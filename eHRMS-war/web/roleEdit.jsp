@@ -21,7 +21,7 @@
                  //alert('submit');
                  $('#action').val('A');
                  $('#myForm').submit();
-                 window.location.href="roleList";
+                 //window.location.href="roleList";
              }      
              );
          }
@@ -46,7 +46,7 @@
         <br/>
         <!-- Main content -->
         <form action="roleEdit" method="post" id="myForm" class="form-horizontal ">
-            <input type="hidden" name="action" id="action" value=""/>
+            <input type="hidden" value="" id="action" name="action"/>
             <div class="form-group">
                      <label class=" control-label col-sm-2">Name</label>
                      <div class="col-sm-3">
