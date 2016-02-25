@@ -89,7 +89,7 @@ public class RoleEdit extends HttpServlet {
             role.setAccessList(accessList);
             //update ejb
             accessBean.addRole(role);
-             
+            page = "/rolelist.jsp"; 
         }
         else if(action.equals("U"))
         {
