@@ -19,7 +19,7 @@
          $(document).ready(function () {
              $('#Add').click(function ()
              {
-                window.location.href="addDept"; 
+                window.location.href="roleEdit"; 
              }      
              );
              $('#roleTab').DataTable({
