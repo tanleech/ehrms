@@ -5,6 +5,7 @@
  */
 package com.sapuraglobal.hrms.ejb;
 
+import com.sapuraglobal.hrms.dto.AccessDTO;
 import com.sapuraglobal.hrms.dto.RoleDTO;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -57,8 +58,15 @@ public class AccessBean implements AccessBeanLocal {
         {
             session =  DaoDelegate.getInstance().create();
             txn = session.beginTransaction();
-            session.persist(roleDTO);
+            //set all the accesslist
+            List<AccessDTO> accessList = roleDTO.getAccessList();
+            for(int i=0;i<accessList.size();i++)
+            {
+                accessList.get(i).setCreated(current);
+                accessList.get(i).setModified(current);
+            }
             
+            session.save(roleDTO);
             txn.commit();
             
         }catch (Exception ex)

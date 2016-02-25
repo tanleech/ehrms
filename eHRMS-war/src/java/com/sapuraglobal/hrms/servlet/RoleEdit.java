@@ -83,6 +83,8 @@ public class RoleEdit extends HttpServlet {
                     System.out.println("rights: "+rights);
                     System.out.println("module name: "+module.getName());
                     access.setAccess(Integer.parseInt(rights));
+                    access.setModule(module);
+                    access.setRole(role);
                 }
                 accessList.add(access);
             }//end for
