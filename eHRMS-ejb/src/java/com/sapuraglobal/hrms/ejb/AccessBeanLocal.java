@@ -5,6 +5,7 @@
  */
 package com.sapuraglobal.hrms.ejb;
 
+import com.sapuraglobal.hrms.dto.AccessDTO;
 import com.sapuraglobal.hrms.dto.RoleDTO;
 import java.util.List;
 import javax.ejb.Local;
@@ -19,6 +20,10 @@ public interface AccessBeanLocal {
     List<RoleDTO> getAllRoles();
 
     void addRole(RoleDTO roleDTO);
+
+    RoleDTO getRole(String descr);
+
+    void update(RoleDTO roleDTO);
 
 
     

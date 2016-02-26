@@ -88,20 +88,6 @@ public class DeptEdit extends HttpServlet {
                 System.out.println("json mgr: "+mgr);
                 String emp = request.getParameter("emp");
                 System.out.println("json emp: "+emp);
-                /*
-                JsonParser parser = Json.createParser(new StringReader(mgr));
-                while (parser.hasNext()) 
-                {
-                    Event event = parser.next();
-                    System.out.println("event: "+event.toString());
-                    if(event.VALUE_STRING.equals(event))
-                    {
-                        System.out.println("value: "+parser.getString());
-                    }
-    
-                }
-                parser.close();
-                */
                 List<UserDTO> mgrList = parseObj(mgr);
                 UserDTO mgrDTO = mgrList.get(0);
                 mgrDTO.setIsManager(true);

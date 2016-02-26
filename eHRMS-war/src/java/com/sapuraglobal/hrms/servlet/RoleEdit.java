@@ -48,7 +48,8 @@ public class RoleEdit extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            response.setContentType("text/html;charset=UTF-8");
+            
+        response.setContentType("text/html;charset=UTF-8");
             
         String action = request.getParameter("action");
         System.out.println("action: "+action);
@@ -56,11 +57,45 @@ public class RoleEdit extends HttpServlet {
         if(action==null||action.isEmpty())
         {
             List<ModuleDTO> moduleList = moduleBean.getAllModules();
+            System.out.println("setting moduleList");
             request.getSession().setAttribute("moduleList",moduleList);
         }
         else if(action.equals("A"))
         {   
+            RoleDTO role = prepare(request);
+            //update ejb
+            accessBean.addRole(role);
+            //clear the modulelist in session.
+            //request.getSession().removeAttribute("moduleList");
+            page = "/roleList"; 
+        }
+        else if(action.equals("U"))
+        {
+            //get the role description
+            String description = request.getParameter("role");
+            RoleDTO roleDTO = accessBean.getRole(description);
+            request.setAttribute("roleData", roleDTO);
+            //clear the modulelist in session.
+            //request.getSession().removeAttribute("moduleList");
+            page = "/roleEdit.jsp?action=U";
+        }
+        else if(action.equals("E"))
+        {
+            RoleDTO role = prepare(request);
+            accessBean.update(role);
+            page = "/roleList"; 
+        }
+        RequestDispatcher view = getServletContext().getRequestDispatcher(page); 
+        view.forward(request,response);     
+    }
+    
+    private RoleDTO prepare(HttpServletRequest request)
+    {
             List<ModuleDTO> moduleList = (List)request.getSession().getAttribute("moduleList");
+            if(moduleList==null)
+            {
+                moduleList = moduleBean.getAllModules();
+            }
             List<AccessDTO> accessList = new ArrayList();
             RoleDTO role = new RoleDTO();
             String roleName = request.getParameter("name");
@@ -68,7 +103,7 @@ public class RoleEdit extends HttpServlet {
             
             //system access
             String acr = request.getParameter("system");
-            
+            System.out.println("module: "+moduleList);
             for(int i=0;i<moduleList.size();i++)
             {
                 ModuleDTO module = moduleList.get(i);
@@ -83,23 +118,13 @@ public class RoleEdit extends HttpServlet {
                     System.out.println("rights: "+rights);
                     System.out.println("module name: "+module.getName());
                     access.setAccess(Integer.parseInt(rights));
-                    access.setModule(module);
-                    access.setRole(role);
                 }
+                access.setRole(role);
+                access.setModule(module);
                 accessList.add(access);
             }//end for
             role.setAccessList(accessList);
-            //update ejb
-            accessBean.addRole(role);
-            page = "/rolelist.jsp"; 
-        }
-        else if(action.equals("U"))
-        {
-            
-        }
-        RequestDispatcher view = getServletContext().getRequestDispatcher(page); 
-        view.forward(request,response);     
-            
+            return role;
 
     }
     

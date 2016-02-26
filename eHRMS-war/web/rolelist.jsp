@@ -72,7 +72,7 @@
                                     <c:forEach var="entry" items="${requestScope.roleList}">
                                         <tr>
                                             <td>
-                                                <a href='<c:out value="roleEdit?role=${entry.description}"/>'><c:out value="${entry.description}"/> </a>                                               
+                                                <a href='<c:out value="roleEdit?role=${entry.description}&action=U"/>'><c:out value="${entry.description}"/> </a>                                               
                                             </td>
                                             <td>
                                                 <c:out value="${fn:length(entry.userRoleList)}"/>                                                

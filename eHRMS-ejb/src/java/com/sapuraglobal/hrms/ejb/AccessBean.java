@@ -9,6 +9,7 @@ import com.sapuraglobal.hrms.dto.AccessDTO;
 import com.sapuraglobal.hrms.dto.RoleDTO;
 import java.util.List;
 import javax.ejb.Stateless;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -82,6 +83,65 @@ public class AccessBean implements AccessBeanLocal {
             DaoDelegate.getInstance().close(session);
         }
 
+    }
+
+    @Override
+    public RoleDTO getRole(String descr) {
+        List results=null;
+        Session session=null;
+        try
+        {
+            session = DaoDelegate.getInstance().create();
+            //results =  session.createQuery("FROM com.sapuraglobal.hrms.dto.RoleDTO role").list();
+            String qry = "SELECT DISTINCT role FROM com.sapuraglobal.hrms.dto.RoleDTO role left join fetch role.accessList WHERE role.description = :descr";
+            Query query = session.createQuery(qry);
+            query.setParameter("descr", descr);
+            results = query.list();
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
+        
+        return (RoleDTO)results.get(0);
+    }
+
+    @Override
+    public void update(RoleDTO roleDTO) {
+        java.util.Date current = new java.util.Date();
+        roleDTO.setModified(current);
+        Session session = null;
+        Transaction txn = null;
+        try
+        {
+            session =  DaoDelegate.getInstance().create();
+            txn = session.beginTransaction();
+            //set all the accesslist
+            List<AccessDTO> accessList = roleDTO.getAccessList();
+            for(int i=0;i<accessList.size();i++)
+            {
+                accessList.get(i).setModified(current);
+            }
+            
+            session.update(roleDTO);
+            txn.commit();
+        }catch (Exception ex)
+        {
+            if(txn!=null)
+            {
+                txn.rollback();
+            }
+            ex.printStackTrace();
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
+        
     }
     
     
