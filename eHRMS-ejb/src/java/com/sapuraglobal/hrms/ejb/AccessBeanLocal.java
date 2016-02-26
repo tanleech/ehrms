@@ -23,7 +23,7 @@ public interface AccessBeanLocal {
 
     RoleDTO getRole(String descr);
 
-    void update(RoleDTO roleDTO);
+    void update(int roleId, List<AccessDTO>accessList);
 
 
     

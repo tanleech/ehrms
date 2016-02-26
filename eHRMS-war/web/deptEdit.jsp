@@ -84,7 +84,13 @@
           
         <!-- Content Header (Page header) -->
         <div class="content-header">
-            <h1>Add Department - Edit
+            <h1>
+                <c:if test="${param.action eq 'U'}">
+                    Update Department
+                </c:if>
+                <c:if test="${param.action ne 'U'}">
+                    Add Department
+                </c:if>    
                 <button type="button" class="btn btn-primary pull-right" id="saveBtn">Save</button>
             </h1>    
         </div>

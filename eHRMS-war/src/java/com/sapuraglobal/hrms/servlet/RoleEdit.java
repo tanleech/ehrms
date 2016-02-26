@@ -75,6 +75,16 @@ public class RoleEdit extends HttpServlet {
             String description = request.getParameter("role");
             RoleDTO roleDTO = accessBean.getRole(description);
             request.setAttribute("roleData", roleDTO);
+            String flag ="N";
+            for(int i=0; i<roleDTO.getAccessList().size();i++)
+            {
+                AccessDTO entry = roleDTO.getAccessList().get(i);
+                if(entry.getAccess()==1)
+                {
+                    flag="Y";
+                }
+            }
+            request.setAttribute("sys", flag);
             //clear the modulelist in session.
             //request.getSession().removeAttribute("moduleList");
             page = "/roleEdit.jsp?action=U";
@@ -82,7 +92,9 @@ public class RoleEdit extends HttpServlet {
         else if(action.equals("E"))
         {
             RoleDTO role = prepare(request);
-            accessBean.update(role);
+            //accessBean.update(role);
+            int id = accessBean.getRole(role.getDescription()).getId();
+            accessBean.update(id, role.getAccessList());
             page = "/roleList"; 
         }
         RequestDispatcher view = getServletContext().getRequestDispatcher(page); 

@@ -73,7 +73,7 @@
                                     <c:forEach var="entry" items="${requestScope.deptList}">
                                         <tr>
                                             <td>
-                                                <a href='<c:out value="deptEdit?dept=${entry.description}"/>'><c:out value="${entry.description}"/> </a>                                               
+                                                <a href='<c:out value="deptEdit?action=U&dept=${entry.description}"/>'><c:out value="${entry.description}"/> </a>                                               
                                             </td>
                                             <td>
                                               <c:forEach var="userDept" items="${entry.employees}">

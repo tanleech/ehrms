@@ -58,25 +58,6 @@ public class DeptBean implements DeptBeanLocal {
             session =  DaoDelegate.getInstance().create();
             txn = session.beginTransaction();
             session.persist(deptDTO);
-            //retrieve the Manager
-            /*
-            String hql = "SELECT User FROM com.sapuraglobal.hrms.dto.UserDTO User WHERE User.id = :id";
-            Query query = session.createQuery(hql);
-            query.setParameter("id", mgrDTO.getId());
-            List results = query.list();
-            UserDTO data = null;
-            if(results!=null && !results.isEmpty())
-            {
-               data = (UserDTO) results.get(0);
-            }
-            UserDeptDTO userDept = new UserDeptDTO();
-            userDept.setManager("Y");
-            userDept.setCreated(current);
-            userDept.setModified(current);
-            userDept.setDept(deptDTO);
-            userDept.setUser(data);
-            session.persist(userDept);
-            */
             txn.commit();
             
         }catch (Exception ex)

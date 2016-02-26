@@ -111,23 +111,29 @@ public class AccessBean implements AccessBeanLocal {
     }
 
     @Override
-    public void update(RoleDTO roleDTO) {
+    public void update(int roleId, List<AccessDTO>accessList) {
         java.util.Date current = new java.util.Date();
-        roleDTO.setModified(current);
         Session session = null;
         Transaction txn = null;
         try
         {
             session =  DaoDelegate.getInstance().create();
             txn = session.beginTransaction();
+            String hql = "UPDATE com.sapuraglobal.hrms.dto.AccessDTO acr set acr.access = :acr, acr.modified = :modify WHERE acr.role.id = :roleId and acr.module.id=:moduleId";
+            Query qry = session.createQuery(hql);
             //set all the accesslist
-            List<AccessDTO> accessList = roleDTO.getAccessList();
             for(int i=0;i<accessList.size();i++)
             {
-                accessList.get(i).setModified(current);
+                AccessDTO access = (AccessDTO) accessList.get(i);
+                System.out.println("acr: "+access.getAccess());
+                qry.setParameter("acr", access.getAccess());
+                qry.setParameter("modify", current);
+                qry.setParameter("roleId", roleId);
+                qry.setParameter("moduleId", access.getModule().getId());
+                System.out.println("role: "+roleId);
+                int result =qry.executeUpdate();
+                //txn.commit();
             }
-            
-            session.update(roleDTO);
             txn.commit();
         }catch (Exception ex)
         {

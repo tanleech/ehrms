@@ -89,10 +89,18 @@
             <div class="form-group">
                      <label class=" control-label col-sm-2">System Access</label>
                      <div class="col-sm-3">
-                        <select class="form-control" id="system" name="system">
-                           <option value="1">Active</option>
-                           <option value="0">InActive</option>
-                        </select>
+                         <c:if test="${requestScope.sys eq 'N'}">
+                            <select class="form-control" id="system" name="system">
+                               <option value="0">InActive</option>
+                               <option value="1">Active</option>
+                            </select>                             
+                         </c:if>
+                         <c:if test="${requestScope.sys ne 'N'}">
+                            <select class="form-control" id="system" name="system">
+                               <option value="1">Active</option>
+                               <option value="0">InActive</option>
+                            </select>
+                         </c:if>
                      </div>
             </div>
             <c:if test="${param.action ne 'U'}">         
