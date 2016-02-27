@@ -22,5 +22,7 @@ public interface DeptBeanLocal {
     void addDept(DeptDTO deptDTO);
 
     void addEmployees(List<UserDTO> userList, DeptDTO deptDTO); 
+
+    DeptDTO getDepartment(String deptDescr);
     
 }

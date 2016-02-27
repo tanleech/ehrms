@@ -55,6 +55,7 @@ public class AddDept extends HttpServlet {
             deptBean.addDept(deptDTO);
             //request.getSession().setAttribute("dept", name);
             //page = "/deptEdit";
+            page = "/deptList";
         }
         RequestDispatcher view = getServletContext().getRequestDispatcher(page); 
         view.forward(request,response);           

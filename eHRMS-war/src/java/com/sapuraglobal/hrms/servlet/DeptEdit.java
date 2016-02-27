@@ -7,6 +7,7 @@ package com.sapuraglobal.hrms.servlet;
 
 import com.sapuraglobal.hrms.dto.DeptDTO;
 import com.sapuraglobal.hrms.dto.UserDTO;
+import com.sapuraglobal.hrms.dto.UserDeptDTO;
 import com.sapuraglobal.hrms.ejb.DeptBeanLocal;
 import com.sapuraglobal.hrms.ejb.UserBeanLocal;
 import java.io.IOException;
@@ -55,33 +56,22 @@ public class DeptEdit extends HttpServlet {
             throws ServletException, IOException {
             response.setContentType("text/html;charset=UTF-8");
             String action = request.getParameter("action");
+            System.out.println("action: "+action);
             String dept = request.getParameter("dept");
             String page = "/deptEdit.jsp";
             
-            if(action==null||action.isEmpty()||!action.equals("A"))
+            if(action==null||action.isEmpty())
             {   
                 if(dept!=null && !dept.isEmpty())
                 {
-                try
-                {
-                    SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-
-                    Date from = formatter.parse("01/01/0000");
-                    Date to   = formatter.parse("12/31/9999");
-
-                    List<UserDTO> userList = userBean.getAllUsers(from, to);
+                    List<UserDTO>userList = getAllUsers();
                     request.setAttribute("usrList", userList);
                     request.setAttribute("dept",dept);
                     //RequestDispatcher view = getServletContext().getRequestDispatcher("/deptEdit.jsp"); 
                     //view.forward(request,response);           
                 }
-                catch(Exception ex)
-                {
-                   ex.printStackTrace();
-                }
-                }
             }
-            else if (action!=null&&action.equals("A"))
+            else if (action.equals("A"))
             {
                 //deptBean.addEmployee(userDTO, true);
                 String mgr = request.getParameter("mgr");
@@ -98,15 +88,35 @@ public class DeptEdit extends HttpServlet {
                 DeptDTO deptDTO = new DeptDTO();
                 deptDTO.setDescription(deptName);
                 deptBean.addEmployees(empList, deptDTO);
-                
                 page = "/deptList";
-                
+            }
+            else if (action.equals("U"))
+            {
+               DeptDTO deptData = deptBean.getDepartment(dept);
+               //retrieve the manager
+               List<UserDeptDTO> employees = deptData.getEmployees();
+               boolean found=false;
+               int i=0;
+               while(!found && employees!=null && !employees.isEmpty())
+               {
+                   UserDeptDTO emp = employees.get(i);
+                   if(emp.getManager()!=null && emp.getManager().equals("Y"))
+                   {
+                       found=true;
+                       request.setAttribute("manager", emp );
+                       employees.remove(i);
+                   }
+                   i++;
+               }
+               List<UserDTO> userList = getAllUsers();
+               request.setAttribute("usrList", userList);
+               request.setAttribute("employeeList", employees);
+               request.setAttribute("dept", dept);
+               page="/deptEdit.jsp";
             }
         RequestDispatcher view = getServletContext().getRequestDispatcher(page); 
         view.forward(request,response);     
-            
-
-    }
+     }
     
     private List<UserDTO> parseObj(String jsonData)
     {   
@@ -134,6 +144,25 @@ public class DeptEdit extends HttpServlet {
         parser.close();
         
         return results;
+    }
+    
+    private List<UserDTO> getAllUsers()
+    {
+        List<UserDTO> userList=null;
+        try
+        {
+            SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+
+            Date from = formatter.parse("01/01/0000");
+            Date to   = formatter.parse("12/31/9999");
+
+            userList = userBean.getAllUsers(from, to);
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        return userList;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8" language="java"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ page import="java.util.List" %>
 <%@ page import="com.sapuraglobal.hrms.dto.DeptDTO" %>
 
@@ -16,8 +17,7 @@
      
  <script>
          $(document).ready(function () {
-             var indx=0;
-             $('#action').val('');
+             var indx=0+<c:out value="${fn:length(requestScope.employeeList)}"/>;
              $('#addBtn').click(function ()
              {
                  //alert('submit');
@@ -117,7 +117,7 @@
                             <c:choose>
                                 <c:when test="${!empty requestScope.usrList}">
                                     <c:forEach var="entry" items="${requestScope.usrList}">
-                                        <option value="<c:out value="${entry.id}"/>"><c:out value="${entry.name}"/></option>
+                                        <option value="<c:out value="${entry.id}"/>" ${requestScope.manager.user.name == entry.name ? 'selected' : ''}><c:out value="${entry.name}"/></option>
                                     </c:forEach>
                                 </c:when>
                             </c:choose>
@@ -131,6 +131,19 @@
                       </tr>
                     </thead>
                     <tbody>
+                         <c:forEach var="emp" items="${requestScope.employeeList}" varStatus="loop">
+                          <tr>   
+                            <td width="40%">
+                               <select class="form-control" name="employee" id="emp${loop.index}">
+                                <c:forEach var="entry" items="${requestScope.usrList}">
+                                    <option value="<c:out value="${entry.id}"/>" ${emp.user.name == entry.name ? 'selected' : ''}>
+                                    <c:out value="${entry.name}"/></option>
+                                </c:forEach>
+                               </select>
+                            </td>
+                         <td class="pull-right"><a href="#"  class="del"><span class="glyphicon glyphicon-remove"/></a></td>
+                          </tr> 
+                        </c:forEach>
                     </tbody>
                 </table>
                      

@@ -101,7 +101,17 @@ public class DeptBean implements DeptBeanLocal {
 
 
             //session.persist(deptDTO);
+            //check whether there are records for the departments
+            
+                //delete existing user from UserDept table
+            String delHql = "delete com.sapuraglobal.hrms.dto.UserDeptDTO userDept WHERE userDept.dept.id = :id";  
+            Query delQry = session.createQuery(delHql);
+            System.out.println("deptId: "+deptData.getId());
+            delQry.setParameter("id", deptData.getId());
+            delQry.executeUpdate();
+            //txn.commit();
             //retrieve the Manager
+            //txn.begin();
             for(int i=0; i<userList.size();i++)
             {    
                 UserDTO dto = userList.get(i);
@@ -116,20 +126,18 @@ public class DeptBean implements DeptBeanLocal {
                 {
                    data = (UserDTO) results.get(0);
                 }
-
                 UserDeptDTO userDept = new UserDeptDTO();
                 if(dto.isIsManager())
                 {
-                   userDept.setManager("Y");
+                  userDept.setManager("Y");
                 }
                 userDept.setCreated(current);
                 userDept.setModified(current);
                 userDept.setDept(deptData);
                 userDept.setUser(data);
                 session.persist(userDept);
-            }
+            }    
             txn.commit();
-            
         }catch (Exception ex)
         {
             if(txn!=null)
@@ -143,6 +151,43 @@ public class DeptBean implements DeptBeanLocal {
             DaoDelegate.getInstance().close(session);
         }
 
+    }
+
+    @Override
+    public DeptDTO getDepartment(String deptDescr) {
+        Session session = null;
+        Transaction txn = null;        
+        DeptDTO deptData = null;
+        try
+        {
+            session =  DaoDelegate.getInstance().create();
+            txn = session.beginTransaction();
+            //retrieve the full data from db.
+            String deptl = "SELECT DISTINCT dept FROM com.sapuraglobal.hrms.dto.DeptDTO dept left join fetch dept.employees WHERE dept.description = :descr";
+            Query deptQuery = session.createQuery(deptl);
+            deptQuery.setParameter("descr", deptDescr);
+            
+            List deptResults = deptQuery.list();
+            
+            if(deptResults!=null && !deptResults.isEmpty())
+            {
+               deptData = (DeptDTO) deptResults.get(0);
+            }
+            
+        }catch (Exception ex)
+        {
+            if(txn!=null)
+            {
+                txn.rollback();
+            }
+            ex.printStackTrace();
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
+        
+        return deptData;
     }
     
     

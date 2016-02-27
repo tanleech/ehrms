@@ -20,7 +20,7 @@
              {
                  //alert('submit');
                  $('#myForm').submit();
-                 window.location.href="deptList";
+                 //window.location.href="deptList";
              }      
              );
          }
