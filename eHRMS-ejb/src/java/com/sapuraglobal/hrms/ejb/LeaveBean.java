@@ -51,6 +51,28 @@ public class LeaveBean implements LeaveBeanLocal {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
+
+    @Override
+    public List<LeaveTypeDTO> getAllLeaveSettings() {
+        List results=null;
+        Session session=null;
+        try
+        {
+            session = DaoDelegate.getInstance().create();
+            results =  session.createQuery("FROM com.sapuraglobal.hrms.dto.LeaveTypeDTO leaveType").list();
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
+        
+        return results;
+         
+    }
     
     
 }
