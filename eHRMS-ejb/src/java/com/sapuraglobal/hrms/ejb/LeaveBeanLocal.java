@@ -16,8 +16,14 @@ import javax.ejb.Local;
 @Local
 public interface LeaveBeanLocal {
 
-    void saveLeaveSetting(List<LeaveTypeDTO> leaveTypes);
+    void saveLeaveSetting(LeaveTypeDTO leaveType);
 
     List<LeaveTypeDTO> getAllLeaveSettings();
+
+    void deleteLeaveSetting(int typeId);
+
+    LeaveTypeDTO getLeaveSetting(int id);
+
+    void updateLeaveSetting(LeaveTypeDTO type);
     
 }
