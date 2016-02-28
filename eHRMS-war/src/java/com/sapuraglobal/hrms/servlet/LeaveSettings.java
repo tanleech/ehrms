@@ -44,25 +44,80 @@ public class LeaveSettings extends HttpServlet {
             System.out.println("action: "+action);
             String page = "/leaveSettings.jsp";
             
-            if(action==null||action.isEmpty())
-            {   
-                List<LeaveTypeDTO> leaveList = leaveBean.getAllLeaveSettings();
-                request.setAttribute("leaveTypelist", leaveList);
-            }
-            else if (action.equals("A"))
+            /*
+            String leaveType = request.getParameter("leaveType");
+            String ent = request.getParameter("ent");
+            String mandatory = request.getParameter("mandatory");
+            String annualIncre = request.getParameter("annualIncre");
+            String cf = request.getParameter("cf");
+            */
+
+            if(action!=null)
             {
-                //deptBean.addEmployee(userDTO, true);
-                page = "/deptList";
+                if (action.equals("A"))
+                {
+                    /*
+                   LeaveTypeDTO type = new LeaveTypeDTO();
+                   type.setDescription(leaveType);
+                   type.setMandatory(mandatory);
+                   type.setDays(Integer.parseInt(ent));
+                   type.setAnnualIncre(Integer.parseInt(annualIncre));
+                   type.setCarriedForward(Integer.parseInt(cf));
+                    */
+                    LeaveTypeDTO type = prepare(request);
+                   leaveBean.saveLeaveSetting(type);
+                   //page="/leaveSettings";
+                }
+                else if (action.equals("D"))
+                {
+                   String id = request.getParameter("id");
+                   leaveBean.deleteLeaveSetting(Integer.parseInt(id));
+                }
+                else if (action.equals("U"))
+                {
+                   String id = request.getParameter("id");
+                   LeaveTypeDTO type = leaveBean.getLeaveSetting(Integer.parseInt(id));
+                   request.setAttribute("leaveType", type);
+                   page="/leaveSettingsEdit.jsp?action=U";
+                }
+                else if (action.equals("E"))
+                {
+                   String id = request.getParameter("id");
+                   System.out.println("id: "+id);
+                   LeaveTypeDTO leaveType = prepare(request);
+                   leaveType.setId(Integer.parseInt(id));
+                   leaveBean.updateLeaveSetting(leaveType);
+                   page="/leaveSettings.jsp";
+                    
+                }
             }
-            else if (action.equals("U"))
-            {
-               page="/deptEdit.jsp";
-            }
+        if(page.equals("/leaveSettings.jsp"))    
+        {
+            List<LeaveTypeDTO> leaveList = leaveBean.getAllLeaveSettings();
+            request.setAttribute("leaveTypelist", leaveList);            
+        }
         RequestDispatcher view = getServletContext().getRequestDispatcher(page); 
         view.forward(request,response);     
      }
     
-    
+    private LeaveTypeDTO prepare(HttpServletRequest request)
+    {
+        String leaveType = request.getParameter("leaveType");
+        String ent = request.getParameter("ent");
+        System.out.println("ent: "+ent);
+        String mandatory = request.getParameter("mandatory");
+        String annualIncre = request.getParameter("annualIncre");
+        String cf = request.getParameter("cf");
+        
+        LeaveTypeDTO type = new LeaveTypeDTO();
+        type.setDescription(leaveType);
+        type.setMandatory(mandatory);
+        type.setDays(Integer.parseInt(ent));
+        type.setAnnualIncre(Integer.parseInt(annualIncre));
+        type.setCarriedForward(Integer.parseInt(cf));
+        
+        return type;
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

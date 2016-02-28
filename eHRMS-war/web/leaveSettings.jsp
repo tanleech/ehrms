@@ -19,42 +19,10 @@
          $(document).ready(function () {
              $('#addBtn').click(function ()
              {
-                 
+                  window.location.href="leaveSettingsEdit.jsp?action=A"; 
              }
              );
-             $('#saveBtn').click( function()
-                {
-                    //alert('save btn clicked');
-                    var i;
-                    var emp = '{"employee":[';//+mgr+'"}]}';
-                    for(i=0;i<indx;i++)
-                    {
-                         var selected = $('#emp'+i+' option:selected').val();
-                         //alert('i: '+selected);
-                         emp = emp + '{"id":"'+ selected +'"}';
-                         if(i<indx-1)
-                         {
-                             emp = emp+',';
-                         }
-                    }
-                    emp = emp+"]}";
-                    //alert('emp: '+emp)
-                    //alert('emp: '+JSON.stringify(JSON.parse(emp)));
-                    var mgr = $('#mgr option:selected').val();
-                    mgr = '{"mgr":[{"id":"'+mgr+'"}]}';
-                    $('#manager').val(mgr);
-                    $('#emp').val(emp);
-                    $('#action').val('A');
-                    //alert('Manager: '+JSON.stringify(JSON.parse(mgr)));
-                    $('#myForm').submit();
-                }
-             );
-             $('#deptTab').on('click','.del',function()
-                {
-                  $(this).closest( 'tr').remove();
-                }      
-             );
-             $('#deptTab').DataTable({
+             $('#leaveTab').DataTable({
                         "paging": false,
                         "lengthChange": false,
                         "searching": false,
@@ -87,10 +55,7 @@
         <!-- Main content -->
                <div class="box-body">
                   <form action="deptEdit" method="post" id="myForm" class="form-horizontal">
-                      <input type="hidden" value="" id="manager"  name="mgr"/>
-                      <input type="hidden" value="" id="emp" name="emp"/>
                       <input type="hidden" value="" id="action" name="action"/>
-                      
                     <span class="content form-control" id="panel" style="height: 100%">
                     <!--    
                     <div class="form-group">
@@ -106,7 +71,7 @@
                      </div>
                     </div>
                     -->
-                <table id="deptTab" class="table table-bordered table-hover">
+                <table id="leaveTab" class="table table-bordered table-hover">
                     <thead>
                       <tr> 
                           <th>Type</th>
@@ -117,10 +82,10 @@
                       </tr>
                     </thead>
                     <tbody>
-                         <c:forEach var="entry" items="${requestScope.leaveTypelist}" varStatus="loop">
+                         <c:forEach var="entry" items="${requestScope.leaveTypelist}">
                           <tr>   
                             <td width="40%">
-                                <a href ="#" ><c:out value='${entry.description}'/></a>
+                                <a href ="leaveSettings?action=U&id=${entry.id}" ><c:out value='${entry.description}'/></a>
                             </td>
                             <td width="20%">
                                 <c:out value='${entry.days}'/>
@@ -134,7 +99,7 @@
                                     </c:if>
                             </td>
                             <td width="10%">
-                                 <a href="#"  class="del"><span class="glyphicon glyphicon-remove"/></a>                               
+                                 <a href="leaveSettings?action=D&id=${entry.id}"><span class="glyphicon glyphicon-remove"/></a>                               
                             </td>
                           </tr> 
                         </c:forEach>
