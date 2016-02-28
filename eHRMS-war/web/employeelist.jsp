@@ -74,7 +74,7 @@
          $(document).ready(function () {
              $('#Add').click(function ()
              {
-                window.location.href="addEmployee"; 
+                window.location.href="employeeEdit"; 
              }      
              );
              $('#daterange').daterangepicker();

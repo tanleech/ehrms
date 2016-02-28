@@ -10,11 +10,10 @@ import com.sapuraglobal.hrms.dto.UserDTO;
 import com.sapuraglobal.hrms.dto.UserDeptDTO;
 import com.sapuraglobal.hrms.ejb.DeptBeanLocal;
 import com.sapuraglobal.hrms.ejb.UserBeanLocal;
+import com.sapuraglobal.hrms.servlet.helper.BeanHelper;
 import java.io.IOException;
 import java.io.StringReader;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.json.Json;
@@ -64,7 +63,7 @@ public class DeptEdit extends HttpServlet {
             {   
                 if(dept!=null && !dept.isEmpty())
                 {
-                    List<UserDTO>userList = getAllUsers();
+                    List<UserDTO>userList = new BeanHelper().getAllUsers(userBean);
                     request.setAttribute("usrList", userList);
                     request.setAttribute("dept",dept);
                     //RequestDispatcher view = getServletContext().getRequestDispatcher("/deptEdit.jsp"); 
@@ -108,7 +107,7 @@ public class DeptEdit extends HttpServlet {
                    }
                    i++;
                }
-               List<UserDTO> userList = getAllUsers();
+               List<UserDTO> userList = new BeanHelper().getAllUsers(userBean);
                request.setAttribute("usrList", userList);
                request.setAttribute("employeeList", employees);
                request.setAttribute("dept", dept);
@@ -146,24 +145,6 @@ public class DeptEdit extends HttpServlet {
         return results;
     }
     
-    private List<UserDTO> getAllUsers()
-    {
-        List<UserDTO> userList=null;
-        try
-        {
-            SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-
-            Date from = formatter.parse("01/01/0000");
-            Date to   = formatter.parse("12/31/9999");
-
-            userList = userBean.getAllUsers(from, to);
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return userList;
-    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

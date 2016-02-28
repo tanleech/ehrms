@@ -13,6 +13,13 @@
 <html>
   <head>
      <%@include file="head.jsp"%>
+       <script>
+         $(document).ready(function () {
+             $('#dateJoin').datepicker(); 
+             $('#probDue').datepicker(); 
+             
+         });
+       </script>
   </head>
     
   <body class="hold-transition skin-blue sidebar-mini" >
@@ -30,8 +37,8 @@
         </div>
         <br/>
         <!-- Main content -->
-                 <form action="addEmployee" method="post" id="myForm" class="form-horizontal">
-                  <span class="content form-control">
+                 <form action="employeeEdit" method="post" id="myForm" class="form-horizontal">
+                  <span class="content form-control ">
                     <div class="form-group">
                      <label class=" control-label col-sm-1">Name</label>
                      <div class="col-sm-3">
@@ -41,11 +48,20 @@
                      <div class="col-sm-3">
                         <input type="text" class="form-control" name="email"/>   
                      </div>
-                    </div> 
+                    </div>
+                      
                     <div class="form-group">
                      <label class=" control-label col-sm-1">Department</label>
                      <div class="col-sm-3">
-                         <input type="text" class="form-control" name="dept" id="dept" readonly/>
+                        <select class="form-control" id="dept">
+                            <c:choose>
+                                <c:when test="${!empty requestScope.deptList}">
+                                    <c:forEach var="entry" items="${requestScope.deptList}">
+                                        <option value="<c:out value="${entry.id}"/>"><c:out value="${entry.description}"/></option>
+                                    </c:forEach>
+                                </c:when>
+                            </c:choose>
+                        </select>                          
                      </div>
                      <label class=" control-label col-sm-2">Mobile</label>
                      <div class="col-sm-3">
@@ -73,46 +89,67 @@
                     <div class="form-group">
                      <label class=" control-label col-sm-1">Manager</label>
                      <div class="col-sm-3">
-                        <input type="text" class="form-control" name="mgr" id="mgr" readonly/>
+                        <select class="form-control" id="mgr">
+                            <option value="0">None</option>
+                            <c:choose>
+                                <c:when test="${!empty requestScope.mgrList}">
+                                    <c:forEach var="entry" items="${requestScope.mgrList}">
+                                        <option value="<c:out value="${entry.login}"/>"><c:out value="${entry.name}"/></option>
+                                    </c:forEach>
+                                </c:when>
+                            </c:choose>
+                        </select>                      
                      </div>
                      <label class=" control-label col-sm-2">User Role</label>
                      <div class="col-sm-3">
-                        <select class="form-control" id="title">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
+                        <select class="form-control" id="role">
+                            <c:choose>
+                                <c:when test="${!empty requestScope.roleList}">
+                                    <c:forEach var="entry" items="${requestScope.roleList}">
+                                        <option value="<c:out value="${entry.id}"/>"><c:out value="${entry.description}"/></option>
+                                    </c:forEach>
+                                </c:when>
+                            </c:choose>
                         </select>                         
                      </div>
-                    </div> 
-                  </span> 
-                     <span class="content form-control">
-                     
+                    </div>
+                    <div class="form-group">
+                     <label class=" control-label col-sm-1">Login</label>
+                     <div class="col-sm-3">
+                         <input type="text" class="form-control" name="mobile"/>   
+                     </div>
+                    </div>
+                  </span>
+                  
+                  <span class="content form-control">
                     <div class="form-group">
                      <label class=" control-label col-sm-1">Date Joined</label>
                      <div class="col-sm-3">
-                        <input type="text" class="form-control" name="name"/>   
+                        <input type="text" class="form-control" id="dateJoin" name="dateJoin"/>   
                      </div>
-                     <label class=" control-label col-sm-2">Base Leave Entitlement</label>
+                     <label class=" control-label col-sm-2">Probation End</label>
                      <div class="col-sm-3">
-                        <input type="text" class="form-control" name="email"/>   
+                        <input type="text" class="form-control" id="probDue" name="probDue"/>   
                      </div>
                     </div> 
                     <div class="form-group">
-                     <label class=" control-label col-sm-1">Probation End</label>
+                     <label class=" control-label col-sm-1">Base Leave Entitlement</label>
                      <div class="col-sm-3">
-                        <select class="form-control" id="dept">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                        </select>                         
+                        <input type="text" class="form-control" id="base" name="base"/>   
                      </div>
                      <label class=" control-label col-sm-2">Max Leave<br/>Entitlement</label>
                      <div class="col-sm-3">
                         <input type="text" class="form-control" name="mobile"/>   
                      </div>
                     </div> 
+                    <div class="form-group">
+                     <label class=" control-label col-sm-1">Current Leave<br/>Entitlement</label>
+                     <div class="col-sm-3">
+                        <input type="text" class="form-control" name="mobile"/>   
+                     </div>
+                    </div> 
+                      
+                    <!--     
                     <div class="form-group">
                      <label class=" control-label col-sm-1">Category</label>
                      <div class="col-sm-3">
@@ -124,6 +161,7 @@
                         </select>                         
                      </div>
                     </div> 
+                    -->
                   </span> 
                  </form>
             <!-- Main content -->

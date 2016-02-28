@@ -5,9 +5,15 @@
  */
 package com.sapuraglobal.hrms.servlet;
 
+import com.sapuraglobal.hrms.dto.DeptDTO;
+import com.sapuraglobal.hrms.dto.RoleDTO;
 import com.sapuraglobal.hrms.dto.TitleDTO;
+import com.sapuraglobal.hrms.dto.UserDTO;
+import com.sapuraglobal.hrms.ejb.AccessBeanLocal;
+import com.sapuraglobal.hrms.ejb.DeptBeanLocal;
 import com.sapuraglobal.hrms.ejb.TitleBeanLocal;
 import com.sapuraglobal.hrms.ejb.UserBeanLocal;
+import com.sapuraglobal.hrms.servlet.helper.BeanHelper;
 import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
@@ -23,13 +29,18 @@ import javax.servlet.http.HttpServletResponse;
  * @author sapura-mac-pro-cto-C02PC1MWG3QT
  */
 @WebServlet(
-    urlPatterns = {"/addEmployee"}
+    urlPatterns = {"/employeeEdit"}
 )
-public class AddEmployee extends HttpServlet {
+public class EmployeeEdit extends HttpServlet {
     @EJB
     private UserBeanLocal userBean;
     @EJB
     private TitleBeanLocal titleBean;
+    @EJB
+    private DeptBeanLocal deptBean;
+    @EJB
+    private AccessBeanLocal accessBean;
+
 
 
     /**
@@ -47,10 +58,22 @@ public class AddEmployee extends HttpServlet {
           
           List<TitleDTO> titleList = titleBean.getAllTitles();
           request.setAttribute("titleList", titleList);
-          RequestDispatcher view = getServletContext().getRequestDispatcher("/addEmployee.jsp"); 
+          
+          List<DeptDTO>deptList = deptBean.getAllDepts();
+          request.setAttribute("deptList",deptList);
+
+          List<RoleDTO>roleList = accessBean.getAllRoles();
+          request.setAttribute("roleList",roleList);
+          
+          List<UserDTO>mgrList = new BeanHelper().getAllUsers(userBean);
+          request.setAttribute("mgrList",mgrList);
+          
+          
+          RequestDispatcher view = getServletContext().getRequestDispatcher("/employeeEdit.jsp"); 
           view.forward(request,response);           
     }
-
+    
+ 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
