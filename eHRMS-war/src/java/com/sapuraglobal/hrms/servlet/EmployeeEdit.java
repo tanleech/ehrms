@@ -9,12 +9,16 @@ import com.sapuraglobal.hrms.dto.DeptDTO;
 import com.sapuraglobal.hrms.dto.RoleDTO;
 import com.sapuraglobal.hrms.dto.TitleDTO;
 import com.sapuraglobal.hrms.dto.UserDTO;
+import com.sapuraglobal.hrms.dto.UserDeptDTO;
+import com.sapuraglobal.hrms.dto.UserRoleDTO;
 import com.sapuraglobal.hrms.ejb.AccessBeanLocal;
 import com.sapuraglobal.hrms.ejb.DeptBeanLocal;
 import com.sapuraglobal.hrms.ejb.TitleBeanLocal;
 import com.sapuraglobal.hrms.ejb.UserBeanLocal;
 import com.sapuraglobal.hrms.servlet.helper.BeanHelper;
+import com.sapuraglobal.hrms.servlet.helper.Utility;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -56,6 +60,9 @@ public class EmployeeEdit extends HttpServlet {
             throws ServletException, IOException {
           response.setContentType("text/html;charset=UTF-8");
           
+          String action = request.getParameter("action");
+          String page = "/employeeEdit.jsp";
+          
           List<TitleDTO> titleList = titleBean.getAllTitles();
           request.setAttribute("titleList", titleList);
           
@@ -67,12 +74,76 @@ public class EmployeeEdit extends HttpServlet {
           
           List<UserDTO>mgrList = new BeanHelper().getAllUsers(userBean);
           request.setAttribute("mgrList",mgrList);
+          if(action!=null)
+          {
+             if(action.equals("A"))
+             {
+                 UserDTO userDto = prepare(request);
+                 userBean.createUser(userDto, userDto.getDept(), userDto.getRole());
+                 //userBean.createUser(userDto);
+                 
+             }
+          }
           
           
           RequestDispatcher view = getServletContext().getRequestDispatcher("/employeeEdit.jsp"); 
           view.forward(request,response);           
     }
     
+    private UserDTO prepare(HttpServletRequest request)
+    {
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        String dept = request.getParameter("dept");
+        String mobile = request.getParameter("mobile");
+        String title = request.getParameter("title");
+        String office = request.getParameter("office");
+        String mgr = request.getParameter("mgr");
+        String role = request.getParameter("role");
+        String login = request.getParameter("login");
+        String dateJoin = request.getParameter("dateJoin");
+        String probDue = request.getParameter("probDue");
+        String base = request.getParameter("base");
+        String max = request.getParameter("max");
+        
+        UserDTO user = new UserDTO();
+        user.setName(name);
+        user.setEmail(email);
+        user.setPhone(mobile);
+        user.setOffice(office);
+        user.setLogin(login);
+        try
+        {
+           Date join = Utility.format(dateJoin,"MM/dd/yyyy");
+           Date prob = Utility.format(probDue, "MM/dd/yyyy");
+           user.setDateJoin(join);
+           user.setProbationDue(prob);
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        
+        TitleDTO titleDto = new TitleDTO();
+        titleDto.setId(Integer.parseInt(title));
+        user.setTitle(titleDto);
+        
+        DeptDTO deptDto = new DeptDTO();
+        deptDto.setDescription(dept);
+        UserDeptDTO userDept = new UserDeptDTO();
+        userDept.setDept(deptDto);
+        
+        RoleDTO roleDto = new RoleDTO();
+        roleDto.setDescription(role);
+        UserRoleDTO userRole = new UserRoleDTO();
+        userRole.setRole(roleDto);
+        
+        user.setDept(userDept);
+        user.setRole(userRole);
+        
+        return user;
+        
+    }
  
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

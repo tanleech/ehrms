@@ -49,8 +49,7 @@ public class Login extends HttpServlet {
             System.out.println("redirect to login");
             response.sendRedirect("login.jsp");
         }
-        else if (userId!=null&&!userId.isEmpty()
-                 ||password!=null&&!password.isEmpty())
+        else         
         {
             //authenticate
             UserDTO auth = userBean.authenticate(userId, password);
