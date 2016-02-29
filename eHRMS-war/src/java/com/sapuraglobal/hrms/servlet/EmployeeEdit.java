@@ -124,9 +124,9 @@ public class EmployeeEdit extends HttpServlet {
             ex.printStackTrace();
         }
         
-        TitleDTO titleDto = new TitleDTO();
-        titleDto.setId(Integer.parseInt(title));
+        TitleDTO titleDto = titleBean.getTitle(Integer.parseInt(title));
         user.setTitle(titleDto);
+        
         
         DeptDTO deptDto = new DeptDTO();
         deptDto.setDescription(dept);
