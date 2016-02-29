@@ -19,5 +19,7 @@ public interface TitleBeanLocal {
     List<TitleDTO> getAllTitles();
 
     void addTitle(TitleDTO title);
+
+    TitleDTO getTitle(int id);
     
 }

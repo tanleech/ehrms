@@ -8,6 +8,7 @@ package com.sapuraglobal.hrms.ejb;
 import com.sapuraglobal.hrms.dto.TitleDTO;
 import java.util.List;
 import javax.ejb.Stateless;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -74,4 +75,29 @@ public class TitleBean implements TitleBeanLocal {
         }
  
     }
+
+    @Override
+    public TitleDTO getTitle(int id) {
+        List results=null;
+        Session session=null;
+        try
+        {
+            session = DaoDelegate.getInstance().create();
+            Query qry = session.createQuery("SELECT title FROM com.sapuraglobal.hrms.dto.TitleDTO title WHERE title.id = :id");
+            qry.setParameter("id", id);
+            results = qry.list();
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
+        
+        return (TitleDTO)results.get(0);
+    }
+    
+    
 }

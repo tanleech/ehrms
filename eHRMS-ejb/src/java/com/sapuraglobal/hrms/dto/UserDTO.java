@@ -73,7 +73,7 @@ public class UserDTO {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date modified;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne(cascade=CascadeType.MERGE)
     @JoinColumn(name="Title_id")
     private TitleDTO title;
     

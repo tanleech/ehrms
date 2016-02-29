@@ -114,6 +114,7 @@ public class UserBean implements UserBeanLocal {
         {
             session = DaoDelegate.getInstance().create();
             txn = session.beginTransaction();
+            
             session.persist(user);
 
             DeptDTO dept = deptBean.getDepartment(userDept.getDept().getDescription());
