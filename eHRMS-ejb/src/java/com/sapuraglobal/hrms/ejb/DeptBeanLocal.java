@@ -7,6 +7,7 @@ package com.sapuraglobal.hrms.ejb;
 
 import com.sapuraglobal.hrms.dto.DeptDTO;
 import com.sapuraglobal.hrms.dto.UserDTO;
+import com.sapuraglobal.hrms.dto.UserDeptDTO;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -21,8 +22,14 @@ public interface DeptBeanLocal {
 
     void addDept(DeptDTO deptDTO);
 
-    void addEmployees(List<UserDTO> userList, DeptDTO deptDTO); 
+    void addEmployee(UserDTO userDTO, DeptDTO deptDTO); 
 
     DeptDTO getDepartment(String deptDescr);
+
+    UserDeptDTO getUserDept(int userId, int deptId);
+
+    void unassignManager(int deptId);
+
+    void unassignEmployee(int userId, int deptId);
     
 }

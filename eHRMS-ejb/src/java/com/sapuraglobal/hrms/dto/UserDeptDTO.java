@@ -27,11 +27,11 @@ public class UserDeptDTO implements java.io.Serializable {
     @Column(name = "id")
     private int id;
     
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne(cascade=CascadeType.MERGE)
     @JoinColumn(name="Dept_id")
     private DeptDTO dept;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne(cascade=CascadeType.MERGE)
     @JoinColumn(name="User_id")
     private UserDTO user;
     

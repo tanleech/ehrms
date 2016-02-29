@@ -12,6 +12,7 @@ import com.sapuraglobal.hrms.ejb.DeptBeanLocal;
 import com.sapuraglobal.hrms.ejb.UserBeanLocal;
 import com.sapuraglobal.hrms.servlet.helper.BeanHelper;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,65 +57,91 @@ public class DeptEdit extends HttpServlet {
             response.setContentType("text/html;charset=UTF-8");
             String action = request.getParameter("action");
             System.out.println("action: "+action);
+            
             String dept = request.getParameter("dept");
+            System.out.println("dept: "+dept);
+            
             String page = "/deptEdit.jsp";
             
-            if(action==null||action.isEmpty())
+            if(action!=null)
             {   
-                if(dept!=null && !dept.isEmpty())
+                if(action.equals("A"))
                 {
-                    List<UserDTO>userList = new BeanHelper().getAllUsers(userBean);
-                    request.setAttribute("usrList", userList);
-                    request.setAttribute("dept",dept);
-                    //RequestDispatcher view = getServletContext().getRequestDispatcher("/deptEdit.jsp"); 
-                    //view.forward(request,response);           
+                        List<UserDTO>userList = new BeanHelper().getAllUsers(userBean);
+                        request.setAttribute("usrList", userList);
+                        request.setAttribute("dept",dept);
+                        page="/deptAddEmp.jsp";
+
+                }
+                else if (action.equals("D"))
+                {
+                    String userId = request.getParameter("userId");
+                    DeptDTO deptDto = deptBean.getDepartment(dept);
+                    deptBean.unassignEmployee(Integer.parseInt(userId), deptDto.getId());
+                    page = "/deptEdit?action=U&dept="+dept;                    
+                }
+                else if (action.equals("AM"))
+                {
+                    String emp = request.getParameter("manager");
+                    System.out.println("mgr: "+emp);
+                    UserDTO empDto = userBean.getUser(emp);
+                    empDto.setIsManager(true);
+                    //get dept name
+                    DeptDTO deptDto = deptBean.getDepartment(dept);
+                    deptBean.unassignManager(deptDto.getId());
+                    deptBean.addEmployee(empDto, deptDto);
+                    page="";
+                    /*
+                     response.setContentType("text/html");
+                     PrintWriter out = response.getWriter();
+                     out.write(json);
+                     out.flush();
+                    */
+                }
+                else if (action.equals("AS"))
+                {
+                    //deptBean.addEmployee(userDTO, true);
+                    String emp = request.getParameter("empLogin");
+                    UserDTO empDto = userBean.getUser(emp);
+
+                    //get dept name
+                    //String deptName = request.getParameter("name");
+                    DeptDTO deptDto = deptBean.getDepartment(dept);
+
+                    deptBean.addEmployee(empDto, deptDto);
+
+                    page = "/deptEdit?action=U&dept="+dept;
+                }
+                else if (action.equals("U"))
+                {
+                   DeptDTO deptData = deptBean.getDepartment(dept);
+                   //retrieve the manager
+                   List<UserDeptDTO> employees = deptData.getEmployees();
+                   boolean found=false;
+                   int i=0;
+                   while(!found && employees!=null && !employees.isEmpty() &&i<employees.size() )
+                   {
+                       UserDeptDTO emp = employees.get(i);
+                       if(emp.getManager()!=null && emp.getManager().equals("Y"))
+                       {
+                           found=true;
+                           request.setAttribute("manager", emp );
+                           employees.remove(i);
+                       }
+                       i++;
+                   }
+                   List<UserDTO> userList = new BeanHelper().getAllUsers(userBean);
+                   request.setAttribute("usrList", userList);
+                   request.setAttribute("employeeList", employees);
+                   request.setAttribute("dept", dept);
+                   page="/deptEdit.jsp";
                 }
             }
-            else if (action.equals("A"))
-            {
-                //deptBean.addEmployee(userDTO, true);
-                String mgr = request.getParameter("mgr");
-                System.out.println("json mgr: "+mgr);
-                String emp = request.getParameter("emp");
-                System.out.println("json emp: "+emp);
-                List<UserDTO> mgrList = parseObj(mgr);
-                UserDTO mgrDTO = mgrList.get(0);
-                mgrDTO.setIsManager(true);
-                List<UserDTO>empList = parseObj(emp);
-                empList.add(mgrDTO);
-                //get dept name
-                String deptName = request.getParameter("name");
-                DeptDTO deptDTO = new DeptDTO();
-                deptDTO.setDescription(deptName);
-                deptBean.addEmployees(empList, deptDTO);
-                page = "/deptList";
-            }
-            else if (action.equals("U"))
-            {
-               DeptDTO deptData = deptBean.getDepartment(dept);
-               //retrieve the manager
-               List<UserDeptDTO> employees = deptData.getEmployees();
-               boolean found=false;
-               int i=0;
-               while(!found && employees!=null && !employees.isEmpty())
-               {
-                   UserDeptDTO emp = employees.get(i);
-                   if(emp.getManager()!=null && emp.getManager().equals("Y"))
-                   {
-                       found=true;
-                       request.setAttribute("manager", emp );
-                       employees.remove(i);
-                   }
-                   i++;
-               }
-               List<UserDTO> userList = new BeanHelper().getAllUsers(userBean);
-               request.setAttribute("usrList", userList);
-               request.setAttribute("employeeList", employees);
-               request.setAttribute("dept", dept);
-               page="/deptEdit.jsp";
-            }
-        RequestDispatcher view = getServletContext().getRequestDispatcher(page); 
-        view.forward(request,response);     
+        if(!page.isEmpty())
+        {
+           RequestDispatcher view = getServletContext().getRequestDispatcher(page); 
+           view.forward(request,response);     
+        }   
      }
     
     private List<UserDTO> parseObj(String jsonData)

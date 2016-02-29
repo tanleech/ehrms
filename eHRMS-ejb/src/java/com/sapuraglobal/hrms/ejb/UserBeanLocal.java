@@ -25,4 +25,6 @@ public interface UserBeanLocal {
 
     List<UserDTO> getAllUsers(Date from, Date to);
     
+    UserDTO getUser(String loginId);
+    
 }

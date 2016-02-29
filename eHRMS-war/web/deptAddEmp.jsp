@@ -17,24 +17,22 @@
      
  <script>
          $(document).ready(function () {
-             $('#addBtn').click(function ()
+             $('#assignBtn').click(function ()
              {
-                window.location.href = 'deptEdit?action=A&dept='+$('#department').val();
+                 $('#action').val('AS');
+                 $('#myForm').submit();    
              }      
              );
              $('#mgr').change(function ()
              {
-                   var url = $('#myForm').attr('action'); 
-                   $('#action').val('AM');
-                   var frmData = $('#myForm').serialize(); 
-                    //ajax post.
-                    $.post(url, frmData,
-                    function (data,status) {
-                        alert('Manager Updated');
-                     });   
-
+                 alert('change');
              }
              ); 
+             $('#deptTab').on('click','.del',function()
+                {
+                  $(this).closest( 'tr').remove();
+                }      
+             );
              $('#deptTab').DataTable({
                         "paging": false,
                         "lengthChange": false,
@@ -60,13 +58,8 @@
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <h1>
-                <c:if test="${param.action eq 'U'}">
-                    Update Department
-                </c:if>
-                <c:if test="${param.action ne 'U'}">
-                    Add Department
-                </c:if>    
-                <button type="button" class="btn btn-primary pull-right" id="addBtn">Add</button>
+                 Assign Employee
+                <button type="button" class="btn btn-primary pull-right" id="assignBtn">Assign</button>
             </h1>    
         </div>
         <br/>
@@ -74,52 +67,26 @@
                <div class="box-body">
                   <form action="deptEdit" method="post" id="myForm" class="form-horizontal">
                     <input type="hidden" value="" id="action" name="action"/>
+                    <input type="hidden" value="${requestScope.dept}" id="dept" name="dept"/>
                     <span class="content form-control" id="panel" style="height: 100%">
                     <div class="form-group">
-                     <label class=" control-label col-sm-1">Name</label>
-                     <div class="col-sm-3">
-                         <input type="text" class="form-control" name="dept" readonly
-                              id="department"  value="${requestScope.dept}"/>
-                     </div>
+                     <label class=" control-label col-sm-1">${requestScope.dept}</label>
                     </div>
                     <div class="form-group">  
-                     <label class=" control-label col-sm-1">Manager</label>
+                     <label class=" control-label col-sm-1">Employee</label>
                      <div class="col-sm-3">
-                        <select class="form-control" id="mgr" name="manager">
-                            <option value="0">None</option>
+                        <select class="form-control" id="emp" name="empLogin">
                             <c:choose>
                                 <c:when test="${!empty requestScope.usrList}">
                                     <c:forEach var="entry" items="${requestScope.usrList}">
-                                        <option value="<c:out value="${entry.login}"/>" ${requestScope.manager.user.name == entry.name ? 'selected' : ''}><c:out value="${entry.name}"/></option>
+                                        <option value="${entry.login}">${entry.name}</option>
                                     </c:forEach>
                                 </c:when>
                             </c:choose>
                         </select>                         
                      </div>
                     </div>
-                <table id="deptTab" class="table table-bordered table-hover">
-                    <thead>
-                      <tr> 
-                          <th colspan="2">Name</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                         <c:forEach var="emp" items="${requestScope.employeeList}">
-                          <tr>   
-                            <td width="40%">
-                               ${emp.user.name}
-                            </td>
-                            <td class="pull-right">
-                               <a href="deptEdit?action=D&userId=${emp.user.id}&dept=${requestScope.dept}"  class="del" id="delBtn">
-                                 <span class="glyphicon glyphicon-remove"/>
-                               </a>
-                            </td>
-                          </tr> 
-                        </c:forEach>
-                    </tbody>
-                </table>
-                     
-                </span> 
+                    </span> 
                  </form>
             <!-- Main content -->
                </div>

@@ -76,8 +76,9 @@ public class UserBean implements UserBeanLocal {
         
         return userData;
     }
-
-    private UserDTO getUser(String loginId)
+  
+    @Override 
+    public UserDTO getUser(String loginId)
     {
         UserDTO data=null;
         String hql = "FROM com.sapuraglobal.hrms.dto.UserDTO U WHERE U.login = :userLogin";
@@ -120,7 +121,7 @@ public class UserBean implements UserBeanLocal {
             DeptDTO dept = deptBean.getDepartment(userDept.getDept().getDescription());
             ArrayList<UserDTO> userList = new ArrayList();
             userList.add(user);
-            deptBean.addEmployees(userList, dept);
+            //deptBean.addEmployees(userList, dept);
             
             txn.commit(); 
         }catch (Exception ex)

@@ -74,8 +74,10 @@ public class DeptBean implements DeptBeanLocal {
         }
     }
     
-    @Override
-    public void addEmployees(List<UserDTO> userList, DeptDTO deptDTO) 
+    
+    
+    @Override 
+    public void addEmployee(UserDTO userDTO, DeptDTO deptDTO) 
     {
         java.util.Date current = new java.util.Date();
         Session session = null;
@@ -85,60 +87,19 @@ public class DeptBean implements DeptBeanLocal {
             
             session =  DaoDelegate.getInstance().create();
             txn = session.beginTransaction();
-            //retrieve the full data from db.
-            String deptl = "SELECT dept FROM com.sapuraglobal.hrms.dto.DeptDTO dept WHERE dept.description = :descr";
-            Query deptQuery = session.createQuery(deptl);
-            System.out.println("descr: "+deptDTO.getDescription());
-            deptQuery.setParameter("descr", deptDTO.getDescription());
-            
-            List deptResults = deptQuery.list();
-            DeptDTO deptData = null;
-            if(deptResults!=null && !deptResults.isEmpty())
+            UserDeptDTO userDept = new UserDeptDTO();
+            if(userDTO.isIsManager())
             {
-               deptData = (DeptDTO) deptResults.get(0);
-               System.out.println("Dept id: "+deptData.getDescription());
-            }
-
-
-            //session.persist(deptDTO);
-            //check whether there are records for the departments
-            
-                //delete existing user from UserDept table
-            String delHql = "delete com.sapuraglobal.hrms.dto.UserDeptDTO userDept WHERE userDept.dept.id = :id";  
-            Query delQry = session.createQuery(delHql);
-            System.out.println("deptId: "+deptData.getId());
-            delQry.setParameter("id", deptData.getId());
-            delQry.executeUpdate();
-            //txn.commit();
-            //retrieve the Manager
-            //txn.begin();
-            for(int i=0; i<userList.size();i++)
-            {    
-                UserDTO dto = userList.get(i);
-                //retrieve the full data from db.
-                String hql = "SELECT User FROM com.sapuraglobal.hrms.dto.UserDTO User WHERE User.id = :id";
-                Query query = session.createQuery(hql);
-                query.setParameter("id", dto.getId());
-                
-                List results = query.list();
-                UserDTO data = null;
-                if(results!=null && !results.isEmpty())
-                {
-                   data = (UserDTO) results.get(0);
-                }
-                UserDeptDTO userDept = new UserDeptDTO();
-                if(dto.isIsManager())
-                {
                   userDept.setManager("Y");
-                }
-                userDept.setCreated(current);
-                userDept.setModified(current);
-                userDept.setDept(deptData);
-                userDept.setUser(data);
-                session.persist(userDept);
-            }    
+            }
+            userDept.setCreated(current);
+            userDept.setModified(current);
+            userDept.setDept(deptDTO);
+            userDept.setUser(userDTO);
+            session.persist(userDept);
             txn.commit();
-        }catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             if(txn!=null)
             {
@@ -188,6 +149,110 @@ public class DeptBean implements DeptBeanLocal {
         }
         
         return deptData;
+    }
+
+    
+    @Override
+    public UserDeptDTO getUserDept(int userId, int deptId) {
+        Session session = null;
+        Transaction txn = null;        
+        UserDeptDTO data = null;
+        try
+        {
+            session =  DaoDelegate.getInstance().create();
+            txn = session.beginTransaction();
+            //retrieve the full data from db.
+            //retrieve from UserDept
+            String hql = "FROM com.sapuraglobal.hrms.dto.UserDeptDTO WHERE User_id=:userId AND Dept_id=:deptId";
+            
+            Query qry = session.createQuery(hql);
+            qry.setParameter("userId", userId);
+            qry.setParameter("deptId", deptId);
+            
+            List results = qry.list();
+            
+            if(results!=null && !results.isEmpty())
+            {
+               data = (UserDeptDTO) results.get(0);
+            }
+            
+        }catch (Exception ex)
+        {
+            if(txn!=null)
+            {
+                txn.rollback();
+            }
+            ex.printStackTrace();
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
+        
+        return data;
+    }
+
+    @Override
+    public void unassignManager(int deptId) {
+        Session session = null;
+        Transaction txn = null;        
+        try
+        {
+            session =  DaoDelegate.getInstance().create();
+            txn = session.beginTransaction();
+            //retrieve the full data from db.
+            //retrieve from UserDept
+            String hql = "DELETE FROM com.sapuraglobal.hrms.dto.UserDeptDTO WHERE Dept_id=:deptId AND manager = 'Y'";
+            Query qry = session.createQuery(hql);
+            qry.setParameter("deptId", deptId);
+            qry.executeUpdate();
+            txn.commit();
+            
+        }catch (Exception ex)
+        {
+            if(txn!=null)
+            {
+                txn.rollback();
+            }
+            ex.printStackTrace();
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
+        
+    }
+
+    @Override
+    public void unassignEmployee(int userId, int deptId) {
+        Session session = null;
+        Transaction txn = null;        
+        try
+        {
+            session =  DaoDelegate.getInstance().create();
+            txn = session.beginTransaction();
+            //retrieve the full data from db.
+            //retrieve from UserDept
+            String hql = "DELETE FROM com.sapuraglobal.hrms.dto.UserDeptDTO WHERE Dept_id=:deptId AND User_id = :userId ";
+            Query qry = session.createQuery(hql);
+            qry.setParameter("userId",userId);
+            qry.setParameter("deptId", deptId);
+            qry.executeUpdate();
+            txn.commit();
+            
+        }catch (Exception ex)
+        {
+            if(txn!=null)
+            {
+                txn.rollback();
+            }
+            ex.printStackTrace();
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
+        
     }
     
     

@@ -111,7 +111,7 @@ public class AddRole extends HttpServlet {
                 String deptName = (String)request.getSession().getAttribute("dept");
                 DeptDTO deptDTO = new DeptDTO();
                 deptDTO.setDescription(deptName);
-                deptBean.addEmployees(empList, deptDTO);
+                //deptBean.addEmployees(empList, deptDTO);
                 
                 page = "/deptList";
                 
