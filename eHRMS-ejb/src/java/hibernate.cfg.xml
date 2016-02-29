@@ -19,6 +19,10 @@
     <mapping class="com.sapuraglobal.hrms.dto.ModuleDTO"/>
     <mapping class="com.sapuraglobal.hrms.dto.AccessDTO"/>
     <mapping class="com.sapuraglobal.hrms.dto.LeaveTypeDTO"/>
+    <mapping class="com.sapuraglobal.hrms.dto.LeaveTxnDTO"/>
+    <mapping class="com.sapuraglobal.hrms.dto.LeaveEntDTO"/>
+    <mapping class="com.sapuraglobal.hrms.dto.StatusDTO"/>
+    
 
     
   </session-factory>

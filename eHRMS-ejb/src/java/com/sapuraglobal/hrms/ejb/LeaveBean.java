@@ -5,7 +5,10 @@
  */
 package com.sapuraglobal.hrms.ejb;
 
+import com.sapuraglobal.hrms.dto.LeaveEntDTO;
+import com.sapuraglobal.hrms.dto.LeaveTxnDTO;
 import com.sapuraglobal.hrms.dto.LeaveTypeDTO;
+import com.sapuraglobal.hrms.dto.UserDTO;
 import java.util.List;
 import javax.ejb.Stateless;
 import org.hibernate.Query;
@@ -74,6 +77,8 @@ public class LeaveBean implements LeaveBeanLocal {
         return results;
          
     }
+    
+    
 
     @Override
     public void deleteLeaveSetting(int typeId) {
@@ -128,10 +133,10 @@ public class LeaveBean implements LeaveBeanLocal {
         return result;
     }
 
+
     @Override
     public void updateLeaveSetting(LeaveTypeDTO type) {
         
-        List results=null;
         Session session=null;
         Transaction txn = null;
         java.util.Date current = new java.util.Date();
@@ -170,6 +175,94 @@ public class LeaveBean implements LeaveBeanLocal {
         
         
     }
+
     
+    @Override
+    public void applyLeave(LeaveTxnDTO leaveTxn) {
+        Session session=null;
+        Transaction txn = null;
+        java.util.Date current = new java.util.Date();
+        try
+        {
+            session = DaoDelegate.getInstance().create();
+            txn = session.beginTransaction();
+            leaveTxn.setCreated(current);
+            leaveTxn.setModified(current);
+            session.persist(leaveTxn);            
+            txn.commit();
+            
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            if(txn!=null)
+            {
+                txn.rollback();
+            }
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
+
+        
+    }
+
+    @Override
+    public double getLeaveBalance(LeaveTypeDTO leaveType, UserDTO user) {
+        Session session=null;
+        LeaveEntDTO result = null;
+        double bal = -1;
+        try
+        {
+            session = DaoDelegate.getInstance().create();
+            Query qry =  session.createQuery("FROM com.sapuraglobal.hrms.dto.LeaveEntDTO ent WHERE ent.user.User_id = :userId");
+            qry.setParameter("userId",user.getId());
+            List<LeaveEntDTO> entList = qry.list();
+            if(entList==null||entList.isEmpty())
+            {
+                bal = 0;
+            }
+            else
+            {
+                result = (LeaveEntDTO)qry.list().get(0);
+                bal = result.getBalance();
+            }
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
+        return bal;
+
+    }
+
+    @Override
+    public List<LeaveEntDTO> getLeaveEntList(String loginId) {
+        
+        Session session=null;
+        List<LeaveEntDTO> result = null;
+        try
+        {
+            session = DaoDelegate.getInstance().create();
+            Query qry =  session.createQuery("SELECT ent FROM com.sapuraglobal.hrms.dto.LeaveEntDTO ent left join fetch ent.leaveType WHERE ent.user.login = :loginId");
+            qry.setParameter("loginId", loginId);
+            result = qry.list();
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
+        return result;
+    }
+
     
 }

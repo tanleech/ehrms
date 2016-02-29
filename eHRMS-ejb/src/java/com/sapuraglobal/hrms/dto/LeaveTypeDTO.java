@@ -28,16 +28,16 @@ public class LeaveTypeDTO implements java.io.Serializable {
     private String description;
     
     @Column(name = "days")
-    private int days;
+    private double days;
     
     @Column(name = "mandatory")
     private String mandatory;
     
     @Column(name = "annualIncre")
-    private int annualIncre;
+    private double annualIncre;
     
     @Column(name = "cf")
-    private int carriedForward;
+    private double carriedForward;
 
     @Column(name = "created")
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
@@ -47,15 +47,15 @@ public class LeaveTypeDTO implements java.io.Serializable {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date modified;
     
-     public int getId() {
+     public double getId() {
         return id;
     }
 
-    public int getDays() {
+    public double getDays() {
         return days;
     }
 
-    public void setDays(int days) {
+    public void setDays(double days) {
         this.days = days;
     }
 
@@ -67,7 +67,7 @@ public class LeaveTypeDTO implements java.io.Serializable {
         this.mandatory = mandatory;
     }
 
-    public int getAnnualIncre() {
+    public double getAnnualIncre() {
         return annualIncre;
     }
 
@@ -75,11 +75,11 @@ public class LeaveTypeDTO implements java.io.Serializable {
         this.annualIncre = annualIncre;
     }
 
-    public int getCarriedForward() {
+    public double getCarriedForward() {
         return carriedForward;
     }
 
-    public void setCarriedForward(int carriedForward) {
+    public void setCarriedForward(double carriedForward) {
         this.carriedForward = carriedForward;
     }
 

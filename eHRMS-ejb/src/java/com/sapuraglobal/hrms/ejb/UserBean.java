@@ -5,10 +5,15 @@
  */
 package com.sapuraglobal.hrms.ejb;
 
+import com.sapuraglobal.hrms.dto.DeptDTO;
 import com.sapuraglobal.hrms.dto.UserDTO;
+import com.sapuraglobal.hrms.dto.UserDeptDTO;
+import com.sapuraglobal.hrms.dto.UserRoleDTO;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -25,7 +30,9 @@ import org.hibernate.Transaction;
  */
 @Stateless
 public class UserBean implements UserBeanLocal {
-
+    @EJB
+    private DeptBeanLocal deptBean;
+    
     @Override
     public UserDTO authenticate(String loginId, String password) {
         
@@ -97,7 +104,7 @@ public class UserBean implements UserBeanLocal {
 
 
     @Override
-    public void createUser(UserDTO user) {
+    public void createUser(UserDTO user, UserDeptDTO userDept, UserRoleDTO userRole) {
         java.util.Date current = new java.util.Date();
         user.setCreated(current);
         user.setModified(current);
@@ -108,8 +115,13 @@ public class UserBean implements UserBeanLocal {
             session = DaoDelegate.getInstance().create();
             txn = session.beginTransaction();
             session.persist(user);
-            txn.commit();
-              
+
+            DeptDTO dept = deptBean.getDepartment(userDept.getDept().getDescription());
+            ArrayList<UserDTO> userList = new ArrayList();
+            userList.add(user);
+            deptBean.addEmployees(userList, dept);
+            
+            txn.commit(); 
         }catch (Exception ex)
         {
             txn.rollback();

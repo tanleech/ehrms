@@ -6,13 +6,17 @@
 package com.sapuraglobal.hrms.dto;
 
 import java.util.Date;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
@@ -34,6 +38,18 @@ public class UserDTO {
     
     @Column(name="phone")
     private String phone;
+    
+    @Column(name="office")
+    private String office;
+
+    public String getOffice() {
+        return office;
+    }
+
+    public void setOffice(String office) {
+        this.office = office;
+    }
+    
 
     @Column(name="email")
     private String email;
@@ -45,9 +61,9 @@ public class UserDTO {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dateJoin;
     
-    @Column(name="dateleft")
+    @Column(name="probdue")
     @Temporal(javax.persistence.TemporalType.DATE)
-    private Date dateLeft;
+    private Date probationDue;
     
     @Column(name="created")
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
@@ -61,7 +77,21 @@ public class UserDTO {
     @JoinColumn(name="Title_id")
     private TitleDTO title;
     
+    @Transient
+    private UserDeptDTO dept;
     
+    @Transient
+    private UserRoleDTO role;
+
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinColumn(name="User_id")
+    private List<LeaveEntDTO> leaveEnt;
+    
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinColumn(name="User_id")
+    private List<LeaveTxnDTO> leaveTxn;
+
+
     @Column(name="approver")
     private int approver;
     
@@ -71,12 +101,37 @@ public class UserDTO {
     @Transient
     private boolean isManager;
 
+    
+    public UserRoleDTO getRole() {
+        return role;
+    }
+
+    public void setRole(UserRoleDTO role) {
+        this.role = role;
+    }
+
     public boolean isIsManager() {
         return isManager;
     }
 
     public void setIsManager(boolean isManager) {
         this.isManager = isManager;
+    }
+
+    public List<LeaveEntDTO> getLeaveEnt() {
+        return leaveEnt;
+    }
+
+    public void setLeaveEnt(List<LeaveEntDTO> leaveEnt) {
+        this.leaveEnt = leaveEnt;
+    }
+
+    public List<LeaveTxnDTO> getLeaveTxn() {
+        return leaveTxn;
+    }
+
+    public void setLeaveTxn(List<LeaveTxnDTO> leaveTxn) {
+        this.leaveTxn = leaveTxn;
     }
     
     
@@ -86,6 +141,14 @@ public class UserDTO {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public UserDeptDTO getDept() {
+        return dept;
+    }
+
+    public void setDept(UserDeptDTO dept) {
+        this.dept = dept;
     }
 
 
@@ -145,13 +208,14 @@ public class UserDTO {
         this.dateJoin = dateJoin;
     }
 
-    public Date getDateLeft() {
-        return dateLeft;
+    public Date getProbationDue() {
+        return probationDue;
     }
 
-    public void setDateLeft(Date dateLeft) {
-        this.dateLeft = dateLeft;
+    public void setProbationDue(Date probationDue) {
+        this.probationDue = probationDue;
     }
+
 
     public Date getCreated() {
         return created;
