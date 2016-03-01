@@ -14,6 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
 import javax.ejb.EJB;
@@ -109,7 +110,7 @@ public class EmployeeList extends HttpServlet {
             Json.createObjectBuilder()
                     .add("name",  user.getName())
                     .add("email", user.getEmail())
-                    .add("dept", "dept")
+                    .add("dept", user.getDept().getDept().getDescription())
                     //.add("dept", user.getDept().getDept().getDescription())
                     .add("title", user.getTitle().getDescription())
                     //.add("category","coming")

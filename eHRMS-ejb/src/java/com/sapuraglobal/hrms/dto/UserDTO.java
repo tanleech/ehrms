@@ -6,6 +6,7 @@
 package com.sapuraglobal.hrms.dto;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -83,7 +84,7 @@ public class UserDTO {
     private UserDeptDTO dept;
     
     //@Transient
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.MERGE)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.MERGE)
     @JoinColumn(name="User_id")
     private UserRoleDTO role;
 
@@ -96,6 +97,10 @@ public class UserDTO {
     private List<LeaveTxnDTO> leaveTxn;
 
 
+    /*
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="approver")
+    */
     @Column(name="approver")
     private int approver;
     
@@ -104,7 +109,6 @@ public class UserDTO {
     
     @Transient
     private boolean isManager;
-
     
     public UserRoleDTO getRole() {
         return role;

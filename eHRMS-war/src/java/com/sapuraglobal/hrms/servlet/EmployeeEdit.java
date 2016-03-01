@@ -85,12 +85,18 @@ public class EmployeeEdit extends HttpServlet {
              if(action.equals("A"))
              {
                  UserDTO userDto = prepare(request);
+                 UserDeptDTO deptDto = userDto.getDept();
+                 UserRoleDTO userRoleDto = userDto.getRole();
+                 LeaveEntDTO entDto = userDto.getLeaveEnt().get(0);
+                 userDto.setDept(null);
+                 userDto.setRole(null);
+                 userDto.setLeaveEnt(null);
                  userBean.createUser(userDto);
-                 //deptBean.addEmployee(userDto, userDto.getDept().getDept());
-                 //userBean.assignRole(userDto,userDto.getRole().getRole());
+                 deptBean.addEmployee(userDto, deptDto.getDept());
+                 userBean.assignRole(userDto,userRoleDto.getRole());
                  //LeaveEntDTO ent = (LeaveEntDTO)userDto.getLeaveEnt().get(0);
-                 //ent.setUser(userDto);
-                 //leaveBean.addLeaveEnt(ent);
+                 entDto.setUser(userDto);
+                 leaveBean.addLeaveEnt(entDto);
                  page="/employee";
                  //userBean.createUser(userDto);
                  
@@ -126,7 +132,9 @@ public class EmployeeEdit extends HttpServlet {
         user.setPhone(mobile);
         user.setOffice(office);
         user.setLogin(login);
-        user.setApprover(Integer.parseInt(mgr));
+        UserDTO mgrDto = new UserDTO();
+        mgrDto.setId(Integer.parseInt(mgr));
+        user.setApprover(mgrDto.getId());
         try
         {
            Date join = Utility.format(dateJoin,"MM/dd/yyyy");
