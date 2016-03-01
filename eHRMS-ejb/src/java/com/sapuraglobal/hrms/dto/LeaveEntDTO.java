@@ -40,11 +40,11 @@ public class LeaveEntDTO implements java.io.Serializable {
     @Column(name = "max")
     private double max;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne(cascade=CascadeType.MERGE)
     @JoinColumn(name="User_id")
     private UserDTO user;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne(cascade=CascadeType.MERGE)
     @JoinColumn(name="LeaveType_id")
     private LeaveTypeDTO leaveType;
 

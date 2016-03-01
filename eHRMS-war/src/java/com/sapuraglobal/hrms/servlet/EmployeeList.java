@@ -6,6 +6,7 @@
 package com.sapuraglobal.hrms.servlet;
 
 import com.sapuraglobal.hrms.dto.UserDTO;
+import com.sapuraglobal.hrms.ejb.DeptBeanLocal;
 import com.sapuraglobal.hrms.ejb.UserBeanLocal;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -36,6 +37,11 @@ public class EmployeeList extends HttpServlet {
 
     @EJB
     private UserBeanLocal userBean;
+    
+    @EJB
+    private DeptBeanLocal deptBean;
+
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -103,10 +109,10 @@ public class EmployeeList extends HttpServlet {
             Json.createObjectBuilder()
                     .add("name",  user.getName())
                     .add("email", user.getEmail())
-                    //.add("dept",  user.getDept().getDescription())
-                    .add("dept", "coming")
+                    .add("dept", "dept")
+                    //.add("dept", user.getDept().getDept().getDescription())
                     .add("title", user.getTitle().getDescription())
-                    .add("category","coming")
+                    //.add("category","coming")
                     .add("manager",user.getApprover())
                     .add("datejoin",joinDateStr)
             );

@@ -6,6 +6,8 @@
 package com.sapuraglobal.hrms.servlet;
 
 import com.sapuraglobal.hrms.dto.DeptDTO;
+import com.sapuraglobal.hrms.dto.LeaveEntDTO;
+import com.sapuraglobal.hrms.dto.LeaveTypeDTO;
 import com.sapuraglobal.hrms.dto.RoleDTO;
 import com.sapuraglobal.hrms.dto.TitleDTO;
 import com.sapuraglobal.hrms.dto.UserDTO;
@@ -13,11 +15,13 @@ import com.sapuraglobal.hrms.dto.UserDeptDTO;
 import com.sapuraglobal.hrms.dto.UserRoleDTO;
 import com.sapuraglobal.hrms.ejb.AccessBeanLocal;
 import com.sapuraglobal.hrms.ejb.DeptBeanLocal;
+import com.sapuraglobal.hrms.ejb.LeaveBeanLocal;
 import com.sapuraglobal.hrms.ejb.TitleBeanLocal;
 import com.sapuraglobal.hrms.ejb.UserBeanLocal;
 import com.sapuraglobal.hrms.servlet.helper.BeanHelper;
 import com.sapuraglobal.hrms.servlet.helper.Utility;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -44,6 +48,8 @@ public class EmployeeEdit extends HttpServlet {
     private DeptBeanLocal deptBean;
     @EJB
     private AccessBeanLocal accessBean;
+    @EJB
+    private LeaveBeanLocal leaveBean;
 
 
 
@@ -79,14 +85,20 @@ public class EmployeeEdit extends HttpServlet {
              if(action.equals("A"))
              {
                  UserDTO userDto = prepare(request);
-                 userBean.createUser(userDto, userDto.getDept(), userDto.getRole());
+                 userBean.createUser(userDto);
+                 //deptBean.addEmployee(userDto, userDto.getDept().getDept());
+                 //userBean.assignRole(userDto,userDto.getRole().getRole());
+                 //LeaveEntDTO ent = (LeaveEntDTO)userDto.getLeaveEnt().get(0);
+                 //ent.setUser(userDto);
+                 //leaveBean.addLeaveEnt(ent);
+                 page="/employee";
                  //userBean.createUser(userDto);
                  
              }
           }
           
           
-          RequestDispatcher view = getServletContext().getRequestDispatcher("/employeeEdit.jsp"); 
+          RequestDispatcher view = getServletContext().getRequestDispatcher(page); 
           view.forward(request,response);           
     }
     
@@ -104,7 +116,9 @@ public class EmployeeEdit extends HttpServlet {
         String dateJoin = request.getParameter("dateJoin");
         String probDue = request.getParameter("probDue");
         String base = request.getParameter("base");
-        String max = request.getParameter("max");
+        String max  = request.getParameter("max");
+        
+
         
         UserDTO user = new UserDTO();
         user.setName(name);
@@ -112,6 +126,7 @@ public class EmployeeEdit extends HttpServlet {
         user.setPhone(mobile);
         user.setOffice(office);
         user.setLogin(login);
+        user.setApprover(Integer.parseInt(mgr));
         try
         {
            Date join = Utility.format(dateJoin,"MM/dd/yyyy");
@@ -124,20 +139,34 @@ public class EmployeeEdit extends HttpServlet {
             ex.printStackTrace();
         }
         
-        TitleDTO titleDto = titleBean.getTitle(Integer.parseInt(title));
-        user.setTitle(titleDto);
+        //TitleDTO titleDto = titleBean.getTitle(Integer.parseInt(title));
+        TitleDTO titleDTO = new TitleDTO();
+        titleDTO.setId(Integer.parseInt(title));
+        user.setTitle(titleDTO);
         
         
         DeptDTO deptDto = new DeptDTO();
-        deptDto.setDescription(dept);
+        deptDto.setId(Integer.parseInt(dept));
         UserDeptDTO userDept = new UserDeptDTO();
         userDept.setDept(deptDto);
         
         RoleDTO roleDto = new RoleDTO();
-        roleDto.setDescription(role);
+        roleDto.setId(Integer.parseInt(role));
         UserRoleDTO userRole = new UserRoleDTO();
         userRole.setRole(roleDto);
         
+        
+        LeaveEntDTO ent = new LeaveEntDTO();
+        ent.setAnnual(Integer.parseInt(base));
+        ent.setMax(Integer.parseInt(max));
+        
+        LeaveTypeDTO leaveType = leaveBean.getLeaveType("Annual");
+        ent.setLeaveType(leaveType);
+        
+        ArrayList<LeaveEntDTO> entList = new ArrayList();
+        entList.add(ent);
+        user.setLeaveEnt(entList);
+         
         user.setDept(userDept);
         user.setRole(userRole);
         

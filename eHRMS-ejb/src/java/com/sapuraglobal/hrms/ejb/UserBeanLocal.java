@@ -5,9 +5,8 @@
  */
 package com.sapuraglobal.hrms.ejb;
 
+import com.sapuraglobal.hrms.dto.RoleDTO;
 import com.sapuraglobal.hrms.dto.UserDTO;
-import com.sapuraglobal.hrms.dto.UserDeptDTO;
-import com.sapuraglobal.hrms.dto.UserRoleDTO;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
@@ -21,10 +20,12 @@ public interface UserBeanLocal {
 
     UserDTO authenticate(String parameter,String password);
 
-    void createUser(UserDTO parameter, UserDeptDTO userDept, UserRoleDTO userRole);
+    void createUser(UserDTO parameter);
 
     List<UserDTO> getAllUsers(Date from, Date to);
     
     UserDTO getUser(String loginId);
+
+    void assignRole(UserDTO user, RoleDTO role);
     
 }

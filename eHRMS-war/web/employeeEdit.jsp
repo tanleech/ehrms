@@ -64,7 +64,7 @@
                             <c:choose>
                                 <c:when test="${!empty requestScope.deptList}">
                                     <c:forEach var="entry" items="${requestScope.deptList}">
-                                        <option value="<c:out value="${entry.description}"/>"><c:out value="${entry.description}"/></option>
+                                        <option value="<c:out value="${entry.id}"/>"><c:out value="${entry.description}"/></option>
                                     </c:forEach>
                                 </c:when>
                             </c:choose>
@@ -94,14 +94,14 @@
                      </div>
                     </div> 
                     <div class="form-group">
-                     <label class=" control-label col-sm-1">Manager</label>
+                     <label class=" control-label col-sm-1">Reports:</label>
                      <div class="col-sm-3">
                         <select class="form-control" id="mgr" name="mgr">
                             <option value="0">None</option>
                             <c:choose>
                                 <c:when test="${!empty requestScope.mgrList}">
                                     <c:forEach var="entry" items="${requestScope.mgrList}">
-                                        <option value="<c:out value="${entry.login}"/>"><c:out value="${entry.name}"/></option>
+                                        <option value="<c:out value="${entry.id}"/>"><c:out value="${entry.name}"/></option>
                                     </c:forEach>
                                 </c:when>
                             </c:choose>
@@ -113,7 +113,7 @@
                             <c:choose>
                                 <c:when test="${!empty requestScope.roleList}">
                                     <c:forEach var="entry" items="${requestScope.roleList}">
-                                        <option value="<c:out value="${entry.description}"/>"><c:out value="${entry.description}"/></option>
+                                        <option value="<c:out value="${entry.id}"/>"><c:out value="${entry.description}"/></option>
                                     </c:forEach>
                                 </c:when>
                             </c:choose>

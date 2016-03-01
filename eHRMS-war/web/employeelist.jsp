@@ -35,7 +35,7 @@
                     "<thead>"+
                     "  <tr> " +
                     "  <th>Employee</th> "+
-                    "  <th>Email</th> <th>Department</th><th>Job Title</th><th>Category</th><th>Manager</th><th>Date Joined</th></tr>"
+                    "  <th>Email</th> <th>Department</th><th>Job Title</th><th>Manager</th><th>Date Joined</th></tr>"
                     +"</thead>"+
                     "<tbody>";
 
@@ -49,8 +49,8 @@
                        "</td><td>" +
                         arr[i].title +
                         "</td><td>" +
-                        arr[i].category +
-                        "</td><td>" +
+                        //arr[i].category +
+                        //"</td><td>" +
                         arr[i].manager +
                         "</td><td>" +
                         arr[i].datejoin +

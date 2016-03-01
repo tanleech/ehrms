@@ -5,11 +5,9 @@
  */
 package com.sapuraglobal.hrms.ejb;
 
-import com.sapuraglobal.hrms.dto.DeptDTO;
+import com.sapuraglobal.hrms.dto.RoleDTO;
 import com.sapuraglobal.hrms.dto.UserDTO;
-import com.sapuraglobal.hrms.dto.UserDeptDTO;
 import com.sapuraglobal.hrms.dto.UserRoleDTO;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
@@ -105,7 +103,7 @@ public class UserBean implements UserBeanLocal {
 
 
     @Override
-    public void createUser(UserDTO user, UserDeptDTO userDept, UserRoleDTO userRole) {
+    public void createUser(UserDTO user) {
         java.util.Date current = new java.util.Date();
         user.setCreated(current);
         user.setModified(current);
@@ -115,12 +113,19 @@ public class UserBean implements UserBeanLocal {
         {
             session = DaoDelegate.getInstance().create();
             txn = session.beginTransaction();
+            user.setDeleted("N");
+            
+            user.getDept().setCreated(current);
+            user.getDept().setModified(current);
+
+            user.getRole().setCreated(current);
+            user.getRole().setModified(current);
+            
+            user.getLeaveEnt().get(0).setCreated(current);
+            user.getLeaveEnt().get(0).setModified(current);
+            
             
             session.persist(user);
-
-            DeptDTO dept = deptBean.getDepartment(userDept.getDept().getDescription());
-            ArrayList<UserDTO> userList = new ArrayList();
-            userList.add(user);
             //deptBean.addEmployees(userList, dept);
             
             txn.commit(); 
@@ -139,7 +144,7 @@ public class UserBean implements UserBeanLocal {
     public List<UserDTO> getAllUsers(Date from, Date to){
         
         List<UserDTO> results = null;
-        String hql = "FROM com.sapuraglobal.hrms.dto.UserDTO U WHERE U.dateJoin BETWEEN :stDate "
+        String hql = "FROM com.sapuraglobal.hrms.dto.UserDTO U left join fetch U.dept WHERE U.dateJoin BETWEEN :stDate "
                 +    "AND :edDate AND U.deleted='N'";
         Session session = null;
         try
@@ -160,6 +165,38 @@ public class UserBean implements UserBeanLocal {
             DaoDelegate.getInstance().close(session);
         }
         return results;
+    }
+
+    @Override
+    public void assignRole(UserDTO userDto, RoleDTO roleDto) {
+        
+        java.util.Date current = new java.util.Date();
+        UserRoleDTO userRole = new UserRoleDTO();
+        userRole.setCreated(current);
+        userRole.setModified(current);
+        Session session = null;
+        Transaction txn = null;
+        try
+        {
+            session = DaoDelegate.getInstance().create();
+            txn = session.beginTransaction();
+            userRole.setUser(userDto);
+            userRole.setRole(roleDto);
+            session.persist(userRole);
+            //deptBean.addEmployees(userList, dept);
+            
+            txn.commit(); 
+        }catch (Exception ex)
+        {
+            txn.rollback();
+            ex.printStackTrace();
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
+
+        
     }
     
     

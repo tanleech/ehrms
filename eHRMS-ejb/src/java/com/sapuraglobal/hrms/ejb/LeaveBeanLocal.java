@@ -34,5 +34,9 @@ public interface LeaveBeanLocal {
     double getLeaveBalance(LeaveTypeDTO leaveType, UserDTO user);
 
     List<LeaveEntDTO> getLeaveEntList(String loginId);
+
+    void addLeaveEnt(LeaveEntDTO leaveEnt);
+
+    LeaveTypeDTO getLeaveType(String leaveType);
     
 }

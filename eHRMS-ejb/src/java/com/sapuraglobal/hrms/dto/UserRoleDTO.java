@@ -37,11 +37,11 @@ public class UserRoleDTO {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date modified;
     
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne(cascade=CascadeType.MERGE)
     @JoinColumn(name="Role_id")
     private RoleDTO role;
     
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne(cascade=CascadeType.MERGE)
     @JoinColumn(name="User_id")
     private UserDTO user;
 

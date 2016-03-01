@@ -264,5 +264,58 @@ public class LeaveBean implements LeaveBeanLocal {
         return result;
     }
 
+    @Override
+    public void addLeaveEnt(LeaveEntDTO leaveEnt) {
+
+        Session session=null;
+        java.util.Date current = new java.util.Date();
+        try
+        {
+            session = DaoDelegate.getInstance().create();
+            leaveEnt.setCreated(current);
+            leaveEnt.setModified(current);
+            session.persist(leaveEnt);
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
+    }
+
+    @Override
+    public LeaveTypeDTO getLeaveType(String leaveType) {
+       Session session=null;
+        List<LeaveTypeDTO> results = null;
+        try
+        {
+            session = DaoDelegate.getInstance().create();
+            Query qry =  session.createQuery("FROM com.sapuraglobal.hrms.dto.LeaveTypeDTO type WHERE type.description = :descr");
+            qry.setParameter("descr", leaveType);
+            results = qry.list();
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
+        if(results!=null&&!results.isEmpty())
+        {
+            return (LeaveTypeDTO)results.get(0); 
+        }
+        else
+        {
+            return null;
+        }
+    }
+    
+    
+        
     
 }
