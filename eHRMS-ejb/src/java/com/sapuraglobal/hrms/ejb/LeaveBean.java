@@ -319,6 +319,33 @@ public class LeaveBean implements LeaveBeanLocal {
             return null;
         }
     }
+
+    @Override
+    public List<LeaveTypeDTO> getLeaveSettings(boolean mandatory) {
+        Session session=null;
+        List<LeaveTypeDTO> results = null;
+        String flag="N";
+        try
+        {
+            if(mandatory)
+            {
+                flag="Y";
+            }
+            session = DaoDelegate.getInstance().create();
+            Query qry =  session.createQuery("FROM com.sapuraglobal.hrms.dto.LeaveTypeDTO WHERE mandatory = :man");
+            qry.setParameter("man", flag);
+            results = qry.list();
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
+        return results;
+    }
     
     
         

@@ -6,7 +6,6 @@
 package com.sapuraglobal.hrms.dto;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -106,6 +105,41 @@ public class UserDTO {
     
     @Column(name="login")
     private String login;
+    
+    @Column(name="base_ent")
+    private double base=0;
+    
+    @Column(name="max_ent")
+    private double max=0;
+    
+    @Column(name="balance")
+    private double balance=0;
+
+    public double getBase() {
+        return base;
+    }
+
+    public void setBase(double base) {
+        this.base = base;
+    }
+
+    public double getMax() {
+        return max;
+    }
+
+    public void setMax(double max) {
+        this.max = max;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+    
+    
     
     @Transient
     private boolean isManager;

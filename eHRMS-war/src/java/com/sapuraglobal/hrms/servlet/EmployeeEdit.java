@@ -87,19 +87,37 @@ public class EmployeeEdit extends HttpServlet {
                  UserDTO userDto = prepare(request);
                  UserDeptDTO deptDto = userDto.getDept();
                  UserRoleDTO userRoleDto = userDto.getRole();
-                 LeaveEntDTO entDto = userDto.getLeaveEnt().get(0);
+                 //LeaveEntDTO entDto = userDto.getLeaveEnt().get(0);
                  userDto.setDept(null);
                  userDto.setRole(null);
                  userDto.setLeaveEnt(null);
                  userBean.createUser(userDto);
                  deptBean.addEmployee(userDto, deptDto.getDept());
                  userBean.assignRole(userDto,userRoleDto.getRole());
-                 //LeaveEntDTO ent = (LeaveEntDTO)userDto.getLeaveEnt().get(0);
-                 entDto.setUser(userDto);
-                 leaveBean.addLeaveEnt(entDto);
                  page="/employee";
-                 //userBean.createUser(userDto);
                  
+             }
+             else if(action.equals("U"))
+             {
+                 String login = request.getParameter("id");
+                 UserDTO user = userBean.getUser(login);
+                 List<LeaveEntDTO> entList = leaveBean.getLeaveEntList(login);
+                 boolean found = false;
+                 int i =0;
+                 while(!found && i < entList.size())
+                 {
+                     LeaveEntDTO ent = entList.get(i);
+                     if(ent.getLeaveType().getDescription().equals("Annual"))
+                     {
+                         found=true;
+                         //user.setLeaveEnt(entList);
+                         request.setAttribute("entAnnual", ent);
+                     }
+                     i++;
+                 }
+                 request.setAttribute("user", user);
+                 request.setAttribute("entList", entList);
+                 page="/employeeDetl.jsp";
              }
           }
           
@@ -123,6 +141,7 @@ public class EmployeeEdit extends HttpServlet {
         String probDue = request.getParameter("probDue");
         String base = request.getParameter("base");
         String max  = request.getParameter("max");
+        String balance = request.getParameter("base");
         
 
         
@@ -132,6 +151,10 @@ public class EmployeeEdit extends HttpServlet {
         user.setPhone(mobile);
         user.setOffice(office);
         user.setLogin(login);
+        user.setMax(Double.parseDouble(max));
+        user.setBase(Double.parseDouble(base));
+        user.setBalance(Double.parseDouble(balance));
+        
         UserDTO mgrDto = new UserDTO();
         mgrDto.setId(Integer.parseInt(mgr));
         user.setApprover(mgrDto.getId());
@@ -163,7 +186,7 @@ public class EmployeeEdit extends HttpServlet {
         UserRoleDTO userRole = new UserRoleDTO();
         userRole.setRole(roleDto);
         
-        
+        /*
         LeaveEntDTO ent = new LeaveEntDTO();
         ent.setAnnual(Integer.parseInt(base));
         ent.setMax(Integer.parseInt(max));
@@ -174,7 +197,7 @@ public class EmployeeEdit extends HttpServlet {
         ArrayList<LeaveEntDTO> entList = new ArrayList();
         entList.add(ent);
         user.setLeaveEnt(entList);
-         
+        */ 
         user.setDept(userDept);
         user.setRole(userRole);
         

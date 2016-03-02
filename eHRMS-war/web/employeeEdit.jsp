@@ -37,7 +37,13 @@
       <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <div class="content-header">
-            <h1>Add Employee
+            <h1>
+                <c:if test="${param.action eq 'U'}">
+                    Employee Details
+                </c:if>
+                <c:if test="${param.action ne 'U'}">
+                    Add Employee
+                </c:if>    
                 <button type="button" class="btn btn-primary pull-right" id="saveBtn">Save</button>
             </h1>    
         </div>
@@ -49,11 +55,13 @@
                     <div class="form-group">
                      <label class=" control-label col-sm-1">Name</label>
                      <div class="col-sm-3">
-                        <input type="text" class="form-control" name="name"/>   
+                        <input type="text" class="form-control" name="name"
+                               value="${requestScope.user.name}"/>   
                      </div>
                      <label class=" control-label col-sm-2">Email</label>
                      <div class="col-sm-3">
-                        <input type="text" class="form-control" name="email"/>   
+                        <input type="text" class="form-control" name="email"
+                               value="${requestScope.user.email}"/>   
                      </div>
                     </div>
                       
@@ -64,7 +72,10 @@
                             <c:choose>
                                 <c:when test="${!empty requestScope.deptList}">
                                     <c:forEach var="entry" items="${requestScope.deptList}">
-                                        <option value="<c:out value="${entry.id}"/>"><c:out value="${entry.description}"/></option>
+                                        <option value="${entry.id}"
+                                                ${requestScope.user.dept.dept.id == entry.id ? 'selected' : ''}>
+                                            ${entry.description}
+                                        </option>
                                     </c:forEach>
                                 </c:when>
                             </c:choose>
@@ -72,7 +83,8 @@
                      </div>
                      <label class=" control-label col-sm-2">Mobile</label>
                      <div class="col-sm-3">
-                        <input type="text" class="form-control" name="mobile"/>   
+                        <input type="text" class="form-control" name="mobile"
+                               value="${requestScope.user.phone}"/>   
                      </div>
                     </div> 
                     <div class="form-group">
@@ -82,7 +94,10 @@
                             <c:choose>
                                 <c:when test="${!empty requestScope.titleList}">
                                     <c:forEach var="titleEntry" items="${requestScope.titleList}">
-                                        <option value="<c:out value="${titleEntry.id}"/>"><c:out value="${titleEntry.description}"/></option>
+                                        <option value="${titleEntry.id}"
+                                                ${requestScope.user.title.id == titleEntry.id ? 'selected' : ''}>
+                                            ${titleEntry.description}
+                                        </option>
                                     </c:forEach>
                                 </c:when>
                             </c:choose>
@@ -90,7 +105,8 @@
                      </div>
                      <label class=" control-label col-sm-2">Office</label>
                      <div class="col-sm-3">
-                        <input type="text" class="form-control" name="office"/>   
+                        <input type="text" class="form-control" name="office"
+                               value="${requestScope.user.office}"/>   
                      </div>
                     </div> 
                     <div class="form-group">
@@ -101,7 +117,10 @@
                             <c:choose>
                                 <c:when test="${!empty requestScope.mgrList}">
                                     <c:forEach var="entry" items="${requestScope.mgrList}">
-                                        <option value="<c:out value="${entry.id}"/>"><c:out value="${entry.name}"/></option>
+                                        <option value="${entry.id}"  
+                                                 ${requestScope.user.id == entry.id ? 'selected' : ''}>
+                                        ${entry.name}
+                                        </option>
                                     </c:forEach>
                                 </c:when>
                             </c:choose>
@@ -113,7 +132,10 @@
                             <c:choose>
                                 <c:when test="${!empty requestScope.roleList}">
                                     <c:forEach var="entry" items="${requestScope.roleList}">
-                                        <option value="<c:out value="${entry.id}"/>"><c:out value="${entry.description}"/></option>
+                                        <option value="${entry.id}"
+                                                 ${requestScope.user.role.role.id == entry.id ? 'selected' : ''}>
+                                            ${entry.description}
+                                        </option>
                                     </c:forEach>
                                 </c:when>
                             </c:choose>
@@ -123,7 +145,8 @@
                     <div class="form-group">
                      <label class=" control-label col-sm-1">Login</label>
                      <div class="col-sm-3">
-                         <input type="text" class="form-control" name="login"/>   
+                         <input type="text" class="form-control" name="login"
+                                value="${requestScope.user.login}"/>   
                      </div>
                     </div>
                   </span>
@@ -132,31 +155,36 @@
                     <div class="form-group">
                      <label class=" control-label col-sm-1">Date Joined</label>
                      <div class="col-sm-3">
-                        <input type="text" class="form-control" id="dateJoin" name="dateJoin"/>   
+                        <input type="text" class="form-control" id="dateJoin" name="dateJoin"
+                               value="${requestScope.user.dateJoin}"/>   
                      </div>
                      <label class=" control-label col-sm-2">Probation End</label>
                      <div class="col-sm-3">
-                        <input type="text" class="form-control" id="probDue" name="probDue"/>   
+                        <input type="text" class="form-control" id="probDue" name="probDue"
+                               value="${requestScope.user.probationDue}"/>   
                      </div>
                     </div> 
                     <div class="form-group">
                      <label class=" control-label col-sm-1">Base Leave Entitlement</label>
                      <div class="col-sm-3">
-                        <input type="text" class="form-control" id="base" name="base"/>   
+                        <input type="text" class="form-control" id="base" name="base"
+                               value="${requestScope.ent.annual}"/>   
                      </div>
                      <label class=" control-label col-sm-2">Max Leave<br/>Entitlement</label>
                      <div class="col-sm-3">
-                        <input type="text" class="form-control" name="max"/>   
+                        <input type="text" class="form-control" name="max"
+                               value="${requestScope.ent.max}"/>   
                      </div>
                     </div> 
-                    <!--  
+                      
                     <div class="form-group">
-                     <label class=" control-label col-sm-1">Current Leave<br/>Entitlement</label>
+                     <label class=" control-label col-sm-1">Current Leave<br/>Balance</label>
                      <div class="col-sm-3">
-                        <input type="text" class="form-control" name="mobile"/>   
+                        <input type="text" class="form-control" name="balance"
+                               value="${requestScope.ent.balance}"/>   
                      </div>
                     </div> 
-                    -->  
+                      
                     <!--     
                     <div class="form-group">
                      <label class=" control-label col-sm-1">Category</label>

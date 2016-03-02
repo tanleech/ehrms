@@ -38,5 +38,7 @@ public interface LeaveBeanLocal {
     void addLeaveEnt(LeaveEntDTO leaveEnt);
 
     LeaveTypeDTO getLeaveType(String leaveType);
+
+    List<LeaveTypeDTO> getLeaveSettings(boolean mandatory);
     
 }

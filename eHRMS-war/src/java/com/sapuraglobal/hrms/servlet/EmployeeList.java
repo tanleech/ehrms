@@ -11,6 +11,7 @@ import com.sapuraglobal.hrms.ejb.UserBeanLocal;
 import com.sapuraglobal.hrms.servlet.helper.BeanHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -141,6 +142,7 @@ public class EmployeeList extends HttpServlet {
             
             array.add(
             Json.createObjectBuilder()
+                    .add("id", user.getLogin())
                     .add("name",  user.getName())
                     .add("email", user.getEmail())
                     .add("dept", user.getDept().getDept().getDescription())
