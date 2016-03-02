@@ -115,7 +115,7 @@ public class UserBean implements UserBeanLocal {
             session = DaoDelegate.getInstance().create();
             txn = session.beginTransaction();
             user.setDeleted("N");
-            
+            /*
             user.getDept().setCreated(current);
             user.getDept().setModified(current);
 
@@ -124,7 +124,7 @@ public class UserBean implements UserBeanLocal {
             
             user.getLeaveEnt().get(0).setCreated(current);
             user.getLeaveEnt().get(0).setModified(current);
-            
+            */
             
             session.persist(user);
             //deptBean.addEmployees(userList, dept);

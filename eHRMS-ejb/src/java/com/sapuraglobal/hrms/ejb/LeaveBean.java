@@ -269,15 +269,20 @@ public class LeaveBean implements LeaveBeanLocal {
 
         Session session=null;
         java.util.Date current = new java.util.Date();
+        Transaction txn = null;
+
         try
         {
             session = DaoDelegate.getInstance().create();
+            txn = session.beginTransaction();
             leaveEnt.setCreated(current);
             leaveEnt.setModified(current);
             session.persist(leaveEnt);
+            txn.commit();
         }
         catch(Exception ex)
         {
+            txn.rollback();
             ex.printStackTrace();
         }
         finally

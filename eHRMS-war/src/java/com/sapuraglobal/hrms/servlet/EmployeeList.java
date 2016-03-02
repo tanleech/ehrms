@@ -8,6 +8,7 @@ package com.sapuraglobal.hrms.servlet;
 import com.sapuraglobal.hrms.dto.UserDTO;
 import com.sapuraglobal.hrms.ejb.DeptBeanLocal;
 import com.sapuraglobal.hrms.ejb.UserBeanLocal;
+import com.sapuraglobal.hrms.servlet.helper.BeanHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
@@ -66,7 +67,9 @@ public class EmployeeList extends HttpServlet {
           String frmDate = formatter.format(frmCal.getTime());
           String toDate  = formatter.format(current);
           StringBuilder sb = new StringBuilder();
-          sb.append(frmDate+" - "+toDate);
+          //sb.append(frmDate+" - "+toDate);
+          sb.append(frmDate).append(" - ").append(toDate);
+          
           request.setAttribute("dateRange",sb.toString());
           RequestDispatcher view = getServletContext().getRequestDispatcher("/employeelist.jsp"); 
           view.forward(request,response);           
@@ -82,9 +85,10 @@ public class EmployeeList extends HttpServlet {
 
 		Date fromDate = formatter.parse(stDate);
                 Date toDate = formatter.parse(edDate);
+
                 List<UserDTO> userList = userBean.getAllUsers(fromDate,toDate);
                 //convert to json array
-                String json = convertToJson(userList);
+                String json = convertToJson(userList,getMap(request));
                 response.setContentType("text/html");
                 PrintWriter out = response.getWriter();
                 out.write(json);
@@ -97,7 +101,28 @@ public class EmployeeList extends HttpServlet {
         }
     }
     
-    private String convertToJson(List<UserDTO> userList)
+    private HashMap getMap(HttpServletRequest request)
+    {
+        HashMap map;
+        if(request.getSession().getAttribute("allUsers")!=null)
+        {
+            map = (HashMap)request.getSession().getAttribute("allUsers");
+        }
+        else
+        {
+            map = new HashMap();
+            List<UserDTO> allUsers = new BeanHelper().getAllUsers(userBean);
+            for(int i=0;i<allUsers.size();i++)
+            {
+                UserDTO user = allUsers.get(i);
+                map.put(user.getId(), user.getName());
+            }
+            request.getSession().setAttribute("allUsers", map);
+        }
+        return map;
+    }
+    
+    private String convertToJson(List<UserDTO> userList, HashMap map)
     {
         JsonArrayBuilder array = Json.createArrayBuilder();
         for(int i=0;i<userList.size();i++)
@@ -106,6 +131,14 @@ public class EmployeeList extends HttpServlet {
             Date datejoin = user.getDateJoin();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             String joinDateStr = formatter.format(datejoin);
+            
+            String approver = "";
+            
+             if(map.containsKey(user.getApprover()))
+             {
+                 approver = (String) map.get(user.getApprover());
+             }
+            
             array.add(
             Json.createObjectBuilder()
                     .add("name",  user.getName())
@@ -114,7 +147,7 @@ public class EmployeeList extends HttpServlet {
                     //.add("dept", user.getDept().getDept().getDescription())
                     .add("title", user.getTitle().getDescription())
                     //.add("category","coming")
-                    .add("manager",user.getApprover())
+                    .add("manager",approver)
                     .add("datejoin",joinDateStr)
             );
             
