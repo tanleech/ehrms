@@ -33,7 +33,7 @@ public class ModuleBean implements ModuleBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close();
+            DaoDelegate.getInstance().close(session);
         }
         
         return results;

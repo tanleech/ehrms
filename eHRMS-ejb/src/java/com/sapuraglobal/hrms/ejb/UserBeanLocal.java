@@ -27,5 +27,7 @@ public interface UserBeanLocal {
     UserDTO getUser(String loginId);
 
     void assignRole(UserDTO user, RoleDTO role);
+
+    void updateUser(UserDTO userDTO);
     
 }

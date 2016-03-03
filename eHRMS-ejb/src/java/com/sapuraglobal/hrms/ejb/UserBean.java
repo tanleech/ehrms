@@ -9,7 +9,6 @@ import com.sapuraglobal.hrms.dto.RoleDTO;
 import com.sapuraglobal.hrms.dto.UserDTO;
 import com.sapuraglobal.hrms.dto.UserRoleDTO;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import javax.ejb.EJB;
@@ -97,7 +96,7 @@ public class UserBean implements UserBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close();
+            DaoDelegate.getInstance().close(session);
         }
         return data;
     }
@@ -137,7 +136,7 @@ public class UserBean implements UserBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close();
+            DaoDelegate.getInstance().close(session);
         }
     }
 
@@ -163,7 +162,7 @@ public class UserBean implements UserBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close();
+            DaoDelegate.getInstance().close(session);
         }
         return results;
     }
@@ -194,10 +193,45 @@ public class UserBean implements UserBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close();
+            DaoDelegate.getInstance().close(session);
         }
 
         
+    }
+
+    @Override
+    public void updateUser(UserDTO userDTO) {
+        
+        java.util.Date current = new java.util.Date();
+        Session session = null;
+        Transaction txn = null;
+        try
+        {
+            session = DaoDelegate.getInstance().create();
+            txn = session.beginTransaction();
+            System.out.println("id: "+userDTO.getId());
+            UserDTO user = (UserDTO) session.get(UserDTO.class, userDTO.getId());
+            user.setName(userDTO.getName());
+            user.setEmail(userDTO.getEmail());
+            user.setPhone(userDTO.getPhone());
+            user.setOffice(userDTO.getOffice());
+            user.setLogin(userDTO.getLogin());
+            user.setDateJoin(userDTO.getDateJoin());
+            user.setProbationDue(userDTO.getProbationDue());
+            user.setTitle(userDTO.getTitle());
+            user.setModified(current);
+            session.saveOrUpdate(user);
+            //deptBean.addEmployees(userList, dept);
+            txn.commit(); 
+        }catch (Exception ex)
+        {
+            txn.rollback();
+            ex.printStackTrace();
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
     }
     
     

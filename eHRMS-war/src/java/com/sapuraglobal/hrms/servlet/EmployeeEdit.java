@@ -69,6 +69,8 @@ public class EmployeeEdit extends HttpServlet {
           String action = request.getParameter("action");
           String page = "/employeeEdit.jsp";
           
+          System.out.println("action: "+action);
+          
           List<TitleDTO> titleList = titleBean.getAllTitles();
           request.setAttribute("titleList", titleList);
           
@@ -135,6 +137,32 @@ public class EmployeeEdit extends HttpServlet {
                  
                  page="/employeeDetl.jsp";
              }
+          else if(action.equals("E"))
+          {
+                 System.out.println("E action");
+                 UserDTO userDto = prepare(request);
+                 int id = Integer.parseInt(request.getParameter("userId"));
+                 userDto.setId(id);
+                 UserDeptDTO deptDto = userDto.getDept();
+                 UserRoleDTO userRoleDto = userDto.getRole();
+                 //getting annual leave ent
+                 LeaveEntDTO entDto = userDto.getLeaveEnt().get(0);
+                 userDto.setDept(null);
+                 userDto.setRole(null);
+                 userDto.setLeaveEnt(null);
+                 //update user
+                 userBean.updateUser(userDto);
+                 //update dept
+                 //deptBean.addEmployee(userDto, deptDto.getDept());
+                 //update role
+                 //userBean.assignRole(userDto,userRoleDto.getRole());
+                 //update entitlement
+                 //entDto.setUser(userDto);
+                 //leaveBean.addLeaveEnt(entDto);
+                 page="/employee";
+
+          }
+             
           }
           
           
