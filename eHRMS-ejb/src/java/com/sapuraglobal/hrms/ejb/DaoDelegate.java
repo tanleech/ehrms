@@ -15,8 +15,9 @@ import org.hibernate.cfg.Configuration;
  */
 public class DaoDelegate {
     
-    //private Session session=null;
+    private Session session=null;
     private Configuration cfg = null;
+   
     //private Transaction txn = null;
     
     private static DaoDelegate instance = null;
@@ -42,12 +43,12 @@ public class DaoDelegate {
         //creating seession factory object  
         StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder().applySettings(cfg.getProperties());
         SessionFactory sessionFactory = cfg.buildSessionFactory(ssrb.build());
-        Session session = sessionFactory.openSession(); 
+        session = sessionFactory.openSession(); 
         //txn = session.beginTransaction();
         return session;
     }
     
-    public void close(Session session)
+    public void close()
     {
 
         if(session!=null)
@@ -55,6 +56,7 @@ public class DaoDelegate {
             session.close();
             //System.out.println("close");
         }
+        
     }
 
     

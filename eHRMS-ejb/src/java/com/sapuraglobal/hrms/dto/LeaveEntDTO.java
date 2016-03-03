@@ -28,11 +28,11 @@ public class LeaveEntDTO implements java.io.Serializable {
     private int id;
 
 
-    @Column(name = "cf")
-    private double cf;
+    @Column(name = "carriedOver")
+    private double carriedOver;
     
-    @Column(name = "annual")
-    private double annual ;
+    @Column(name = "current")
+    private double current ;
 
     @Column(name = "balance")
     private double balance;
@@ -52,7 +52,7 @@ public class LeaveEntDTO implements java.io.Serializable {
         return max;
     }
 
-    public void setMax(double max) {
+   public void setMax(double max) {
         this.max = max;
     }
 
@@ -76,21 +76,22 @@ public class LeaveEntDTO implements java.io.Serializable {
         return created;
     }
 
-    public double getCf() {
-        return cf;
+    public double getCarriedOver() {
+        return carriedOver;
     }
 
-    public void setCf(double cf) {
-        this.cf = cf;
+    public void setCarriedOver(double carriedOver) {
+        this.carriedOver = carriedOver;
     }
 
-    public double getAnnual() {
-        return annual;
+    public double getCurrent() {
+        return current;
     }
 
-    public void setAnnual(double annual) {
-        this.annual = annual;
+    public void setCurrent(double current) {
+        this.current = current;
     }
+
 
     public double getBalance() {
         return balance;

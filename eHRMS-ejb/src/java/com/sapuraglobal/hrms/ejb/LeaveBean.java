@@ -48,7 +48,7 @@ public class LeaveBean implements LeaveBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close(session);
+            DaoDelegate.getInstance().close();
         }
 
     }
@@ -71,7 +71,7 @@ public class LeaveBean implements LeaveBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close(session);
+            DaoDelegate.getInstance().close();
         }
         
         return results;
@@ -106,7 +106,7 @@ public class LeaveBean implements LeaveBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close(session);
+            DaoDelegate.getInstance().close();
         }
 
     }
@@ -128,7 +128,7 @@ public class LeaveBean implements LeaveBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close(session);
+            DaoDelegate.getInstance().close();
         }
         return result;
     }
@@ -169,7 +169,7 @@ public class LeaveBean implements LeaveBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close(session);
+            DaoDelegate.getInstance().close();
         }
 
         
@@ -202,7 +202,7 @@ public class LeaveBean implements LeaveBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close(session);
+            DaoDelegate.getInstance().close();
         }
 
         
@@ -235,7 +235,7 @@ public class LeaveBean implements LeaveBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close(session);
+            DaoDelegate.getInstance().close();
         }
         return bal;
 
@@ -259,7 +259,7 @@ public class LeaveBean implements LeaveBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close(session);
+            DaoDelegate.getInstance().close();
         }
         return result;
     }
@@ -287,7 +287,7 @@ public class LeaveBean implements LeaveBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close(session);
+            DaoDelegate.getInstance().close();
         }
     }
 
@@ -308,7 +308,7 @@ public class LeaveBean implements LeaveBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close(session);
+            DaoDelegate.getInstance().close();
         }
         if(results!=null&&!results.isEmpty())
         {
@@ -342,7 +342,7 @@ public class LeaveBean implements LeaveBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close(session);
+            DaoDelegate.getInstance().close();
         }
         return results;
     }

@@ -71,7 +71,7 @@ public class LeaveTypeDTO implements java.io.Serializable {
         return annualIncre;
     }
 
-    public void setAnnualIncre(int annualIncre) {
+    public void setAnnualIncre(double annualIncre) {
         this.annualIncre = annualIncre;
     }
 

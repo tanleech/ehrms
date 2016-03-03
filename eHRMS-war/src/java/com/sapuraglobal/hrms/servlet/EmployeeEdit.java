@@ -87,13 +87,16 @@ public class EmployeeEdit extends HttpServlet {
                  UserDTO userDto = prepare(request);
                  UserDeptDTO deptDto = userDto.getDept();
                  UserRoleDTO userRoleDto = userDto.getRole();
-                 //LeaveEntDTO entDto = userDto.getLeaveEnt().get(0);
+                 //getting annual leave ent
+                 LeaveEntDTO entDto = userDto.getLeaveEnt().get(0);
                  userDto.setDept(null);
                  userDto.setRole(null);
                  userDto.setLeaveEnt(null);
                  userBean.createUser(userDto);
                  deptBean.addEmployee(userDto, deptDto.getDept());
                  userBean.assignRole(userDto,userRoleDto.getRole());
+                 entDto.setUser(userDto);
+                 leaveBean.addLeaveEnt(entDto);
                  page="/employee";
                  
              }
@@ -104,6 +107,7 @@ public class EmployeeEdit extends HttpServlet {
                  List<LeaveEntDTO> entList = leaveBean.getLeaveEntList(login);
                  boolean found = false;
                  int i =0;
+                 LeaveEntDTO annualEnt=null;
                  while(!found && i < entList.size())
                  {
                      LeaveEntDTO ent = entList.get(i);
@@ -111,12 +115,24 @@ public class EmployeeEdit extends HttpServlet {
                      {
                          found=true;
                          //user.setLeaveEnt(entList);
+                         annualEnt = ent;
                          request.setAttribute("entAnnual", ent);
                      }
                      i++;
                  }
+                 
+                 //compute Annual Accured
+                 Date now = new Date();
+                 Date begin = Utility.getYearBeginTime();
+                 double days = Utility.computeDaysBetween(begin, now);
+                 System.out.println("days between: "+days);
+                 double accured = (days/365.0) * annualEnt.getCurrent();
+                 
+                 request.setAttribute("typeList", leaveBean.getAllLeaveSettings());
                  request.setAttribute("user", user);
                  request.setAttribute("entList", entList);
+                 request.setAttribute("accured", accured);
+                 
                  page="/employeeDetl.jsp";
              }
           }
@@ -141,7 +157,7 @@ public class EmployeeEdit extends HttpServlet {
         String probDue = request.getParameter("probDue");
         String base = request.getParameter("base");
         String max  = request.getParameter("max");
-        String balance = request.getParameter("base");
+        String balance = request.getParameter("balance");
         
 
         
@@ -151,9 +167,11 @@ public class EmployeeEdit extends HttpServlet {
         user.setPhone(mobile);
         user.setOffice(office);
         user.setLogin(login);
+        /*
         user.setMax(Double.parseDouble(max));
         user.setBase(Double.parseDouble(base));
         user.setBalance(Double.parseDouble(balance));
+        */
         
         UserDTO mgrDto = new UserDTO();
         mgrDto.setId(Integer.parseInt(mgr));
@@ -186,10 +204,11 @@ public class EmployeeEdit extends HttpServlet {
         UserRoleDTO userRole = new UserRoleDTO();
         userRole.setRole(roleDto);
         
-        /*
+        
         LeaveEntDTO ent = new LeaveEntDTO();
-        ent.setAnnual(Integer.parseInt(base));
-        ent.setMax(Integer.parseInt(max));
+        ent.setCurrent(Double.parseDouble(base));
+        ent.setMax(Double.parseDouble(max));
+        ent.setBalance(Double.parseDouble(balance));
         
         LeaveTypeDTO leaveType = leaveBean.getLeaveType("Annual");
         ent.setLeaveType(leaveType);
@@ -197,7 +216,7 @@ public class EmployeeEdit extends HttpServlet {
         ArrayList<LeaveEntDTO> entList = new ArrayList();
         entList.add(ent);
         user.setLeaveEnt(entList);
-        */ 
+         
         user.setDept(userDept);
         user.setRole(userRole);
         

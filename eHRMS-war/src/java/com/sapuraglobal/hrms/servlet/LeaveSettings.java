@@ -90,12 +90,14 @@ public class LeaveSettings extends HttpServlet {
                    page="/leaveSettings.jsp";
                     
                 }
+                request.setAttribute("action", "");
             }
         if(page.equals("/leaveSettings.jsp"))    
         {
             List<LeaveTypeDTO> leaveList = leaveBean.getAllLeaveSettings();
             request.setAttribute("leaveTypelist", leaveList);            
         }
+        
         RequestDispatcher view = getServletContext().getRequestDispatcher(page); 
         view.forward(request,response);     
      }
@@ -112,9 +114,9 @@ public class LeaveSettings extends HttpServlet {
         LeaveTypeDTO type = new LeaveTypeDTO();
         type.setDescription(leaveType);
         type.setMandatory(mandatory);
-        type.setDays(Integer.parseInt(ent));
-        type.setAnnualIncre(Integer.parseInt(annualIncre));
-        type.setCarriedForward(Integer.parseInt(cf));
+        type.setDays(Double.parseDouble(ent));
+        type.setAnnualIncre(Double.parseDouble(annualIncre));
+        type.setCarriedForward(Double.parseDouble(cf));
         
         return type;
     }

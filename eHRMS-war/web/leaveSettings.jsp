@@ -7,6 +7,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" language="java"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib prefix="fmt" 
+           uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.sapuraglobal.hrms.dto.DeptDTO" %>
 
@@ -85,7 +87,8 @@
                          <c:forEach var="entry" items="${requestScope.leaveTypelist}">
                           <tr>   
                             <td width="40%">
-                                <a href ="leaveSettings?action=U&id=${entry.id}" ><c:out value='${entry.description}'/></a>
+                                <fmt:formatNumber type="number" maxFractionDigits="5" value="${entry.id}" var="id"/>
+                                <a href ="leaveSettings?action=U&id=${id}" ><c:out value='${entry.description}'/></a>
                             </td>
                             <td width="20%">
                                 <c:out value='${entry.days}'/>
@@ -99,7 +102,7 @@
                                     </c:if>
                             </td>
                             <td width="10%">
-                                 <a href="leaveSettings?action=D&id=${entry.id}"><span class="glyphicon glyphicon-remove"/></a>                               
+                                 <a href="leaveSettings?action=D&id=${id}"><span class="glyphicon glyphicon-remove"/></a>                               
                             </td>
                           </tr> 
                         </c:forEach>

@@ -38,7 +38,7 @@ public class AccessBean implements AccessBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close(session);
+            DaoDelegate.getInstance().close();
         }
         
         return results;
@@ -80,7 +80,7 @@ public class AccessBean implements AccessBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close(session);
+            DaoDelegate.getInstance().close();
         }
 
     }
@@ -104,7 +104,7 @@ public class AccessBean implements AccessBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close(session);
+            DaoDelegate.getInstance().close();
         }
         
         return (RoleDTO)results.get(0);
@@ -145,7 +145,7 @@ public class AccessBean implements AccessBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close(session);
+            DaoDelegate.getInstance().close();
         }
         
     }

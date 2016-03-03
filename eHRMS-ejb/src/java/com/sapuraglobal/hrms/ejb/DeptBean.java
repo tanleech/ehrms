@@ -36,7 +36,7 @@ public class DeptBean implements DeptBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close(session);
+            DaoDelegate.getInstance().close();
         }
         
         return results;
@@ -70,7 +70,7 @@ public class DeptBean implements DeptBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close(session);
+            DaoDelegate.getInstance().close();
         }
     }
     
@@ -109,7 +109,7 @@ public class DeptBean implements DeptBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close(session);
+            DaoDelegate.getInstance().close();
         }
 
     }
@@ -145,7 +145,7 @@ public class DeptBean implements DeptBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close(session);
+            DaoDelegate.getInstance().close();
         }
         
         return deptData;
@@ -186,7 +186,7 @@ public class DeptBean implements DeptBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close(session);
+            DaoDelegate.getInstance().close();
         }
         
         return data;
@@ -218,7 +218,7 @@ public class DeptBean implements DeptBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close(session);
+            DaoDelegate.getInstance().close();
         }
         
     }
@@ -250,7 +250,7 @@ public class DeptBean implements DeptBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close(session);
+            DaoDelegate.getInstance().close();
         }
         
     }

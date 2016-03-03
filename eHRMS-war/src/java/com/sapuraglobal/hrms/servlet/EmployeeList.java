@@ -77,7 +77,8 @@ public class EmployeeList extends HttpServlet {
         }
         else
         {
-            //json
+          //json
+            
           //Get the employees 
           StringTokenizer st = new StringTokenizer(dtRange,"-");
           String stDate = st.nextToken().trim();

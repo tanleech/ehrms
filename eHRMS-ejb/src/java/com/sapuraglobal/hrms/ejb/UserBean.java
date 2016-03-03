@@ -97,7 +97,7 @@ public class UserBean implements UserBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close(session);
+            DaoDelegate.getInstance().close();
         }
         return data;
     }
@@ -137,7 +137,7 @@ public class UserBean implements UserBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close(session);
+            DaoDelegate.getInstance().close();
         }
     }
 
@@ -163,7 +163,7 @@ public class UserBean implements UserBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close(session);
+            DaoDelegate.getInstance().close();
         }
         return results;
     }
@@ -194,7 +194,7 @@ public class UserBean implements UserBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close(session);
+            DaoDelegate.getInstance().close();
         }
 
         

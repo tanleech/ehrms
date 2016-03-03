@@ -6,6 +6,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8" language="java"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" 
+       uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.sapuraglobal.hrms.dto.DeptDTO" %>
 
@@ -19,7 +21,14 @@
              $('#saveBtn').click(function ()
              {
                  //alert('submit');
+                <c:if test="${param.action eq 'U'}">
                  $('#action').val('E');
+                </c:if>
+                <c:if test="${param.action eq 'U'}">
+                 $('#action').val('A');
+                </c:if>
+                    
+                 
                  $('#myForm').submit();
                  //window.location.href="deptList";
              }      

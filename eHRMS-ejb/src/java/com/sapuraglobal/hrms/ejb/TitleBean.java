@@ -37,7 +37,7 @@ public class TitleBean implements TitleBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close(session);
+            DaoDelegate.getInstance().close();
         }
         
         return results;
@@ -71,7 +71,7 @@ public class TitleBean implements TitleBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close(session);
+            DaoDelegate.getInstance().close();
         }
  
     }
@@ -93,7 +93,7 @@ public class TitleBean implements TitleBeanLocal {
         }
         finally
         {
-            DaoDelegate.getInstance().close(session);
+            DaoDelegate.getInstance().close();
         }
         
         return (TitleDTO)results.get(0);
