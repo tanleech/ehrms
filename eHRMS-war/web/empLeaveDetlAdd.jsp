@@ -25,7 +25,7 @@
              $('#leaveType').change(function ()
              {
                  var type = $('#leaveType').val();
-                $.get("leaveEnt?action=T&typeId="+type, function(data, status){
+                $.get("leaveEntAdd?action=T&typeId="+type, function(data, status){
                         //alert("Data: " + data + "\nStatus: " + status);
                         //alert(data);
                         $('#days').val(data);
@@ -57,7 +57,7 @@
         <br/>
         <!-- Main content -->
                <div class="box-body">
-                  <form action="leaveEnt" method="post" id="myForm" class="form-horizontal">
+                  <form action="leaveEntAdd" method="post" id="myForm" class="form-horizontal">
                     <input type="hidden" value="" id="action" name="action"/>
                     <input type="hidden" value="${requestScope.user.login}" id="login" name="login" />
                     <span class="content form-control" id="panel" style="height: 100%">

@@ -51,7 +51,7 @@ public class LeaveEntAdd extends HttpServlet {
             throws ServletException, IOException {
             response.setContentType("text/html;charset=UTF-8");
             String action = request.getParameter("action");
-            System.out.println("action: "+action);
+            System.out.println("action in LeaveEntAdd: "+action);
             String page = "/employeeLeaveDetl.jsp";
             
             /*
@@ -64,14 +64,15 @@ public class LeaveEntAdd extends HttpServlet {
 
             if(action!=null)
             {
-                if (action.equals("A"))
+                
+                if (action.equals("AS"))
                 {
                    String dayStr = request.getParameter("days");
                    String typeIdStr = request.getParameter("leaveType");
                    int typeId = (int) Double.parseDouble(typeIdStr);
                    LeaveTypeDTO typeDTO = leaveBean.getLeaveSetting(typeId);
                    String login = request.getParameter("login");
-                   System.out.println("login ID: "+login);
+                   System.out.println("login ID in leaveEntAdd: "+login);
                    UserDTO user = userBean.getUser(login);
                    
                    double days = Double.parseDouble(dayStr);
@@ -82,13 +83,13 @@ public class LeaveEntAdd extends HttpServlet {
                    entDto.setBalance(days);
                    entDto.setLeaveType(typeDTO);
                    entDto.setUser(user);
+ 
                    leaveBean.addLeaveEnt(entDto);
-                   page="leaveEnt?action=U&?";
-                    
+                   page="/leaveEnt?action=U&id="+login;
+                     
                 }
                 else if (action.equals("T"))
                 {
-                     
                      String typeId = request.getParameter("typeId");
                      
                      int id = (int) Double.parseDouble(typeId);
@@ -112,53 +113,13 @@ public class LeaveEntAdd extends HttpServlet {
                 {
                    //String id = request.getParameter("id");
                    //leaveBean.deleteLeaveSetting(Integer.parseInt(id));
+                    String entId = request.getParameter("entId");
+                    String userId = request.getParameter("userId");
+                    String login = request.getParameter("loginId");
+                    leaveBean.deleteLeaveEnt(Integer.parseInt(entId),Integer.parseInt(userId));
+                    page="/leaveEnt?action=U&id="+login;
                 }
-                else if (action.equals("U"))
-                {
-                 String login = request.getParameter("id");
-                 UserDTO user = userBean.getUser(login);
-                 List<LeaveEntDTO> entList = leaveBean.getLeaveEntList(login);
-                 boolean found = false;
-                 int i =0;
-                 LeaveEntDTO annualEnt=null;
-                 while(!found && i < entList.size())
-                 {
-                     LeaveEntDTO ent = entList.get(i);
-                     if(ent.getLeaveType().getDescription().equals("Annual"))
-                     {
-                         found=true;
-                         //user.setLeaveEnt(entList);
-                         annualEnt = ent;
-                         request.setAttribute("entAnnual", ent);
-                     }
-                     i++;
-                 }
-                 
-                 //compute Annual Accured
-                 Date now = new Date();
-                 Date begin = Utility.getYearBeginTime();
-                 double days = Utility.computeDaysBetween(begin, now);
-                 System.out.println("days between: "+days);
-                 double accured = (days/365.0) * annualEnt.getCurrent();
-                 
-                 request.setAttribute("typeList", leaveBean.getAllLeaveSettings());
-                 request.setAttribute("user", user);
-                 request.setAttribute("entList", entList);
-                 request.setAttribute("accured", accured);
-                 
-                 page="/employeeLeaveDetl.jsp";
 
-                }
-                else if (action.equals("E"))
-                {
-                   String id = request.getParameter("id");
-                   System.out.println("id: "+id);
-                   //LeaveTypeDTO leaveType = prepare(request);
-                   //leaveType.setId(Integer.parseInt(id));
-                   //leaveBean.updateLeaveSetting(leaveType);
-                   page="/leaveSettings.jsp";
-                    
-                }
                 //request.setAttribute("action", "");
             }
 

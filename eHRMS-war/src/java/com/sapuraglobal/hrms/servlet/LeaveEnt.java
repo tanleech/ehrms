@@ -73,54 +73,14 @@ public class LeaveEnt extends HttpServlet {
                    request.setAttribute("user", user);
                    page="/empLeaveDetlAdd.jsp";
                 }
-                else if (action.equals("AS"))
-                {
-                   String dayStr = request.getParameter("days");
-                   String typeIdStr = request.getParameter("leaveType");
-                   int typeId = (int) Double.parseDouble(typeIdStr);
-                   LeaveTypeDTO typeDTO = leaveBean.getLeaveSetting(typeId);
-                   String login = request.getParameter("login");
-                   System.out.println("login ID: "+login);
-                   UserDTO user = userBean.getUser(login);
-                   
-                   double days = Double.parseDouble(dayStr);
-                   LeaveEntDTO entDto = new LeaveEntDTO();
-                   entDto.setCurrent(days);
-                   entDto.setCarriedOver(0);
-                   entDto.setMax(0);
-                   entDto.setBalance(days);
-                   entDto.setLeaveType(typeDTO);
-                   entDto.setUser(user);
-                   leaveBean.addLeaveEnt(entDto);
-                   page="leaveEnt?action=U&?";
-                    
-                }
-                else if (action.equals("T"))
-                {
-                     
-                     String typeId = request.getParameter("typeId");
-                     
-                     int id = (int) Double.parseDouble(typeId);
-                     response.setContentType("text/html");
-                     PrintWriter out = response.getWriter();
-                     
-                     if(id!=0)
-                     {    
-                        LeaveTypeDTO type = leaveBean.getLeaveSetting(id);
-                        out.write(String.valueOf(type.getDays()));
-                     }
-                     else
-                     {
-                        out.write("");
-                     }
-                     out.flush();
-                     
-                     page="";
-                }
                 else if (action.equals("D"))
                 {
                    //String id = request.getParameter("id");
                    //leaveBean.deleteLeaveSetting(Integer.parseInt(id));
+                    String entId = request.getParameter("entId");
+                    String userId = request.getParameter("userId");
+                    leaveBean.deleteLeaveEnt(Integer.parseInt(entId),Integer.parseInt(userId));
+                    
                 }
                 else if (action.equals("U"))
                 {

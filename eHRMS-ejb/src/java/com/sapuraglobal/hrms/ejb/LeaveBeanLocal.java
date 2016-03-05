@@ -40,5 +40,7 @@ public interface LeaveBeanLocal {
     LeaveTypeDTO getLeaveType(String leaveType);
 
     List<LeaveTypeDTO> getLeaveSettings(boolean mandatory);
+
+    void deleteLeaveEnt(int entId, int userId);
     
 }

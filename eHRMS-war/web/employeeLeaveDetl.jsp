@@ -98,7 +98,7 @@
                             <c:choose>
                                 <c:when test="${!empty requestScope.entList}">
                                     <c:forEach var="entry" items="${requestScope.entList}">
-                                        <c:if test="${entry.leaveType.description eq 'Annual'}">
+                                        <c:if test="${entry.leaveType.description ne 'Annual'}">
                                         <tr>
                                             <td>
                                               ${entry.leaveType.description}
@@ -107,7 +107,7 @@
                                                 ${entry.current}
                                             </td>
                                             <td>
-                                              <a href="employeeEdit?action=D&entId=${entry.id}&userId=${requestScope.user.id}"  class="del" id="delBtn">
+                                              <a href="leaveEntAdd?action=D&entId=${entry.id}&userId=${requestScope.user.id}&loginId=${requestScope.user.login}"  class="del" id="delBtn">
                                                 <span class="glyphicon glyphicon-remove"/>
                                               </a>
                                             </td>

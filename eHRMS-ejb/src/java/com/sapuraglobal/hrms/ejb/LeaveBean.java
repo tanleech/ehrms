@@ -346,6 +346,38 @@ public class LeaveBean implements LeaveBeanLocal {
         }
         return results;
     }
+
+    @Override
+    public void deleteLeaveEnt(int entId, int userId) {
+        
+        Session session=null;
+        Transaction txn = null;
+        try
+        {
+            session = DaoDelegate.getInstance().create();
+            txn = session.beginTransaction();
+            Query delQry = session.createQuery("DELETE FROM com.sapuraglobal.hrms.dto.LeaveEntDTO ent where id = :entId and ent.user.id=:userId");
+            delQry.setParameter("entId", entId);
+            delQry.setParameter("userId", userId);
+            delQry.executeUpdate();
+            txn.commit();
+            
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            if(txn!=null)
+            {
+                txn.rollback();
+            }
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
+
+        
+    }
     
     
         
