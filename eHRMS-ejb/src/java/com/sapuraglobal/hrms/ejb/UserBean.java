@@ -61,6 +61,7 @@ public class UserBean implements UserBeanLocal {
             isAuth=true;
             //authenticated get UserDTO
             userData = getUser(loginId);
+            System.out.println("user id: "+userData.getId());
             
             
 	} catch (NamingException e) {

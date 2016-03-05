@@ -5,11 +5,11 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8" language="java"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="java.util.List" %>
 <%@ page import="com.sapuraglobal.hrms.dto.UserDTO" %>
 
-
+ 
 <!DOCTYPE html>
 <html>
   <head>

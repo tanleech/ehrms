@@ -49,17 +49,13 @@ public class LeaveTxnDTO implements java.io.Serializable {
     @JoinColumn(name="User_id")
     private UserDTO user;
 
- 
-
-    
-    @ManyToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name="approver_id")
-    private UserDTO approver;
-
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="LeaveType_id")
     private LeaveTypeDTO leaveType;
-
+    
+    @Column(name = "days")
+    private double days;
+    
     @Column(name = "created")
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date created;
@@ -67,15 +63,16 @@ public class LeaveTxnDTO implements java.io.Serializable {
     @Column(name = "modified")
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date modified;
-    
-    
-       public UserDTO getApprover() {
-        return approver;
+
+    public double getDays() {
+        return days;
     }
 
-    public void setApprover(UserDTO approver) {
-        this.approver = approver;
+    public void setDays(double days) {
+        this.days = days;
     }
+    
+    
     
      public int getId() {
         return id;

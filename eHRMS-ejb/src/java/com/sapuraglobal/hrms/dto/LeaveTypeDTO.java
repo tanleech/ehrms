@@ -47,7 +47,7 @@ public class LeaveTypeDTO implements java.io.Serializable {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date modified;
     
-     public double getId() {
+     public int getId() {
         return id;
     }
 

@@ -46,5 +46,7 @@ public interface LeaveBeanLocal {
     List<LeaveTxnDTO> getAllTxn();
 
     List<LeaveTxnDTO> getTxnForApprover(int approver);
+
+    List<LeaveTxnDTO> getLeaveRecords(int userId);
     
 }

@@ -15,6 +15,14 @@
      <%@include file="head.jsp"%>
      
  <script>
+     
+// Count days from d0 to d1 inclusive, excluding weekends
+        function calculateDays( d0, d1 )
+        {
+            var ndays = 1 + Math.round((d1.getTime()-d0.getTime())/(24*3600*1000));
+            var nsaturdays = Math.floor((ndays + d0.getDay()) / 7);
+            return ndays - 2*nsaturdays + (d0.getDay()==6) - (d1.getDay()==5);
+        }
          $(document).ready(function () {
              $('#apply').click(function ()
              {
@@ -22,13 +30,42 @@
                  $('#myForm').submit();    
              }      
              );
+             $('#compute').click(function()
+             {
+                 var d1 = new Date($('#startDate').val());
+                 var d2 = new Date($('#endDate').val());
+                 var days = calculateDays(d1,d2);
+                 if(d1.getDay() === d2.getDay())
+                 {
+                     if($('#start_slot').val()===$('#end_slot').val())
+                     {
+                         days = days - 0.5+1;
+                     }
+                     else
+                     {
+                         days = days +1;
+                     }
+                 }
+                 else
+                 {
+                     
+                    if($('#start_slot').val()==='AM' && $('#end_slot').val()==='AM')
+                     {
+                         days = days - 1;
+                     }
+                 }
+                $('#taken').val(days);
+                 
+             }      
+             );
              $('#leaveType').change(function ()
              {
-                 var type = $('#leaveType').val();
-                $.get("leaveEntAdd?action=T&typeId="+type, function(data, status){
-                        //alert("Data: " + data + "\nStatus: " + status);
+                var type = $('#leaveType').val();
+                alert('type: '+type);
+                $.get("leaveTxn?action=Q&typeId="+type, function(data, status){
+                        alert("Data: " + data + "\nStatus: " + status);
                         //alert(data);
-                        $('#days').val(data);
+                        $('#balance').val(data);
                         
                     });
              }
@@ -87,7 +124,7 @@
                          <div class="input-group-addon">
                                       <i class="fa fa-calendar"></i>
                          </div>
-                         <select class="form-control" id="slot" name="slot">
+                         <select class="form-control" id="start_slot" name="start_slot">
                             <option value="AM">
                                 AM
                             </option>    
@@ -105,12 +142,12 @@
                                     <div class="input-group-addon">
                                       <i class="fa fa-calendar"></i>
                                     </div>
-                                                    <select class="form-control" id="slot" name="slot">
-                            <option value="AM">
-                                AM
-                            </option>    
+                            <select class="form-control" id="end_slot" name="end_slot">
                             <option value="PM">
                                 PM
+                            </option>    
+                            <option value="AM">
+                                AM
                             </option>    
                         </select>
                         </div>   
@@ -119,6 +156,7 @@
                      <label class=" control-label col-sm-1">Total</label>
                      <div class="input-group col-sm-3">
                          <input value="" name="taken" id="taken"/>
+                         <button type="button" class="btn btn-primary pull-right" id="compute">Compute</button>
                      </div>
                     </div>                         
                     <div class="form-group">  
