@@ -54,13 +54,7 @@ public class LeaveEntAdd extends HttpServlet {
             System.out.println("action in LeaveEntAdd: "+action);
             String page = "/employeeLeaveDetl.jsp";
             
-            /*
-            String leaveType = request.getParameter("leaveType");
-            String ent = request.getParameter("ent");
-            String mandatory = request.getParameter("mandatory");
-            String annualIncre = request.getParameter("annualIncre");
-            String cf = request.getParameter("cf");
-            */
+
 
             if(action!=null)
             {
