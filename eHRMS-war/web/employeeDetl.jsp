@@ -26,6 +26,8 @@
                 $('#myForm').submit();   
              }
              );
+            
+     
          });
        </script>
   </head>
@@ -47,7 +49,6 @@
         <br/>
         <!-- Main content -->
         <div class="box-body">
-        
         <form action="employeeEdit" method="post" id="myForm" class="form-horizontal">
                      <input type="hidden" value="" id="action" name="action"/>
                      <input type="hidden" value="${requestScope.user.id}" name="userId"/>
@@ -189,6 +190,7 @@
                           </div> 
                         </span> 
             <!-- Main content -->
+            <a href ='leaveEnt?action=U&id=${requestScope.user.login}' ><button type="button" class="btn btn-primary pull-right" id="nextBtn">Edit Leave Entitlement</button></a>
         </div> 
       </form>                               
       </div>

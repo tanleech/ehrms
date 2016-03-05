@@ -104,12 +104,13 @@ public class EmployeeEdit extends HttpServlet {
              }
              else if(action.equals("U"))
              {
+                 
                  String login = request.getParameter("id");
                  UserDTO user = userBean.getUser(login);
                  List<LeaveEntDTO> entList = leaveBean.getLeaveEntList(login);
                  boolean found = false;
                  int i =0;
-                 LeaveEntDTO annualEnt=null;
+                 //LeaveEntDTO annualEnt=null;
                  while(!found && i < entList.size())
                  {
                      LeaveEntDTO ent = entList.get(i);
@@ -117,25 +118,27 @@ public class EmployeeEdit extends HttpServlet {
                      {
                          found=true;
                          //user.setLeaveEnt(entList);
-                         annualEnt = ent;
+                         //annualEnt = ent;
                          request.setAttribute("entAnnual", ent);
                      }
                      i++;
                  }
                  
                  //compute Annual Accured
+                 /*
                  Date now = new Date();
                  Date begin = Utility.getYearBeginTime();
                  double days = Utility.computeDaysBetween(begin, now);
                  System.out.println("days between: "+days);
                  double accured = (days/365.0) * annualEnt.getCurrent();
-                 
-                 request.setAttribute("typeList", leaveBean.getAllLeaveSettings());
+                 */
+                 //request.setAttribute("typeList", leaveBean.getAllLeaveSettings());
                  request.setAttribute("user", user);
-                 request.setAttribute("entList", entList);
-                 request.setAttribute("accured", accured);
+                 //request.setAttribute("entList", entList);
+                 //request.setAttribute("accured", accured);
                  
                  page="/employeeDetl.jsp";
+                 
              }
           else if(action.equals("E"))
           {
