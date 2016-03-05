@@ -35,8 +35,11 @@ public class LeaveTxnDTO implements java.io.Serializable {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date end;
     
-    @Column(name = "slot")
-    private String slot;
+    @Column(name = "start_slot")
+    private String start_slot;
+    
+    @Column(name = "end_slot")
+    private String end_slot;
     
    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="status_id")
@@ -45,6 +48,13 @@ public class LeaveTxnDTO implements java.io.Serializable {
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="User_id")
     private UserDTO user;
+
+ 
+
+    
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="approver_id")
+    private UserDTO approver;
 
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="LeaveType_id")
@@ -57,6 +67,15 @@ public class LeaveTxnDTO implements java.io.Serializable {
     @Column(name = "modified")
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date modified;
+    
+    
+       public UserDTO getApprover() {
+        return approver;
+    }
+
+    public void setApprover(UserDTO approver) {
+        this.approver = approver;
+    }
     
      public int getId() {
         return id;
@@ -86,12 +105,20 @@ public class LeaveTxnDTO implements java.io.Serializable {
         this.end = end;
     }
 
-    public String getSlot() {
-        return slot;
+    public String getStart_slot() {
+        return start_slot;
     }
 
-    public void setSlot(String slot) {
-        this.slot = slot;
+    public void setStart_slot(String start_slot) {
+        this.start_slot = start_slot;
+    }
+
+    public String getEnd_slot() {
+        return end_slot;
+    }
+
+    public void setEnd_slot(String end_slot) {
+        this.end_slot = end_slot;
     }
 
     public StatusDTO getStatus() {

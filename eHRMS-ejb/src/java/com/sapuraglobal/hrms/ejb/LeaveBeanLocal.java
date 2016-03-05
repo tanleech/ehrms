@@ -42,5 +42,9 @@ public interface LeaveBeanLocal {
     List<LeaveTypeDTO> getLeaveSettings(boolean mandatory);
 
     void deleteLeaveEnt(int entId, int userId);
+
+    List<LeaveTxnDTO> getAllTxn();
+
+    List<LeaveTxnDTO> getTxnForApprover(int approver);
     
 }

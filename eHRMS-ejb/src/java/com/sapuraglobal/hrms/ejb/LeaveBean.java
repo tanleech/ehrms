@@ -378,6 +378,50 @@ public class LeaveBean implements LeaveBeanLocal {
 
         
     }
+
+    @Override
+    public List<LeaveTxnDTO> getAllTxn() {
+        List results=null;
+        Session session=null;
+        try
+        {
+            session = DaoDelegate.getInstance().create();
+            results =  session.createQuery("FROM com.sapuraglobal.hrms.dto.LeaveTxnDTO txn").list();
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
+        
+        return results;
+    }
+
+    @Override
+    public List<LeaveTxnDTO> getTxnForApprover(int approver) {
+        List results=null;
+        Session session=null;
+        try
+        {
+            session = DaoDelegate.getInstance().create();
+            Query qry =  session.createQuery("FROM com.sapuraglobal.hrms.dto.LeaveTxnDTO txn WHERE txn.approver.id =:approverId");
+            qry.setParameter("approverId", approver);
+            results = qry.list();
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
+        
+        return results;
+    }
     
     
         
