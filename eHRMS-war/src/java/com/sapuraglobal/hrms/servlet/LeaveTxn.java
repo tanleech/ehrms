@@ -5,6 +5,7 @@
  */
 package com.sapuraglobal.hrms.servlet;
 
+import com.sapuraglobal.hrms.dto.LeaveTxnDTO;
 import com.sapuraglobal.hrms.dto.LeaveTypeDTO;
 import com.sapuraglobal.hrms.dto.UserDTO;
 import com.sapuraglobal.hrms.ejb.LeaveBeanLocal;
@@ -64,6 +65,12 @@ public class LeaveTxn extends HttpServlet {
                 out.flush();
                 page="";
 
+            }
+            else if(action.equals("list"))
+            {
+                List<LeaveTxnDTO> txnList = leaveBean.getAllTxn();
+                request.setAttribute("leaveTxnlist", txnList);
+                page="/leaveList.jsp";
             }
         }
         

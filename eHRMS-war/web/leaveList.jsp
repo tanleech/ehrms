@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8" language="java"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.sapuraglobal.hrms.dto.UserDTO" %>
 
@@ -81,10 +82,12 @@
                                 ${entry.user.name}
                             </td>
                             <td width="10%">
-                                ${entry.start}-${entry.start_slot}
+                                <fmt:formatDate type="date"
+                               value="${entry.start}" /> - ${entry.start_slot}
                             </td>
                             <td width="10%">
-                                ${entry.end}-${entry.end_slot}
+                                <fmt:formatDate type="date"
+                               value="${entry.end}" /> -${entry.end_slot}
                             </td>
                             <td width="10%">
                                 ${entry.days}
@@ -93,7 +96,8 @@
                                 ${entry.leaveType.description}
                             </td>
                             <td width="10%">
-                                ${entry.created}
+                                <fmt:formatDate type="date"
+                               value="${entry.created}" />
                             </td>
                             <td width="10%">
                                 ${entry.user.approver}

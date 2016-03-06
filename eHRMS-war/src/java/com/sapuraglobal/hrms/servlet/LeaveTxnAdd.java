@@ -48,7 +48,7 @@ public class LeaveTxnAdd extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String page = "/leaveList.jsp";
+        String page = "/leaveTxn?action=list";
 
         String lvTypeId = request.getParameter("leaveType");
         String startDate = request.getParameter("startDate");
