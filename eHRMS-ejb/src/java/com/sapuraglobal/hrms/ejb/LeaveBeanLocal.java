@@ -8,6 +8,7 @@ package com.sapuraglobal.hrms.ejb;
 import com.sapuraglobal.hrms.dto.LeaveEntDTO;
 import com.sapuraglobal.hrms.dto.LeaveTxnDTO;
 import com.sapuraglobal.hrms.dto.LeaveTypeDTO;
+import com.sapuraglobal.hrms.dto.StatusDTO;
 import com.sapuraglobal.hrms.dto.UserDTO;
 import java.util.List;
 import javax.ejb.Local;
@@ -48,5 +49,7 @@ public interface LeaveBeanLocal {
     List<LeaveTxnDTO> getTxnForApprover(int approver);
 
     List<LeaveTxnDTO> getLeaveRecords(int userId);
+
+    StatusDTO getStatus(String descr);
     
 }

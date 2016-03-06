@@ -5,16 +5,16 @@
  */
 package com.sapuraglobal.hrms.servlet;
 
-import com.sapuraglobal.hrms.dto.LeaveEntDTO;
+import com.sapuraglobal.hrms.dto.LeaveTxnDTO;
 import com.sapuraglobal.hrms.dto.LeaveTypeDTO;
+import com.sapuraglobal.hrms.dto.StatusDTO;
 import com.sapuraglobal.hrms.dto.UserDTO;
 import com.sapuraglobal.hrms.ejb.LeaveBeanLocal;
 import com.sapuraglobal.hrms.ejb.UserBeanLocal;
 import com.sapuraglobal.hrms.servlet.helper.Utility;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.text.ParseException;
 import java.util.Date;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -34,6 +34,8 @@ import javax.servlet.http.HttpServletResponse;
 public class LeaveTxnAdd extends HttpServlet {
     @EJB
     private LeaveBeanLocal leaveBean;
+    @EJB
+    private UserBeanLocal userBean;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -48,8 +50,47 @@ public class LeaveTxnAdd extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String page = "/leaveList.jsp";
 
+        String lvTypeId = request.getParameter("leaveType");
+        String startDate = request.getParameter("startDate");
+        Date startDt=null,endDt=null;
+        try
+        {
+           startDt = Utility.format(startDate, "MM/dd/yyyy");
+           String endDate = request.getParameter("endDate");
+           endDt = Utility.format(endDate, "MM/dd/yyyy");
+ 
+        }catch(ParseException pe)
+        {
+            pe.printStackTrace();
+        }
+  
+        String startSlot = request.getParameter("start_slot");
+
+        String endSlot = request.getParameter("end_slot");
+
+        String days = request.getParameter("taken");
         
         
+        UserDTO user = (UserDTO)request.getSession().getAttribute("User");
+        LeaveTxnDTO txn = new LeaveTxnDTO();
+        txn.setDays(Double.parseDouble(days));
+        
+        txn.setStart(startDt);
+        txn.setEnd(endDt);
+        
+        txn.setStart_slot(startSlot);
+        txn.setEnd_slot(endSlot);
+        
+        System.out.println("leaveTypeId="+lvTypeId);
+        LeaveTypeDTO typeDTO = leaveBean.getLeaveSetting(Integer.parseInt(lvTypeId));
+        txn.setLeaveType(typeDTO);
+        
+        StatusDTO statusDTO = leaveBean.getStatus("pending");
+        
+        txn.setStatus(statusDTO);
+        txn.setUser(user);
+        
+        leaveBean.applyLeave(txn);
         if(!page.isEmpty())
         {
             RequestDispatcher view = getServletContext().getRequestDispatcher(page); 

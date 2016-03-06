@@ -41,15 +41,15 @@ public class LeaveTxnDTO implements java.io.Serializable {
     @Column(name = "end_slot")
     private String end_slot;
     
-   @ManyToOne(cascade=CascadeType.ALL)
+   @ManyToOne(cascade=CascadeType.MERGE)
     @JoinColumn(name="status_id")
     private StatusDTO status;
     
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne(cascade=CascadeType.MERGE)
     @JoinColumn(name="User_id")
     private UserDTO user;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne(cascade=CascadeType.MERGE)
     @JoinColumn(name="LeaveType_id")
     private LeaveTypeDTO leaveType;
     

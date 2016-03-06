@@ -24,9 +24,8 @@
             return ndays - 2*nsaturdays + (d0.getDay()==6) - (d1.getDay()==5);
         }
          $(document).ready(function () {
-             $('#apply').click(function ()
+             $('#submit').click(function ()
              {
-                 $('#action').val('AS');
                  $('#myForm').submit();    
              }      
              );
@@ -90,13 +89,13 @@
         <div class="content-header">
             <h1>
                  Apply Leave
-                <button type="button" class="btn btn-primary pull-right" id="assignBtn">Submit</button>
+                <button type="button" class="btn btn-primary pull-right" id="submit">Submit</button>
             </h1>    
         </div>
         <br/>
         <!-- Main content -->
                <div class="box-body">
-                  <form action="#" method="post" id="myForm" class="form-horizontal">
+                  <form action="leaveTxnAdd" method="post" id="myForm" class="form-horizontal">
                     <input type="hidden" value="" id="action" name="action"/>
                     <input type="hidden" value="${requestScope.user.login}" id="login" name="login" />
                     <span class="content form-control" id="panel" style="height: 100%">

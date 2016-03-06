@@ -8,6 +8,7 @@ package com.sapuraglobal.hrms.ejb;
 import com.sapuraglobal.hrms.dto.LeaveEntDTO;
 import com.sapuraglobal.hrms.dto.LeaveTxnDTO;
 import com.sapuraglobal.hrms.dto.LeaveTypeDTO;
+import com.sapuraglobal.hrms.dto.StatusDTO;
 import com.sapuraglobal.hrms.dto.UserDTO;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -447,6 +448,30 @@ public class LeaveBean implements LeaveBeanLocal {
         }
         
         return results;
+    }
+
+    @Override
+    public StatusDTO getStatus(String descr) {
+        Session session=null;
+        StatusDTO status = null;
+        try
+        {
+            session = DaoDelegate.getInstance().create();
+            Query qry =  session.createQuery("FROM com.sapuraglobal.hrms.dto.StatusDTO status WHERE status.description =:descr");
+            qry.setParameter("descr", descr);
+            status = (StatusDTO)qry.list().get(0);
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
+        
+        return status;
+        
     }
     
     

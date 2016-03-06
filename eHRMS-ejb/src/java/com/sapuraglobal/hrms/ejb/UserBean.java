@@ -72,6 +72,12 @@ public class UserBean implements UserBeanLocal {
         {
             ex.printStackTrace();
         }
+        finally
+        {
+            userData = getUser(loginId);
+            System.out.println("user id: "+userData.getId());
+        }
+            
         
         return userData;
     }
