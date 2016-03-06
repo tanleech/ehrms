@@ -202,7 +202,7 @@ public class DeptBean implements DeptBeanLocal {
             txn = session.beginTransaction();
             //retrieve the full data from db.
             //retrieve from UserDept
-            String hql = "DELETE FROM com.sapuraglobal.hrms.dto.UserDeptDTO WHERE Dept_id=:deptId AND manager = 'Y'";
+            String hql = "UPDATE com.sapuraglobal.hrms.dto.UserDeptDTO userDept SET userDept.manager='' WHERE userDept.dept.id=:deptId AND manager = 'Y'";
             Query qry = session.createQuery(hql);
             qry.setParameter("deptId", deptId);
             qry.executeUpdate();
@@ -253,6 +253,39 @@ public class DeptBean implements DeptBeanLocal {
             DaoDelegate.getInstance().close(session);
         }
         
+    }
+
+    @Override
+    public int assignManager(int userId, int deptId) {
+        Session session = null;
+        Transaction txn = null;        
+        int result=-1;
+        try
+        {
+            session =  DaoDelegate.getInstance().create();
+            txn = session.beginTransaction();
+            //retrieve the full data from db.
+            //retrieve from UserDept
+            String hql = "UPDATE com.sapuraglobal.hrms.dto.UserDeptDTO userDept SET userDept.manager='Y' WHERE userDept.dept.id=:deptId AND userDept.user.id = :userId ";
+            Query qry = session.createQuery(hql);
+            qry.setParameter("deptId", deptId);
+            qry.setParameter("userId", userId);
+            result = qry.executeUpdate();
+            txn.commit();
+            
+        }catch (Exception ex)
+        {
+            if(txn!=null)
+            {
+                txn.rollback();
+            }
+            ex.printStackTrace();
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
+        return result;
     }
     
     

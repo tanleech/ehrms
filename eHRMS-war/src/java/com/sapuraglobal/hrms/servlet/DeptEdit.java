@@ -12,7 +12,6 @@ import com.sapuraglobal.hrms.ejb.DeptBeanLocal;
 import com.sapuraglobal.hrms.ejb.UserBeanLocal;
 import com.sapuraglobal.hrms.servlet.helper.BeanHelper;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +89,9 @@ public class DeptEdit extends HttpServlet {
                     //get dept name
                     DeptDTO deptDto = deptBean.getDepartment(dept);
                     deptBean.unassignManager(deptDto.getId());
-                    deptBean.addEmployee(empDto, deptDto);
+                    int result = deptBean.assignManager(empDto.getId(),deptDto.getId());
+                    if(result==0)
+                       deptBean.addEmployee(empDto, deptDto);
                     page="";
                     /*
                      response.setContentType("text/html");

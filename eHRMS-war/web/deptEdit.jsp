@@ -30,7 +30,7 @@
                     //ajax post.
                     $.post(url, frmData,
                     function (data,status) {
-                        alert('Manager Updated');
+                        location.reload();
                      });   
 
              }

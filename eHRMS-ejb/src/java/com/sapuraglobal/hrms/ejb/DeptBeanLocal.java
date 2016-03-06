@@ -31,5 +31,7 @@ public interface DeptBeanLocal {
     void unassignManager(int deptId);
 
     void unassignEmployee(int userId, int deptId);
+
+    int assignManager(int userId, int deptId);
     
 }
