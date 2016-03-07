@@ -109,6 +109,18 @@ public class UserDTO {
     @Transient
     private boolean isManager;
     
+    @Transient
+    private String approverName;
+
+    public String getApproverName() {
+        return approverName;
+    }
+
+    public void setApproverName(String approverName) {
+        this.approverName = approverName;
+    }
+    
+    
     public UserRoleDTO getRole() {
         return role;
     }

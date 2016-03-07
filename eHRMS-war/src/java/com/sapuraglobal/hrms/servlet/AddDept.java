@@ -7,7 +7,6 @@ package com.sapuraglobal.hrms.servlet;
 
 import com.sapuraglobal.hrms.dto.DeptDTO;
 import com.sapuraglobal.hrms.ejb.DeptBeanLocal;
-import com.sapuraglobal.hrms.ejb.UserBeanLocal;
 import java.io.IOException;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -25,8 +24,6 @@ import javax.servlet.http.HttpServletResponse;
     urlPatterns = {"/addDept"}
 )
 public class AddDept extends HttpServlet {
-    @EJB
-    private UserBeanLocal userBean;
     @EJB
     private DeptBeanLocal deptBean;
     

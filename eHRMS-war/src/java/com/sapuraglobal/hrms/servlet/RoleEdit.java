@@ -114,17 +114,19 @@ public class RoleEdit extends HttpServlet {
             role.setDescription(roleName);
             
             //system access
-            String acr = request.getParameter("system");
+            //String acr = request.getParameter("system");
             System.out.println("module: "+moduleList);
             for(int i=0;i<moduleList.size();i++)
             {
                 ModuleDTO module = moduleList.get(i);
                 AccessDTO access = new AccessDTO();
+                /*
                 if(acr.equals("0"))
                 {
                   access.setAccess(0);
                 }
-                else
+                */
+                //else
                 {
                     String rights = request.getParameter(module.getName());
                     System.out.println("rights: "+rights);

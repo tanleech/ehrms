@@ -89,7 +89,7 @@ public class EmployeeList extends HttpServlet {
 
                 List<UserDTO> userList = userBean.getAllUsers(fromDate,toDate);
                 //convert to json array
-                String json = convertToJson(userList,getMap(request));
+                String json = convertToJson(userList,new BeanHelper().getUserTab(userBean));
                 response.setContentType("text/html");
                 PrintWriter out = response.getWriter();
                 out.write(json);
@@ -101,7 +101,7 @@ public class EmployeeList extends HttpServlet {
             
         }
     }
-    
+    /*
     private HashMap getMap(HttpServletRequest request)
     {
         HashMap map;
@@ -122,7 +122,7 @@ public class EmployeeList extends HttpServlet {
         }
         return map;
     }
-    
+    */
     private String convertToJson(List<UserDTO> userList, HashMap map)
     {
         JsonArrayBuilder array = Json.createArrayBuilder();

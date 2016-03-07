@@ -11,7 +11,6 @@ import com.sapuraglobal.hrms.dto.UserRoleDTO;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -28,8 +27,6 @@ import org.hibernate.Transaction;
  */
 @Stateless
 public class UserBean implements UserBeanLocal {
-    @EJB
-    private DeptBeanLocal deptBean;
     
     @Override
     public UserDTO authenticate(String loginId, String password) {

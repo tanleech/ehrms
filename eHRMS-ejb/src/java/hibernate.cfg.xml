@@ -22,7 +22,6 @@
     <mapping class="com.sapuraglobal.hrms.dto.LeaveTxnDTO"/>
     <mapping class="com.sapuraglobal.hrms.dto.LeaveEntDTO"/>
     <mapping class="com.sapuraglobal.hrms.dto.StatusDTO"/>
-    
 
     
   </session-factory>

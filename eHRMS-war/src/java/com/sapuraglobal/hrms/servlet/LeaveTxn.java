@@ -9,8 +9,11 @@ import com.sapuraglobal.hrms.dto.LeaveTxnDTO;
 import com.sapuraglobal.hrms.dto.LeaveTypeDTO;
 import com.sapuraglobal.hrms.dto.UserDTO;
 import com.sapuraglobal.hrms.ejb.LeaveBeanLocal;
+import com.sapuraglobal.hrms.ejb.UserBeanLocal;
+import com.sapuraglobal.hrms.servlet.helper.BeanHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -31,6 +34,9 @@ import javax.servlet.http.HttpServletResponse;
 public class LeaveTxn extends HttpServlet {
     @EJB
     private LeaveBeanLocal leaveBean;
+    @EJB
+    private UserBeanLocal userBean;
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -59,6 +65,10 @@ public class LeaveTxn extends HttpServlet {
                 LeaveTypeDTO typeDTO= new LeaveTypeDTO();
                 typeDTO.setId(typeId);
                 UserDTO userDTO = (UserDTO)request.getSession().getAttribute("User");
+                HashMap map = new BeanHelper().getUserTab(userBean);
+                System.out.println("approver: "+userDTO.getApprover());
+                String appr = (String)map.get(userDTO.getApprover());
+                userDTO.setApproverName(appr);
                 double balance = leaveBean.getLeaveBalance(typeDTO, userDTO);
                 PrintWriter out = response.getWriter();
                 out.write(String.valueOf(balance));
@@ -69,6 +79,12 @@ public class LeaveTxn extends HttpServlet {
             else if(action.equals("list"))
             {
                 List<LeaveTxnDTO> txnList = leaveBean.getAllTxn();
+                HashMap map = new BeanHelper().getUserTab(userBean);
+                for(int i=0;i<txnList.size();i++)
+                {
+                    LeaveTxnDTO txn = txnList.get(i);
+                    txn.getUser().setApproverName((String)map.get(txn.getUser().getApprover()));
+                }
                 request.setAttribute("leaveTxnlist", txnList);
                 page="/leaveList.jsp";
             }

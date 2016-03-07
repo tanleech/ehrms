@@ -51,5 +51,12 @@ public interface LeaveBeanLocal {
     List<LeaveTxnDTO> getLeaveRecords(int userId);
 
     StatusDTO getStatus(String descr);
+
+    void updateLeaveEnt(int leaveTypeId, int userId, double days);
+
+    void approveLeave(int txnId, int status);
+
+    LeaveTxnDTO getTxn(int txnId);
+
     
 }

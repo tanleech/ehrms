@@ -9,6 +9,7 @@ import com.sapuraglobal.hrms.dto.UserDTO;
 import com.sapuraglobal.hrms.ejb.UserBeanLocal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -35,6 +36,17 @@ public class BeanHelper {
         }
         return userList;
     }
-
     
+    public HashMap getUserTab(UserBeanLocal userBean)
+    {
+        HashMap map=new HashMap();
+        List<UserDTO> allUsers = getAllUsers(userBean);
+            for(int i=0;i<allUsers.size();i++)
+            {
+                UserDTO user = allUsers.get(i);
+                map.put(user.getId(), user.getName());
+            }
+            
+       return map;
+    }
 }

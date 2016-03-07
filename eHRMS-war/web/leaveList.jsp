@@ -19,7 +19,7 @@
          $(document).ready(function () {
              $('#Apply').click(function ()
              {
-                window.location.href="employeeEdit"; 
+                window.location.href="leaveTxn"; 
              }      
              );
              $('#leaveTab').DataTable({
@@ -83,11 +83,11 @@
                             </td>
                             <td width="10%">
                                 <fmt:formatDate type="date"
-                               value="${entry.start}" /> - ${entry.start_slot}
+                               value="${entry.start}" /> ${entry.start_slot}
                             </td>
                             <td width="10%">
                                 <fmt:formatDate type="date"
-                               value="${entry.end}" /> -${entry.end_slot}
+                               value="${entry.end}" /> ${entry.end_slot}
                             </td>
                             <td width="10%">
                                 ${entry.days}
@@ -100,14 +100,15 @@
                                value="${entry.created}" />
                             </td>
                             <td width="10%">
-                                ${entry.user.approver}
+                                ${entry.user.approverName}
                             </td>
                             <td width="10%">
                                 ${entry.status.description}
                             </td>
                             <td width="20%">
-                                <a href="#" >Approve</a>
-                                <a href="#" >Reject</a>
+                                <a href="leaveTxnApprove?action=APPRV&txn=${entry.id}">Approve</a>
+                                |
+                                <a href="leaveTxnApprove?action=REJ&txn=${entry.id}&typeId=${entry.leaveType.id}&userId=${entry.user.id}&days=${entry.days}">Reject</a>
                             </td>
                             
                           </tr> 

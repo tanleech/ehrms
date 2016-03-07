@@ -29,10 +29,10 @@ import javax.servlet.http.HttpServletResponse;
  * @author sapura-mac-pro-cto-C02PC1MWG3QT
  */
 @WebServlet(
-    urlPatterns = {"/leaveTxnAdd"}
+    urlPatterns = {"/leaveTxnApprove"}
 )
 
-public class LeaveTxnAdd extends HttpServlet {
+public class LeaveTxnApprove extends HttpServlet {
     @EJB
     private LeaveBeanLocal leaveBean;
     /**
@@ -47,54 +47,40 @@ public class LeaveTxnAdd extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
+        String action = request.getParameter("action");
+        System.out.println("action: "+action);
+
         String page = "/leaveTxn?action=list";
 
-        String lvTypeId = request.getParameter("leaveType");
-        String startDate = request.getParameter("startDate");
-        Date startDt=null,endDt=null;
-        try
+        String txnId = request.getParameter("txn");
+        if(action!=null)
         {
-           startDt = Utility.format(startDate, "MM/dd/yyyy");
-           String endDate = request.getParameter("endDate");
-           endDt = Utility.format(endDate, "MM/dd/yyyy");
- 
-        }catch(ParseException pe)
-        {
-            pe.printStackTrace();
+            if(action.equals("APPRV"))
+            {
+                StatusDTO status = leaveBean.getStatus("approved");
+                leaveBean.approveLeave(Integer.parseInt(txnId), status.getId());
+            }
+            else if(action.equals("REJ"))
+            {
+                StatusDTO status = leaveBean.getStatus("rejected");
+                leaveBean.approveLeave(Integer.parseInt(txnId), status.getId());
+                //add on to the leave balance
+                String typeId = request.getParameter("typeId");
+                String userId = request.getParameter("userId");
+                double days = Double.parseDouble(request.getParameter("days"));
+                
+                //LeaveEntDTO entDTO = leaveBean.getLeaveEnt(Integer.parseInt(typeId), Integer.parseInt(userId));
+                LeaveTypeDTO typeDTO = new LeaveTypeDTO();
+                typeDTO.setId(Integer.parseInt(typeId));
+                
+                UserDTO userDTO = new UserDTO();
+                userDTO.setId(Integer.parseInt(userId));
+                double bal = leaveBean.getLeaveBalance(typeDTO, userDTO);
+
+                leaveBean.updateLeaveEnt(Integer.parseInt(typeId),Integer.parseInt(userId) , bal+days);
+            }
         }
-  
-        String startSlot = request.getParameter("start_slot");
-
-        String endSlot = request.getParameter("end_slot");
-
-        String days = request.getParameter("taken");
-        
-        Double daysTaken = Double.parseDouble(days);
-        UserDTO user = (UserDTO)request.getSession().getAttribute("User");
-        LeaveTxnDTO txn = new LeaveTxnDTO();
-        txn.setDays(daysTaken);
-        
-        txn.setStart(startDt);
-        txn.setEnd(endDt);
-        
-        txn.setStart_slot(startSlot);
-        txn.setEnd_slot(endSlot);
-        
-        System.out.println("leaveTypeId="+lvTypeId);
-        LeaveTypeDTO typeDTO = leaveBean.getLeaveSetting(Integer.parseInt(lvTypeId));
-        txn.setLeaveType(typeDTO);
-        
-        //LeaveEntDTO entDTO = leaveBean.getLeaveEnt(Integer.parseInt(lvTypeId), user.getId());
-        double bal = leaveBean.getLeaveBalance(typeDTO, user);
-        
-        StatusDTO statusDTO = leaveBean.getStatus("pending");
-        
-        txn.setStatus(statusDTO);
-        txn.setUser(user);
-        
-        leaveBean.applyLeave(txn);
-        leaveBean.updateLeaveEnt(typeDTO.getId(), user.getId(), bal-daysTaken);
-        //update the balance
         
         if(!page.isEmpty())
         {

@@ -473,8 +473,104 @@ public class LeaveBean implements LeaveBeanLocal {
         return status;
         
     }
-    
-    
+
+    @Override
+    public void updateLeaveEnt(int leaveTypeId, int userId, double days) {
+        Session session=null;
+        Transaction txn = null;
+        java.util.Date current = new java.util.Date();
+        try
+        {
+            session = DaoDelegate.getInstance().create();
+            txn = session.beginTransaction();
+            Query updateQry = session.createQuery("UPDATE com.sapuraglobal.hrms.dto.LeaveEntDTO ent "
+                    + " set  ent.balance = :bal, ent.modified =:modified "
+                    + " where ent.leaveType.id = :typeId AND ent.user.id = :userId");
+            System.out.println("typeId: "+leaveTypeId);
+            updateQry.setParameter("typeId", leaveTypeId);
+            updateQry.setParameter("userId", userId);
+            updateQry.setParameter("bal", days);
+            updateQry.setParameter("modified", current);
+            updateQry.executeUpdate();
+            txn.commit();
+            
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            if(txn!=null)
+            {
+                txn.rollback();
+            }
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
+
+        
+    }
+
+    @Override
+    public void approveLeave(int txnId, int status) {
+        
+        Session session=null;
+        Transaction txn = null;
+        java.util.Date current = new java.util.Date();
+        try
+        {
+            session = DaoDelegate.getInstance().create();
+            txn = session.beginTransaction();
+            Query updateQry = session.createQuery("UPDATE com.sapuraglobal.hrms.dto.LeaveTxnDTO txn "
+                    + " set  txn.status.id = :status, txn.modified =:modified "
+                    + " where txn.id = :txnId");
+            updateQry.setParameter("status", status);
+            updateQry.setParameter("txnId", txnId);
+            updateQry.setParameter("modified", current);
+            updateQry.executeUpdate();
+            txn.commit();
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            if(txn!=null)
+            {
+                txn.rollback();
+            }
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
+        
+    }
+
+    @Override
+    public LeaveTxnDTO getTxn(int txnId) {
+        List results=null;
+        Session session=null;
+        LeaveTxnDTO txn = null;
+        try
+        {
+            session = DaoDelegate.getInstance().create();
+            Query qry =  session.createQuery("FROM com.sapuraglobal.hrms.dto.LeaveTxnDTO txn WHERE txn.id =:txnId");
+            qry.setParameter("txnId", txnId);
+            results = qry.list();
+            txn = (LeaveTxnDTO)results.get(0);
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
+        
+        return txn;
+
+    }
+
         
     
 }

@@ -86,23 +86,6 @@
                             value='<c:out value="${requestScope.roleData.description}"/>'/>
                      </div>
             </div>
-            <div class="form-group">
-                     <label class=" control-label col-sm-2">System Access</label>
-                     <div class="col-sm-3">
-                         <c:if test="${requestScope.sys eq 'N'}">
-                            <select class="form-control" id="system" name="system">
-                               <option value="0">InActive</option>
-                               <option value="1">Active</option>
-                            </select>                             
-                         </c:if>
-                         <c:if test="${requestScope.sys ne 'N'}">
-                            <select class="form-control" id="system" name="system">
-                               <option value="1">Active</option>
-                               <option value="0">InActive</option>
-                            </select>
-                         </c:if>
-                     </div>
-            </div>
             <c:if test="${param.action ne 'U'}">         
                 <c:forEach var="entry" items="${sessionScope.moduleList}">
                 <div class="form-group">
@@ -116,8 +99,8 @@
                          </div>
                     </c:if>
                     <c:if test="${entry.name != 'Email Notification'}">
-
-                    <label class=" control-label col-sm-2"><c:out value="${entry.name}"/></label>
+                        <c:if test="${entry.name != 'Leave'}">
+                         <label class=" control-label col-sm-2"><c:out value="${entry.name}"/></label>
                          <div class="col-sm-3">
                                 <select class="form-control" name="${entry.name}">
                                    <option value="0">No Access</option>
@@ -125,6 +108,18 @@
                                    <option value="2">View & Edit</option>
                                 </select>
                          </div>
+                        </c:if>
+                        <c:if test="${entry.name == 'Leave'}">
+                         <label class=" control-label col-sm-2"><c:out value="${entry.name}"/></label>
+                         <div class="col-sm-3">
+                                <select class="form-control" name="${entry.name}">
+                                   <option value="0">No Access</option>
+                                   <option value="1">Apply or Approved</option>
+                                   <option value="2">View & Edit</option>
+                                </select>
+                         </div>
+                        </c:if>
+                         
                     </c:if>               
                 </div>                     
                 </c:forEach>
@@ -142,15 +137,29 @@
                      </div>
                 </c:if>
                 <c:if test="${entry.module.name != 'Email Notification'}">
+                     <c:if test="${entry.module.name != 'Leave'}">
                      
-                <label class=" control-label col-sm-2"><c:out value="${entry.module.name}"/></label>
-                     <div class="col-sm-3">
+                       <label class=" control-label col-sm-2"><c:out value="${entry.module.name}"/></label>
+                        <div class="col-sm-3">
                             <select class="form-control" name="${entry.module.name}">
                                <option value="0" ${entry.access == 0 ? 'selected' : ''}>No Access</option>
                                <option value="1" ${entry.access == 1 ? 'selected' : ''}>View</option>
                                <option value="2" ${entry.access == 2 ? 'selected' : ''}>View & Edit</option>
                             </select>
-                     </div>
+                        </div>
+                     </c:if>
+                     <c:if test="${entry.module.name == 'Leave'}">
+                     
+                       <label class=" control-label col-sm-2"><c:out value="${entry.module.name}"/></label>
+                        <div class="col-sm-3">
+                            <select class="form-control" name="${entry.module.name}">
+                               <option value="0" ${entry.access == 0 ? 'selected' : ''}>No Access</option>
+                               <option value="1" ${entry.access == 1 ? 'selected' : ''}>Apply or Approve</option>
+                               <option value="2" ${entry.access == 2 ? 'selected' : ''}>View & Edit</option>
+                            </select>
+                        </div>
+                     </c:if>
+                       
                 </c:if>               
             </div>                     
             </c:forEach>
