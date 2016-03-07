@@ -6,7 +6,6 @@
 package com.sapuraglobal.hrms.servlet;
 
 import com.sapuraglobal.hrms.dto.UserDTO;
-import com.sapuraglobal.hrms.ejb.DeptBeanLocal;
 import com.sapuraglobal.hrms.ejb.UserBeanLocal;
 import com.sapuraglobal.hrms.servlet.helper.BeanHelper;
 import java.io.IOException;
@@ -39,9 +38,6 @@ public class EmployeeList extends HttpServlet {
 
     @EJB
     private UserBeanLocal userBean;
-    
-    @EJB
-    private DeptBeanLocal deptBean;
 
     
     /**
