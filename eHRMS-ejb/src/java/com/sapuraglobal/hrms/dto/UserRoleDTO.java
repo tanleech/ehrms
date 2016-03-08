@@ -5,6 +5,7 @@
  */
 package com.sapuraglobal.hrms.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,7 +24,7 @@ import javax.persistence.Temporal;
  */
 @Entity  
 @Table(name= "UserRole")  
-public class UserRoleDTO {
+public class UserRoleDTO implements Serializable{
     
     @Id @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "id")

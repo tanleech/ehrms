@@ -18,7 +18,7 @@ import javax.ejb.Local;
 @Local
 public interface UserBeanLocal {
 
-    UserDTO authenticate(String parameter,String password);
+    UserDTO authenticate(String parameter,String password, boolean useLdap);
 
     void createUser(UserDTO parameter);
 
@@ -29,5 +29,9 @@ public interface UserBeanLocal {
     void assignRole(UserDTO user, RoleDTO role);
 
     void updateUser(UserDTO userDTO);
+
+    void updateRole(int userId, int roleId);
+
+    List<UserDTO> getReporteeList(int userId);
     
 }

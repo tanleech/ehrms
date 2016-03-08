@@ -71,8 +71,10 @@
                           <th>Type</th> 
                           <th>Submitted</th> 
                           <th>Manager</th> 
-                          <th>Status</th> 
-                          <th>Action</th> 
+                          <th>Status</th>
+                          <c:if test="${requestScope.isManager eq 'Y'}">
+                             <th>Action</th> 
+                          </c:if>
                       </tr>
                     </thead>
                     <tbody>
@@ -105,12 +107,13 @@
                             <td width="10%">
                                 ${entry.status.description}
                             </td>
+                           <c:if test="${requestScope.isManager eq 'Y'}">
                             <td width="20%">
                                 <a href="leaveTxnApprove?action=APPRV&txn=${entry.id}">Approve</a>
                                 |
                                 <a href="leaveTxnApprove?action=REJ&txn=${entry.id}&typeId=${entry.leaveType.id}&userId=${entry.user.id}&days=${entry.days}">Reject</a>
                             </td>
-                            
+                           </c:if> 
                           </tr> 
                         </c:forEach>
                     </tbody>

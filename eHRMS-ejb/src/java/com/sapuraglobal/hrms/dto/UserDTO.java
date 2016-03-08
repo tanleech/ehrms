@@ -5,6 +5,7 @@
  */
 package com.sapuraglobal.hrms.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -27,7 +28,7 @@ import javax.persistence.Transient;
  */
 @Entity  
 @Table(name= "User")  
-public class UserDTO {
+public class UserDTO implements Serializable{
     
     @Id @GeneratedValue
     @Column(name = "id")
@@ -41,6 +42,10 @@ public class UserDTO {
     
     @Column(name="office")
     private String office;
+    
+    @Column(name="password")
+    private String password;
+    
 
     public String getOffice() {
         return office;
@@ -107,7 +112,7 @@ public class UserDTO {
     private String login;
     
     @Transient
-    private boolean isManager;
+    private boolean isManager=false;
     
     @Transient
     private String approverName;
@@ -118,6 +123,14 @@ public class UserDTO {
 
     public void setApproverName(String approverName) {
         this.approverName = approverName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
     
     

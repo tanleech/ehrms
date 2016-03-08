@@ -5,9 +5,13 @@
  */
 package com.sapuraglobal.hrms.servlet;
 
+import com.sapuraglobal.hrms.dto.AccessDTO;
 import com.sapuraglobal.hrms.dto.UserDTO;
+import com.sapuraglobal.hrms.ejb.AccessBeanLocal;
 import com.sapuraglobal.hrms.ejb.UserBeanLocal;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,6 +31,9 @@ public class Login extends HttpServlet {
 
     @EJB
     private UserBeanLocal userBean;
+
+    @EJB
+    private AccessBeanLocal accessBean;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -52,17 +59,40 @@ public class Login extends HttpServlet {
         else         
         {
             //authenticate
-            UserDTO auth = userBean.authenticate(userId, password);
+            UserDTO auth = userBean.authenticate(userId, password, false);
+            
             if(auth!=null)
             {
                 HttpSession session = request.getSession();
+                
+                
+                //auth.getRole().getRole().setAccessList(accessBean.getAccessRights(auth.getRole().getRole().getId()));
+                List<AccessDTO> list = accessBean.getAccessRights(auth.getRole().getRole().getId());
                 session.setAttribute("User", auth);
+                session.setAttribute("access", convertToACRMap(list));
+                //determine manager
+                List<UserDTO> resultList = userBean.getReporteeList(auth.getId());
+                if(resultList!=null&&resultList.size()>0)
+                {
+                    auth.setIsManager(true);
+                }
                 response.sendRedirect("employee");
             }
             
         }
         
         
+    }
+    
+    private HashMap convertToACRMap(List<AccessDTO>accessList)
+    {
+        HashMap map = new HashMap();
+        for(int i=0;i<accessList.size();i++)
+        {
+            AccessDTO access = accessList.get(i);
+            map.put(access.getModule().getName(), access);
+        }
+        return map;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

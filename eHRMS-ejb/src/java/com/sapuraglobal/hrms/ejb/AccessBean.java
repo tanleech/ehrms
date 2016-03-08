@@ -149,6 +149,30 @@ public class AccessBean implements AccessBeanLocal {
         }
         
     }
+
+    @Override
+    public List<AccessDTO> getAccessRights(int roleId) {
+        List results=null;
+        Session session=null;
+        try
+        {
+            session = DaoDelegate.getInstance().create();
+            //results =  session.createQuery("FROM com.sapuraglobal.hrms.dto.RoleDTO role").list();
+            String qry = "SELECT access FROM com.sapuraglobal.hrms.dto.AccessDTO access WHERE access.role.id = :roleId";
+            Query query = session.createQuery(qry);
+            query.setParameter("roleId", roleId);
+            results = query.list();
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
+        return results;
+    }
     
     
     

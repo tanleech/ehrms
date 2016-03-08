@@ -29,13 +29,14 @@ import org.hibernate.Transaction;
 public class UserBean implements UserBeanLocal {
     
     @Override
-    public UserDTO authenticate(String loginId, String password) {
+    public UserDTO authenticate(String loginId, String password, boolean useLDAP) {
         
         Context initCtx;
         String url,baseDn;
-        boolean isAuth=false;
         UserDTO userData = null;
         try {
+           if(useLDAP)
+           {
             initCtx = new InitialContext();
             Context envCtx = (Context) initCtx.lookup("java:comp/env");
             // Look up our data source
@@ -55,24 +56,28 @@ public class UserBean implements UserBeanLocal {
 	    // Create initial context
 	    DirContext ctx = new InitialDirContext(env);
 	    ctx.close();
-            isAuth=true;
             //authenticated get UserDTO
             userData = getUser(loginId);
             System.out.println("user id: "+userData.getId());
             
+           }
+           else
+           {
+               userData = getUser(loginId);
+               System.out.println("user id: "+userData.getId());
+               if(!password.equals(userData.getPassword()))
+               {
+                   userData=null;
+               }
+           }
+            
             
 	} catch (NamingException e) {
 	    e.printStackTrace();
-            
 	}
         catch (Exception ex)
         {
             ex.printStackTrace();
-        }
-        finally
-        {
-            userData = getUser(loginId);
-            System.out.println("user id: "+userData.getId());
         }
             
         
@@ -83,7 +88,7 @@ public class UserBean implements UserBeanLocal {
     public UserDTO getUser(String loginId)
     {
         UserDTO data=null;
-        String hql = "FROM com.sapuraglobal.hrms.dto.UserDTO U WHERE U.login = :userLogin";
+        String hql = "FROM com.sapuraglobal.hrms.dto.UserDTO U left join fetch U.role WHERE U.login = :userLogin";
         Session session=null;
         try{
             session = DaoDelegate.getInstance().create();
@@ -236,6 +241,62 @@ public class UserBean implements UserBeanLocal {
         {
             DaoDelegate.getInstance().close(session);
         }
+    }
+
+    @Override
+    public void updateRole(int userId, int roleId) {
+        
+        java.util.Date current = new java.util.Date();
+        Session session = null;
+        Transaction txn = null;
+        try
+        {
+            session = DaoDelegate.getInstance().create();
+            txn = session.beginTransaction();
+            System.out.println("roleId: "+roleId);
+            System.out.println("userId: "+userId);
+            
+            Query qry = session.createQuery("UPDATE com.sapuraglobal.hrms.dto.UserRoleDTO userRole SET userRole.role.id=:roleId WHERE userRole.user.id=:userId");
+            qry.setParameter("roleId", roleId);
+            qry.setParameter("userId", userId);
+            qry.executeUpdate();
+            txn.commit(); 
+        }catch (Exception ex)
+        {
+            txn.rollback();
+            ex.printStackTrace();
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
+
+    }
+
+    @Override
+    public List<UserDTO> getReporteeList(int userId) {
+        
+        Session session = null;
+        Transaction txn = null;
+        List<UserDTO> results = null;
+        try
+        {
+            session = DaoDelegate.getInstance().create();
+            txn = session.beginTransaction();
+            Query qry = session.createQuery("FROM com.sapuraglobal.hrms.dto.UserDTO user WHERE user.approver=:userId");
+            qry.setParameter("userId", userId);
+            results = qry.list();
+        }catch (Exception ex)
+        {
+            txn.rollback();
+            ex.printStackTrace();
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
+
+        return results;
     }
     
     

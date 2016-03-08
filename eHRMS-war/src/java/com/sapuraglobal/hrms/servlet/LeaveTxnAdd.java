@@ -5,13 +5,11 @@
  */
 package com.sapuraglobal.hrms.servlet;
 
-import com.sapuraglobal.hrms.dto.LeaveEntDTO;
 import com.sapuraglobal.hrms.dto.LeaveTxnDTO;
 import com.sapuraglobal.hrms.dto.LeaveTypeDTO;
 import com.sapuraglobal.hrms.dto.StatusDTO;
 import com.sapuraglobal.hrms.dto.UserDTO;
 import com.sapuraglobal.hrms.ejb.LeaveBeanLocal;
-import com.sapuraglobal.hrms.ejb.UserBeanLocal;
 import com.sapuraglobal.hrms.servlet.helper.Utility;
 import java.io.IOException;
 import java.text.ParseException;

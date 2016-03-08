@@ -5,6 +5,7 @@
  */
 package com.sapuraglobal.hrms.servlet;
 
+import com.sapuraglobal.hrms.dto.AccessDTO;
 import com.sapuraglobal.hrms.dto.LeaveTxnDTO;
 import com.sapuraglobal.hrms.dto.LeaveTypeDTO;
 import com.sapuraglobal.hrms.dto.UserDTO;
@@ -78,8 +79,32 @@ public class LeaveTxn extends HttpServlet {
             }
             else if(action.equals("list"))
             {
-                List<LeaveTxnDTO> txnList = leaveBean.getAllTxn();
+                List<LeaveTxnDTO> txnList = null;
                 HashMap map = new BeanHelper().getUserTab(userBean);
+                HashMap accessTab = (HashMap)request.getSession().getAttribute("access");
+                UserDTO userDTO = (UserDTO)request.getSession().getAttribute("User");
+                AccessDTO access = (AccessDTO)accessTab.get("Leave");
+                int acr = access.getAccess();
+                System.out.println("acr: "+acr);
+                if(acr==1)
+                {
+                    if(!userDTO.isIsManager())
+                    {
+                      txnList = leaveBean.getLeaveRecords(userDTO.getId());
+                    }
+                    else
+                    {
+                      txnList = leaveBean.getTxnForApprover(userDTO.getId());
+                      request.setAttribute("isManager", "Y");
+                        
+                    }
+                }
+                else if (acr==2)
+                {
+                   txnList = leaveBean.getAllTxn();
+                }   
+
+
                 for(int i=0;i<txnList.size();i++)
                 {
                     LeaveTxnDTO txn = txnList.get(i);

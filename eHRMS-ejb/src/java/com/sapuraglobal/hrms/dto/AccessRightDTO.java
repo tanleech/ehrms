@@ -5,6 +5,7 @@
  */
 package com.sapuraglobal.hrms.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,7 +20,7 @@ import javax.persistence.Temporal;
  */
 @Entity  
 @Table(name= "Accessrights")
-public class AccessRightDTO {
+public class AccessRightDTO implements Serializable{
     
     @Id @GeneratedValue
     @Column(name = "id")

@@ -155,6 +155,7 @@ public class EmployeeEdit extends HttpServlet {
                  userDto.setLeaveEnt(null);
                  //update user
                  userBean.updateUser(userDto);
+                 userBean.updateRole(id, userRoleDto.getRole().getId());
                  //update dept
                  //deptBean.addEmployee(userDto, deptDto.getDept());
                  //update role
@@ -231,6 +232,7 @@ public class EmployeeEdit extends HttpServlet {
         userDept.setDept(deptDto);
         
         RoleDTO roleDto = new RoleDTO();
+        System.out.println("selected Role: "+role);
         roleDto.setId(Integer.parseInt(role));
         UserRoleDTO userRole = new UserRoleDTO();
         userRole.setRole(roleDto);

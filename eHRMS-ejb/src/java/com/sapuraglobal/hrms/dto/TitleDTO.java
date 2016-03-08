@@ -5,6 +5,7 @@
  */
 package com.sapuraglobal.hrms.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -25,7 +26,7 @@ import javax.persistence.Transient;
 
 @Entity  
 @Table(name= "Title")  
-public class TitleDTO {
+public class TitleDTO implements Serializable{
     
     @Id @GeneratedValue
     @Column(name = "id")
