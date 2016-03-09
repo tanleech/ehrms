@@ -49,10 +49,18 @@ public class AddDept extends HttpServlet {
         {
             DeptDTO deptDTO = new DeptDTO();
             deptDTO.setDescription(name);
-            deptBean.addDept(deptDTO);
-            //request.getSession().setAttribute("dept", name);
-            //page = "/deptEdit";
-            page = "/deptList";
+            if(deptBean.getDepartment(name)==null)
+            {
+              deptBean.addDept(deptDTO);
+              //request.getSession().setAttribute("dept", name);
+              //page = "/deptEdit";
+              page = "/deptList";
+            }
+            else
+            {
+                //duplicate name
+                request.setAttribute("error", "Duplicate department name.");
+            }
         }
         RequestDispatcher view = getServletContext().getRequestDispatcher(page); 
         view.forward(request,response);           

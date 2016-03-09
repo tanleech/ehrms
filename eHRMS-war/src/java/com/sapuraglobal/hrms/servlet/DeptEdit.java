@@ -110,9 +110,21 @@ public class DeptEdit extends HttpServlet {
                     //String deptName = request.getParameter("name");
                     DeptDTO deptDto = deptBean.getDepartment(dept);
 
-                    deptBean.addEmployee(empDto, deptDto);
-
-                    page = "/deptEdit?action=U&dept="+dept;
+                    if(deptBean.getUserDept(empDto.getId(), deptDto.getId())!=null)
+                    {
+                        request.setAttribute("error", "Employee already assigned.");
+                        List<UserDTO>userList = new BeanHelper().getAllUsers(userBean);
+                        request.setAttribute("usrList", userList);
+                        request.setAttribute("dept",dept);
+                        
+                        page="/deptAddEmp.jsp";
+                    }
+                    else
+                    {
+                      
+                      deptBean.addEmployee(empDto, deptDto);
+                      page = "/deptEdit?action=U&dept="+dept;
+                    }
                 }
                 else if (action.equals("U"))
                 {

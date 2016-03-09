@@ -21,5 +21,7 @@ public interface TitleBeanLocal {
     void addTitle(TitleDTO title);
 
     TitleDTO getTitle(int id);
+
+    TitleDTO getTitleByName(String descr);
     
 }

@@ -43,15 +43,22 @@ public class AddTitle extends HttpServlet {
         
         response.setContentType("text/html;charset=UTF-8");
         String name = request.getParameter("name");
-        String action = request.getParameter("action");
-        //System.out.println("name: "+name);
         String page="/addTitle.jsp";
         if(name!=null&&!name.isEmpty())
         {
             TitleDTO titleDTO = new TitleDTO();
             titleDTO.setDescription(name);
-            titleBean.addTitle(titleDTO);
-            page = "/titleList";
+            if(titleBean.getTitleByName(name)!=null)
+            {
+                request.setAttribute("error", "Duplicate Title name is not allowed");
+                System.out.println("duplicate title name redirect to page: "+page);
+                //page="/addTitle.jsp";
+            }
+            else
+            {
+                titleBean.addTitle(titleDTO);
+                page = "/titleList";
+            }
         }
         RequestDispatcher view = getServletContext().getRequestDispatcher(page); 
         view.forward(request,response);           

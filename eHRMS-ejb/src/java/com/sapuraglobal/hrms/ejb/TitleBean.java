@@ -98,6 +98,35 @@ public class TitleBean implements TitleBeanLocal {
         
         return (TitleDTO)results.get(0);
     }
+
+    @Override
+    public TitleDTO getTitleByName(String descr) {
+        
+        List results=null;
+        Session session=null;
+        TitleDTO data=null;
+        try
+        {
+            session = DaoDelegate.getInstance().create();
+            Query qry = session.createQuery("SELECT title FROM com.sapuraglobal.hrms.dto.TitleDTO title WHERE title.description = :descr");
+            qry.setParameter("descr", descr);
+            results = qry.list();
+            if(results!=null&&results.size()>0)
+            {
+               data = (TitleDTO)results.get(0);
+            }
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
+        
+        return data ;
+    }
     
     
 }

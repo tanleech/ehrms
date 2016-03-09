@@ -19,8 +19,18 @@
              $('#saveBtn').click(function ()
              {
                  //alert('submit');
-                 $('#myForm').submit();
-                 window.location.href="titleList";
+                 
+                 if($('#name').val()=== '')
+                 {
+                     alert('Title name cannot be empty.');
+                     //$('#name').val('<div class="alert alert-danger">Department name cannot be empty</div>');
+                     e.preventDefault();
+                 }
+                 else
+                 {
+                  $('#myForm').submit();
+                 }
+                 //window.location.href="titleList";
              }      
              );
          }
@@ -46,10 +56,15 @@
         <!-- Main content -->
                  <form action="addTitle" method="post" id="myForm" class="form-horizontal">
                   <span class="content form-control">
+                        <c:if test="${not empty requestScope.error}">
+                          <div class="alert alert-danger">
+                          ${requestScope.error}
+                          </div>
+                        </c:if>
                     <div class="form-group">
                      <label class=" control-label col-sm-1">Name</label>
                      <div class="col-sm-3">
-                        <input type="text" class="form-control" name="name"/>   
+                        <input type="text" class="form-control" name="name" id="name"/>   
                      </div>
                     </div>
                   </span> 

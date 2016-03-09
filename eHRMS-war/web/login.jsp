@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8" language="java"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
 <html>
@@ -18,6 +19,11 @@
       </div><!-- /.login-logo -->
       <div class="login-box-body">
         <p class="login-box-msg">Sign in to start your session</p>
+        <c:if test="${not empty requestScope.error}">
+            <div class="alert alert-danger">
+                   ${requestScope.error}
+            </div>
+        </c:if>     
         <form action="login" method="post">
 
           <div class="form-group has-feedback">
@@ -29,18 +35,9 @@
           </div>
           <div class="row">
               &nbsp;
-            <!--  
-            <div class="col-xs-5">
-              <div class="checkbox icheck">
-                <label>
-                    <input type="checkbox"> Remember Me</input>
-                </label>
-              </div>
-            </div>
-            -->
             <!-- /.col -->
             <div class="col-xs-4">
-              <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+              <button type="submit" class="btn btn-primary btn-block btn-flat" id="signIn">Sign In</button>
             </div><!-- /.col -->
           </div>
         </form>
@@ -57,7 +54,24 @@
     <!-- iCheck -->
     <script src="plugins/iCheck/icheck.min.js"></script>
     <script>
-      $(function () {
+       $(document).ready(function () {
+        
+        
+        $('#signIn').click(function(e)
+        {
+          if($('#login').val() === ''||$('#passwd').val() === '')
+          {
+              alert('login and/or password cannot be empty.');
+              e.preventDefault();
+          }
+          else
+          {
+              $('#signIn').submit();
+          }
+        }
+        );
+        
+        
         $('#login').attr("placeholder", "Enter Login name");
         $("#passwd").attr("placeholder", "Enter password")
         $('input').iCheck({

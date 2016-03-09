@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -49,15 +50,17 @@ public class Login extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String userId = request.getParameter("loginId");
         String password = request.getParameter("password");
+        String page="/login.jsp";
         if(userId==null||userId.isEmpty()
            ||password==null||password.isEmpty())
         {
             //redirect to login.jsp
             System.out.println("redirect to login");
-            response.sendRedirect("login.jsp");
+            //response.sendRedirect("login.jsp");
         }
         else         
         {
+
             //authenticate
             UserDTO auth = userBean.authenticate(userId, password, false);
             
@@ -76,10 +79,16 @@ public class Login extends HttpServlet {
                 {
                     auth.setIsManager(true);
                 }
-                response.sendRedirect("main.jsp");
+                page = "/main.jsp";
             }
-            
+            else
+            {
+                request.setAttribute("error","login credentials not match.");
+
+            }
         }
+            RequestDispatcher view = getServletContext().getRequestDispatcher(page); 
+            view.forward(request,response);    
         
         
     }

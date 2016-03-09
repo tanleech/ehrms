@@ -72,6 +72,7 @@
         <br/>
         <!-- Main content -->
                <div class="box-body">
+ 
                   <form action="deptEdit" method="post" id="myForm" class="form-horizontal">
                     <input type="hidden" value="" id="action" name="action"/>
                     <span class="content form-control" id="panel" style="height: 100%">

@@ -65,6 +65,11 @@
         <br/>
         <!-- Main content -->
                <div class="box-body">
+                  <c:if test="${not empty requestScope.error}">
+                      <div class="alert alert-danger">
+                          ${requestScope.error}
+                      </div>
+                  </c:if>  
                   <form action="deptEdit" method="post" id="myForm" class="form-horizontal">
                     <input type="hidden" value="" id="action" name="action"/>
                     <input type="hidden" value="${requestScope.dept}" id="dept" name="dept"/>
