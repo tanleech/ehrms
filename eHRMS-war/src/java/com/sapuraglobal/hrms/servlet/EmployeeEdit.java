@@ -95,7 +95,7 @@ public class EmployeeEdit extends HttpServlet {
                  userDto.setRole(null);
                  userDto.setLeaveEnt(null);
                  userBean.createUser(userDto);
-                 deptBean.addEmployee(userDto, deptDto.getDept());
+                 deptBean.assignEmployee(userDto, deptDto.getDept());
                  userBean.assignRole(userDto,userRoleDto.getRole());
                  entDto.setUser(userDto);
                  leaveBean.addLeaveEnt(entDto);
@@ -157,7 +157,7 @@ public class EmployeeEdit extends HttpServlet {
                  userBean.updateUser(userDto);
                  userBean.updateRole(id, userRoleDto.getRole().getId());
                  //update dept
-                 //deptBean.addEmployee(userDto, deptDto.getDept());
+                 deptBean.updateEmployee(id, deptDto.getDept().getId());
                  //update role
                  //userBean.assignRole(userDto,userRoleDto.getRole());
                  //update entitlement

@@ -91,7 +91,7 @@ public class DeptEdit extends HttpServlet {
                     deptBean.unassignManager(deptDto.getId());
                     int result = deptBean.assignManager(empDto.getId(),deptDto.getId());
                     if(result==0)
-                       deptBean.addEmployee(empDto, deptDto);
+                       deptBean.assignEmployee(empDto, deptDto);
                     page="";
                     /*
                      response.setContentType("text/html");
@@ -116,13 +116,13 @@ public class DeptEdit extends HttpServlet {
                         List<UserDTO>userList = new BeanHelper().getAllUsers(userBean);
                         request.setAttribute("usrList", userList);
                         request.setAttribute("dept",dept);
-                        
                         page="/deptAddEmp.jsp";
                     }
                     else
                     {
-                      
-                      deptBean.addEmployee(empDto, deptDto);
+                      deptBean.updateEmployee(empDto.getId(), deptDto.getId());
+                      System.out.println("id: "+empDto.getId());
+                      //deptBean.assignEmployee(empDto, deptDto);
                       page = "/deptEdit?action=U&dept="+dept;
                     }
                 }

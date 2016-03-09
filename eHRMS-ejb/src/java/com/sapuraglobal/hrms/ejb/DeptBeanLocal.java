@@ -22,16 +22,18 @@ public interface DeptBeanLocal {
 
     void addDept(DeptDTO deptDTO);
 
-    void addEmployee(UserDTO userDTO, DeptDTO deptDTO); 
-
     DeptDTO getDepartment(String deptDescr);
 
     UserDeptDTO getUserDept(int userId, int deptId);
 
     void unassignManager(int deptId);
 
+    void assignEmployee(UserDTO userDTO, DeptDTO deptDTO); 
+
     void unassignEmployee(int userId, int deptId);
 
     int assignManager(int userId, int deptId);
+
+    int updateEmployee(int userId, int deptId);
     
 }

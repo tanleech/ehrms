@@ -229,6 +229,7 @@ public class UserBean implements UserBeanLocal {
             user.setProbationDue(userDTO.getProbationDue());
             user.setTitle(userDTO.getTitle());
             user.setModified(current);
+            user.setApprover(userDTO.getApprover());
             session.saveOrUpdate(user);
             //deptBean.addEmployees(userList, dept);
             txn.commit(); 

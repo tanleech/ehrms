@@ -77,7 +77,7 @@ public class DeptBean implements DeptBeanLocal {
     
     
     @Override 
-    public void addEmployee(UserDTO userDTO, DeptDTO deptDTO) 
+    public void assignEmployee(UserDTO userDTO, DeptDTO deptDTO) 
     {
         java.util.Date current = new java.util.Date();
         Session session = null;
@@ -268,6 +268,42 @@ public class DeptBean implements DeptBeanLocal {
             //retrieve from UserDept
             String hql = "UPDATE com.sapuraglobal.hrms.dto.UserDeptDTO userDept SET userDept.manager='Y' WHERE userDept.dept.id=:deptId AND userDept.user.id = :userId ";
             Query qry = session.createQuery(hql);
+            qry.setParameter("deptId", deptId);
+            qry.setParameter("userId", userId);
+            result = qry.executeUpdate();
+            txn.commit();
+            
+        }catch (Exception ex)
+        {
+            if(txn!=null)
+            {
+                txn.rollback();
+            }
+            ex.printStackTrace();
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
+        return result;
+    }
+
+    @Override
+    public int updateEmployee(int userId, int deptId) {
+        Session session = null;
+        Transaction txn = null;        
+        int result=0;
+        try
+        {
+            session =  DaoDelegate.getInstance().create();
+            txn = session.beginTransaction();
+            //retrieve the full data from db.
+            //retrieve from UserDept
+            String hql = "UPDATE com.sapuraglobal.hrms.dto.UserDeptDTO userDept SET userDept.dept.id=:deptId WHERE userDept.user.id = :userId ";
+            Query qry = session.createQuery(hql);
+            System.out.println("deptId: "+deptId);
+            System.out.println("userId: "+userId);
+            
             qry.setParameter("deptId", deptId);
             qry.setParameter("userId", userId);
             result = qry.executeUpdate();
