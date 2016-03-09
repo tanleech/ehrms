@@ -16,17 +16,22 @@
       <!-- Left side column. contains the logo and sidebar -->
       <%@include file="sidemenu.jsp"%>
       <!-- Content Wrapper. Contains page content -->
-            <div class="content-wrapper">
+      <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1>
-            Dashboard
+            Corporate News
           </h1>
         </section>
 
         <!-- Main content -->
         <section class="content">
             <div id="inner">
+                Dear employees,
+                
+                Let me tell you this. No bonus for this year unless you prove your worth to me.
+                
+                From the boss.
             </div><!-- /.row -->
           <!-- Main row -->
         </section><!-- /.content -->

@@ -76,7 +76,7 @@ public class Login extends HttpServlet {
                 {
                     auth.setIsManager(true);
                 }
-                response.sendRedirect("employee");
+                response.sendRedirect("main.jsp");
             }
             
         }

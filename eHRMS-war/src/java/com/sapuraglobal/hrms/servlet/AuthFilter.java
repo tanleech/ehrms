@@ -230,21 +230,20 @@ public class AuthFilter implements Filter {
            if(action!=null)
            {
             System.out.println("actionStr: "+action);
-            if(action.contains("action=list"))
+            if(action.contains("action=list")||action.contains("action=Q"))
             {
                  if(access.getAccess()>=1)
                  {
                      hasAccess=true;
                  }
             }
-            else if(action.contains("action=Q"))
-            {
-                 if(access.getAccess()==2)
+           }
+           else
+           {
+                if(access.getAccess()>=1)
                  {
                      hasAccess=true;
                  }
-
-            }    
            }
         }
         else if(module.equals("leaveTxnAdd"))

@@ -5,29 +5,30 @@
  */
 package com.sapuraglobal.hrms.servlet;
 
-import com.sapuraglobal.hrms.dto.TitleDTO;
-import com.sapuraglobal.hrms.ejb.TitleBeanLocal;
+import com.sapuraglobal.hrms.dto.AccessDTO;
+import com.sapuraglobal.hrms.dto.UserDTO;
+import com.sapuraglobal.hrms.ejb.AccessBeanLocal;
+import com.sapuraglobal.hrms.ejb.UserBeanLocal;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 import javax.ejb.EJB;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author sapura-mac-pro-cto-C02PC1MWG3QT
  */
 @WebServlet(
-    urlPatterns = {"/addTitle"}
+    urlPatterns = {"/logout"}
 )
-public class AddTitle extends HttpServlet {
+public class Logout extends HttpServlet {
 
-    @EJB
-    private TitleBeanLocal titleBean;
-    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,22 +40,15 @@ public class AddTitle extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        
+            throws ServletException, IOException 
+    {
         response.setContentType("text/html;charset=UTF-8");
-        String name = request.getParameter("name");
-        String action = request.getParameter("action");
-        //System.out.println("name: "+name);
-        String page="/addTitle.jsp";
-        if(name!=null&&!name.isEmpty())
-        {
-            TitleDTO titleDTO = new TitleDTO();
-            titleDTO.setDescription(name);
-            titleBean.addTitle(titleDTO);
-            page = "/titleList";
-        }
-        RequestDispatcher view = getServletContext().getRequestDispatcher(page); 
-        view.forward(request,response);           
+        //invalidate the session
+        HttpSession session = request.getSession();
+        session.invalidate();
+        response.sendRedirect("login.jsp");
+        
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
