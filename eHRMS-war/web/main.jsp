@@ -28,9 +28,9 @@
         <section class="content">
             <div id="inner">
                 Dear employees,
-                
-                Let me tell you this. No bonus for this year unless you prove your worth to me.
-                
+                <br/>
+                Let me tell you this. No bonus for all employees this year unless you prove your worth to me.
+                <br/>
                 From the boss.
             </div><!-- /.row -->
           <!-- Main row -->
