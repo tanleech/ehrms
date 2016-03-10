@@ -55,14 +55,14 @@
                      
                         <span class="content form-control ">
                           <div class="form-group">
-                           <label class=" control-label col-sm-1">Name</label>
+                           <label class=" control-label col-sm-1">*Name</label>
                            <div class="col-sm-3">
-                              <input type="text" class="form-control" name="name"
+                              <input type="text" class="form-control" name="name" id="name"
                                      value="${requestScope.user.name}"/>   
                            </div>
-                           <label class=" control-label col-sm-2">Email</label>
+                           <label class=" control-label col-sm-2">*Email</label>
                            <div class="col-sm-3">
-                              <input type="text" class="form-control" name="email"
+                              <input type="text" class="form-control" name="email" id="email"
                                      value="${requestScope.user.email}"/>   
                            </div>
                           </div>

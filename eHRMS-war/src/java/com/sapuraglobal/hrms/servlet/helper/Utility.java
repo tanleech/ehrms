@@ -48,6 +48,24 @@ public class Utility {
        }
        
     }
+    public static Date getYearEndTime()
+    {
+        //SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+       try
+       {
+        Date current = new Date();
+        Calendar cal = Calendar.getInstance(); 
+        int year = cal.get(Calendar.YEAR);
+        String source = "12/31/"+String.valueOf(year);
+        System.out.println("source :"+source);
+        Date yearEndTime = format(source,"MM/dd/yyyy"); 
+        return yearEndTime;
+       }catch(ParseException pe)
+       {
+           return null;
+       }
+       
+    }
     
     public static int getWorkingDaysBetweenTwoDates(Date startDate, Date endDate) 
     {

@@ -6,6 +6,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8" language="java"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" 
+           uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.sapuraglobal.hrms.dto.TitleDTO" %>
 
@@ -15,12 +17,57 @@
      <%@include file="head.jsp"%>
        <script>
          $(document).ready(function () {
+             /*
+             $("#dateJoin").on("change",function(){
+                 alert('join date');
+             });
+             */
              $('#dateJoin').datepicker(); 
              $('#probDue').datepicker(); 
              $('#saveBtn').click(function ()
              {
-                $('#action').val('A'); 
-                $('#myForm').submit();   
+                var errMsg = '';
+                if($('#name').val()==='')
+                {
+                    //alert('Name cannot be empty.');
+                    errMsg=errMsg+'Name cannot be empty.\n';
+                }
+                if($('#email').val()==='')
+                {
+                    //alert('email cannot be empty.');
+                    errMsg=errMsg+'Email cannot be empty.\n';
+                }
+                if($('#login').val()==='')
+                {
+                    errMsg=errMsg+'Login cannot be empty.\n';
+                }
+                if($('#dateJoin').val()==='')
+                {
+                    errMsg=errMsg+'Date Join cannot be empty.\n';
+                }
+                if($('#probDue').val()==='')
+                {
+                    errMsg=errMsg+'Probation Date cannot be empty.\n';
+                }
+                if($('#base').val()==='')
+                {
+                    errMsg=errMsg+'Base Leave cannot be empty.\n';
+                }
+                if($('#max').val()==='')
+                {
+                    errMsg=errMsg+'Max Leave cannot be empty.\n';
+                    
+                }
+                if (errMsg === '')
+                {
+                    //$('#action').val('A'); 
+                    $('#myForm').submit();   
+                }
+                else
+                {
+                    alert(errMsg);
+                }
+                
              }
              );
              
@@ -50,17 +97,25 @@
         <br/>
         <!-- Main content -->
                  <form action="employeeEdit" method="post" id="myForm" class="form-horizontal">
-                    <input type="hidden" value="" id="action" name="action"/>
+     <div class="box-body">
+         <c:if test="${param.action eq 'U'}">
+                    <input type="hidden" value="E" id="action" name="action"/>
+         </c:if>
+         <c:if test="${param.action ne 'U'}">
+                    <input type="hidden" value="A" id="action" name="action"/>
+         </c:if>
+                                         <input type="hidden" value="${requestScope.user.id}" name="userId"/>
+
                   <span class="content form-control ">
                     <div class="form-group">
-                     <label class=" control-label col-sm-1">Name</label>
+                     <label class=" control-label col-sm-1">*Name</label>
                      <div class="col-sm-3">
-                        <input type="text" class="form-control" name="name"
+                        <input type="text" class="form-control" name="name" id="name"
                                value="${requestScope.user.name}"/>   
                      </div>
-                     <label class=" control-label col-sm-2">Email</label>
+                     <label class=" control-label col-sm-2">*Email</label>
                      <div class="col-sm-3">
-                        <input type="text" class="form-control" name="email"
+                        <input type="text" class="form-control" name="email" id="email"
                                value="${requestScope.user.email}"/>   
                      </div>
                     </div>
@@ -83,7 +138,7 @@
                      </div>
                      <label class=" control-label col-sm-2">Mobile</label>
                      <div class="col-sm-3">
-                        <input type="text" class="form-control" name="mobile"
+                        <input type="text" class="form-control" name="mobile" id="mobile"
                                value="${requestScope.user.phone}"/>   
                      </div>
                     </div> 
@@ -118,7 +173,7 @@
                                 <c:when test="${!empty requestScope.mgrList}">
                                     <c:forEach var="entry" items="${requestScope.mgrList}">
                                         <option value="${entry.id}"  
-                                                 ${requestScope.user.id == entry.id ? 'selected' : ''}>
+                                                 ${requestScope.user.approver == entry.id ? 'selected' : ''}>
                                         ${entry.name}
                                         </option>
                                     </c:forEach>
@@ -142,48 +197,65 @@
                         </select>                         
                      </div>
                     </div>
-                    <div class="form-group">
-                     <label class=" control-label col-sm-1">Login</label>
-                     <div class="col-sm-3">
-                         <input type="text" class="form-control" name="login"
-                                value="${requestScope.user.login}"/>   
-                     </div>
-                    </div>
                   </span>
                   
                   <span class="content form-control">
                     <div class="form-group">
-                     <label class=" control-label col-sm-1">Date Joined</label>
+                     <label class=" control-label col-sm-1">*Login</label>
                      <div class="col-sm-3">
-                        <input type="text" class="form-control" id="dateJoin" name="dateJoin"
-                               value="${requestScope.user.dateJoin}"/>   
+                         <input type="text" class="form-control" name="login" id="login"
+                                value="${requestScope.user.login}"/>   
                      </div>
-                     <label class=" control-label col-sm-2">Probation End</label>
-                     <div class="col-sm-3">
-                        <input type="text" class="form-control" id="probDue" name="probDue"
-                               value="${requestScope.user.probationDue}"/>   
-                     </div>
-                    </div> 
-                    <div class="form-group">
-                     <label class=" control-label col-sm-1">Base Leave Entitlement</label>
-                     <div class="col-sm-3">
-                        <input type="text" class="form-control" id="base" name="base"
-                               value="${requestScope.ent.annual}"/>   
-                     </div>
-                     <label class=" control-label col-sm-2">Max Leave<br/>Entitlement</label>
-                     <div class="col-sm-3">
-                        <input type="text" class="form-control" name="max"
-                               value="${requestScope.ent.max}"/>   
-                     </div>
-                    </div> 
+                    </div>
                       
                     <div class="form-group">
-                     <label class=" control-label col-sm-1">Current Leave<br/>Balance</label>
+                     <label class=" control-label col-sm-1">*Date Joined</label>
                      <div class="col-sm-3">
-                        <input type="text" class="form-control" name="balance"
-                               value="${requestScope.ent.balance}"/>   
+                        <fmt:formatDate pattern="MM/dd/yyyy" value="${requestScope.user.dateJoin}" var="join"/>                               
+                         
+                        <input type="text" class="form-control" id="dateJoin" name="dateJoin"
+                               value="${join}"/>   
+                     </div>
+                     <label class=" control-label col-sm-2">*Probation End</label>
+                     <div class="col-sm-3">
+                        <fmt:formatDate pattern="MM/dd/yyyy" value="${requestScope.user.probationDue}" var="prob"/>                               
+                         
+                        <input type="text" class="form-control" id="probDue" name="probDue"
+                               value="${prob}"/>   
                      </div>
                     </div> 
+                    <div class="form-group">
+                     <label class=" control-label col-sm-1">*Leave Entitlement</label>
+                     <div class="col-sm-3">
+                        <input type="text" class="form-control" id="base" name="base"
+                               value="${requestScope.entAnnual.current}"/>   
+                     </div>
+                     <label class=" control-label col-sm-2">*Max Leave<br/>Entitlement</label>
+                     <div class="col-sm-3">
+                        <input type="text" class="form-control" name="max" id="max"
+                               value="${requestScope.entAnnual.max}"/>   
+                     </div>
+                    </div> 
+                    <c:if test="${param.action eq 'U'}">
+                                   
+                    <div class="form-group">
+                           <label class=" control-label col-sm-1">Leave Balance</label>
+                           <div class="col-sm-3">
+
+                              <input type="text" class="form-control" name="balance"
+                                     value="${requestScope.entAnnual.balance}"/>   
+                           </div>
+                    </div> 
+                    </c:if>       
+                    <!-- 
+                    <div class="form-group">
+                     <label class=" control-label col-sm-1">*Current Leave<br/>Balance</label>
+                     <div class="col-sm-3">
+                        <input type="text" class="form-control" name="balance" id="balance"
+                               value="${requestScope.ent.balance}"/>   
+                     </div>
+                    </div>
+                    -->
                       
                     <!--     
                     <div class="form-group">
@@ -198,8 +270,11 @@
                      </div>
                     </div> 
                     -->
+                   <a href ='leaveEnt?action=U&id=${requestScope.user.login}' ><button type="button" class="btn btn-primary pull-right" id="nextBtn">Edit Leave Entitlement</button></a>
+
                   </span> 
                  </form>
+                        </div>  
             <!-- Main content -->
       </div>
       <%@include file="footer.jsp" %>

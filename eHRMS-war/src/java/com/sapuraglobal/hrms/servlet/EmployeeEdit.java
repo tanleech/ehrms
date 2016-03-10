@@ -97,7 +97,9 @@ public class EmployeeEdit extends HttpServlet {
                  userBean.createUser(userDto);
                  deptBean.assignEmployee(userDto, deptDto.getDept());
                  userBean.assignRole(userDto,userRoleDto.getRole());
+                 double ent = computeLeave(userDto.getDateJoin(), entDto.getCurrent());
                  entDto.setUser(userDto);
+                 entDto.setBalance(ent);
                  leaveBean.addLeaveEnt(entDto);
                  page="/employee";
                  
@@ -110,7 +112,7 @@ public class EmployeeEdit extends HttpServlet {
                  List<LeaveEntDTO> entList = leaveBean.getLeaveEntList(login);
                  boolean found = false;
                  int i =0;
-                 //LeaveEntDTO annualEnt=null;
+                 LeaveEntDTO annualEnt=null;
                  while(!found && i < entList.size())
                  {
                      LeaveEntDTO ent = entList.get(i);
@@ -119,26 +121,14 @@ public class EmployeeEdit extends HttpServlet {
                          found=true;
                          //user.setLeaveEnt(entList);
                          //annualEnt = ent;
+                         //ent.setBalance(entitlement);
                          request.setAttribute("entAnnual", ent);
                      }
                      i++;
                  }
-                 
-                 //compute Annual Accured
-                 /*
-                 Date now = new Date();
-                 Date begin = Utility.getYearBeginTime();
-                 double days = Utility.computeDaysBetween(begin, now);
-                 System.out.println("days between: "+days);
-                 double accured = (days/365.0) * annualEnt.getCurrent();
-                 */
-                 //request.setAttribute("typeList", leaveBean.getAllLeaveSettings());
                  request.setAttribute("user", user);
-                 //request.setAttribute("entList", entList);
-                 //request.setAttribute("accured", accured);
-                 
-                 page="/employeeDetl.jsp";
-                 
+                 //page="/employeeDetl.jsp";
+                 page="/employeeEdit.jsp?action=U";
              }
           else if(action.equals("E"))
           {
@@ -173,7 +163,25 @@ public class EmployeeEdit extends HttpServlet {
           RequestDispatcher view = getServletContext().getRequestDispatcher(page); 
           view.forward(request,response);           
     }
-    
+    private double computeLeave(Date joinDate, double ent )
+    {
+                                 //compute
+        Date end = Utility.getYearEndTime();
+        //Date begin = user.getDateJoin();
+        double days = Utility.computeDaysBetween(joinDate, end);
+        System.out.println("days between: "+days);
+        double entitlement = 0;
+        if(days>=365)
+        {
+            entitlement = ent;
+        }
+        else
+        {
+            entitlement = (days/365.0) * ent;
+        }
+        return entitlement;
+    }
+
     private UserDTO prepare(HttpServletRequest request)
     {
         String name = request.getParameter("name");
@@ -241,7 +249,12 @@ public class EmployeeEdit extends HttpServlet {
         LeaveEntDTO ent = new LeaveEntDTO();
         ent.setCurrent(Double.parseDouble(base));
         ent.setMax(Double.parseDouble(max));
-        ent.setBalance(Double.parseDouble(balance));
+        double bal=0;
+        if(balance!=null&&!balance.isEmpty())
+        {
+            bal = Double.parseDouble(balance);
+        }
+        ent.setBalance(bal);
         
         LeaveTypeDTO leaveType = leaveBean.getLeaveType("Annual");
         ent.setLeaveType(leaveType);
