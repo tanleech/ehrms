@@ -323,6 +323,42 @@ public class DeptBean implements DeptBeanLocal {
         }
         return result;
     }
+
+    @Override
+    public int updateDept(String oldName, String newName) {
+         Session session = null;
+        Transaction txn = null;        
+        int result=0;
+        try
+        {
+            session =  DaoDelegate.getInstance().create();
+            txn = session.beginTransaction();
+            //retrieve the full data from db.
+            //retrieve from UserDept
+            String hql = "UPDATE com.sapuraglobal.hrms.dto.DeptDTO dept SET dept.description=:descr WHERE dept.description = :oldDescr ";
+            Query qry = session.createQuery(hql);
+            System.out.println("old descr: "+oldName);
+            System.out.println("new descr: "+newName);
+            
+            qry.setParameter("descr", newName);
+            qry.setParameter("oldDescr", oldName);
+            result = qry.executeUpdate();
+            txn.commit();
+            
+        }catch (Exception ex)
+        {
+            if(txn!=null)
+            {
+                txn.rollback();
+            }
+            ex.printStackTrace();
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
+        return result;
+    }
     
     
      

@@ -35,5 +35,7 @@ public interface DeptBeanLocal {
     int assignManager(int userId, int deptId);
 
     int updateEmployee(int userId, int deptId);
+
+    int updateDept(String oldName, String newName);
     
 }
