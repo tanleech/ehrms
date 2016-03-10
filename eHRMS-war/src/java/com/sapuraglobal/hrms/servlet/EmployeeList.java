@@ -135,13 +135,17 @@ public class EmployeeList extends HttpServlet {
              {
                  approver = (String) map.get(user.getApprover());
              }
-            
+            String deptDescr=""; 
+            if(user.getDept()!=null)
+            {
+                deptDescr = user.getDept().getDept().getDescription();
+            }
             array.add(
             Json.createObjectBuilder()
                     .add("id", user.getLogin())
                     .add("name",  user.getName())
                     .add("email", user.getEmail())
-                    .add("dept", user.getDept().getDept().getDescription())
+                    .add("dept", deptDescr)
                     //.add("dept", user.getDept().getDept().getDescription())
                     .add("title", user.getTitle().getDescription())
                     //.add("category","coming")

@@ -104,7 +104,13 @@
          <c:if test="${param.action ne 'U'}">
                     <input type="hidden" value="A" id="action" name="action"/>
          </c:if>
-                                         <input type="hidden" value="${requestScope.user.id}" name="userId"/>
+                  <input type="hidden" value="${requestScope.user.id}" name="userId"/>
+                  
+                       <c:if test="${not empty requestScope.error}">
+                          <div class="alert alert-danger">
+                          ${requestScope.error}
+                          </div>
+                        </c:if>   
 
                   <span class="content form-control ">
                     <div class="form-group">
@@ -270,11 +276,14 @@
                      </div>
                     </div> 
                     -->
+                  <c:if test="${param.action eq 'U'}">
+  
                    <a href ='leaveEnt?action=U&id=${requestScope.user.login}' ><button type="button" class="btn btn-primary pull-right" id="nextBtn">Edit Leave Entitlement</button></a>
-
+                  </c:if>
                   </span> 
-                 </form>
                         </div>  
+                   
+                 </form>
             <!-- Main content -->
       </div>
       <%@include file="footer.jsp" %>

@@ -21,8 +21,20 @@
              $('#probDue').datepicker();
              $('#saveBtn').click(function ()
              {
-                $('#action').val('A'); 
-                $('#myForm').submit();   
+                //$('#action').val('A'); 
+                alert('update');
+                var url = $('#myForm').attr('action'); 
+                $('#action').val('E');
+                var frmData = $('#myForm').serialize(); 
+                    //ajax post.
+                    $.post(url, frmData,
+                    function (data,status) {
+                        //$('#computedCF').val(data);
+                        alert(data);
+                        location.reload();
+                        
+                     }); 
+                //$('#myForm').submit();   
 
              }
              );
@@ -49,10 +61,11 @@
         </div>
         <br/>
         <!-- Main content -->
-        <div class="box-body">
 
         <!-- Main content -->
-        <form action="leaveEdit" method="post" id="myForm" class="form-horizontal">
+        <form action="leaveSettings" method="post" id="myForm" class="form-horizontal">
+                    <div class="box-body">
+
                 <span class="content form-control" id="panel" style="height: 100%">
                            <div class="form-group">
                            <label class=" control-label col-sm-1">Annual Accrued</label>
@@ -76,7 +89,7 @@
                            </div>
                            <label class=" control-label col-sm-2">Computed CF(25%)</label>
                            <div class="col-sm-3">
-                              <input type="text" class="form-control" name="computedCF"
+                              <input type="text" class="form-control" name="computedCF" id="computedCF"
                                      value="${requestScope.entAnnual.carriedOver}"readonly/>   
                            </div>
                            <div class="form-group">

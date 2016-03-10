@@ -87,21 +87,31 @@ public class EmployeeEdit extends HttpServlet {
              if(action.equals("A"))
              {
                  UserDTO userDto = prepare(request);
-                 UserDeptDTO deptDto = userDto.getDept();
-                 UserRoleDTO userRoleDto = userDto.getRole();
-                 //getting annual leave ent
-                 LeaveEntDTO entDto = userDto.getLeaveEnt().get(0);
-                 userDto.setDept(null);
-                 userDto.setRole(null);
-                 userDto.setLeaveEnt(null);
-                 userBean.createUser(userDto);
-                 deptBean.assignEmployee(userDto, deptDto.getDept());
-                 userBean.assignRole(userDto,userRoleDto.getRole());
-                 double ent = computeLeave(userDto.getDateJoin(), entDto.getCurrent());
-                 entDto.setUser(userDto);
-                 entDto.setBalance(ent);
-                 leaveBean.addLeaveEnt(entDto);
-                 page="/employee";
+                 if(userBean.getUser(userDto.getLogin())==null)
+                 {
+                    UserDeptDTO deptDto = userDto.getDept();
+                    UserRoleDTO userRoleDto = userDto.getRole();
+                    //getting annual leave ent
+                    LeaveEntDTO entDto = userDto.getLeaveEnt().get(0);
+                    userDto.setDept(null);
+                    userDto.setRole(null);
+                    userDto.setLeaveEnt(null);
+                    userBean.createUser(userDto);
+                    deptBean.assignEmployee(userDto, deptDto.getDept());
+                    userBean.assignRole(userDto,userRoleDto.getRole());
+                    double ent = computeLeave(userDto.getDateJoin(), entDto.getCurrent());
+                    entDto.setUser(userDto);
+                    entDto.setBalance(ent);
+                    leaveBean.addLeaveEnt(entDto);
+                    page="/employee";
+
+                 }
+                 else
+                 {
+                    request.setAttribute("error","Duplicate login is not allowed.");
+                    page= "/employeeEdit.jsp";
+                 }
+                //page="/employee";
                  
              }
              else if(action.equals("U"))
@@ -147,7 +157,11 @@ public class EmployeeEdit extends HttpServlet {
                  userBean.updateUser(userDto);
                  userBean.updateRole(id, userRoleDto.getRole().getId());
                  //update dept
-                 deptBean.updateEmployee(id, deptDto.getDept().getId());
+                 int res = deptBean.updateEmployee(id, deptDto.getDept().getId());
+                 if(res==0)
+                 {
+                     deptBean.assignEmployee(userDto, deptDto.getDept());
+                 }
                  //update role
                  //userBean.assignRole(userDto,userRoleDto.getRole());
                  //update entitlement
