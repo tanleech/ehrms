@@ -79,6 +79,11 @@
         <!-- Main content -->
         <form action="roleEdit" method="post" id="myForm" class="form-horizontal ">
             <input type="hidden" value="" id="action" name="action"/>
+                  <c:if test="${not empty requestScope.error}">
+                          <div class="alert alert-danger">
+                          ${requestScope.error}
+                          </div>
+                  </c:if>
             <div class="form-group">
                      <label class=" control-label col-sm-2">Name</label>
                      <div class="col-sm-3">

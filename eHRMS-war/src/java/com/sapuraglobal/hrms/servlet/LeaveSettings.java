@@ -64,9 +64,17 @@ public class LeaveSettings extends HttpServlet {
                    type.setAnnualIncre(Integer.parseInt(annualIncre));
                    type.setCarriedForward(Integer.parseInt(cf));
                     */
-                    LeaveTypeDTO type = prepare(request);
-                   leaveBean.saveLeaveSetting(type);
-                   //page="/leaveSettings";
+                   LeaveTypeDTO type = prepare(request);
+                   if(leaveBean.getLeaveType(type.getDescription())!=null)
+                   {
+                       request.setAttribute("error", "Duplicate name not allowed");
+                       page = "/leaveSettingsEdit.jsp";
+                   }
+                   else
+                   {
+                       leaveBean.saveLeaveSetting(type);
+                   }
+                    //page="/leaveSettings";
                 }
                 else if (action.equals("D"))
                 {
@@ -110,13 +118,27 @@ public class LeaveSettings extends HttpServlet {
         String mandatory = request.getParameter("mandatory");
         String annualIncre = request.getParameter("annualIncre");
         String cf = request.getParameter("cf");
+        double cfVal=0,entVal=0,increVal=0;
+        if(cf!=null&&!cf.isEmpty())
+        {
+            cfVal = Double.parseDouble(cf);
+        }
+        if(ent!=null&&ent.isEmpty())
+        {
+            entVal = Double.parseDouble(ent);
+        }
+        if(annualIncre!=null&&annualIncre.isEmpty())
+        {
+            increVal = Double.parseDouble(annualIncre);
+        }
+        
         
         LeaveTypeDTO type = new LeaveTypeDTO();
         type.setDescription(leaveType);
         type.setMandatory(mandatory);
         type.setDays(Double.parseDouble(ent));
         type.setAnnualIncre(Double.parseDouble(annualIncre));
-        type.setCarriedForward(Double.parseDouble(cf));
+        type.setCarriedForward(cfVal);
         
         return type;
     }

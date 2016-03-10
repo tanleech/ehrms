@@ -64,16 +64,27 @@ public class RoleEdit extends HttpServlet {
         {   
             RoleDTO role = prepare(request);
             //update ejb
-            accessBean.addRole(role);
-            //clear the modulelist in session.
+            if(accessBean.getRole(role.getDescription())!=null)
+            {
+              request.setAttribute("error", "Duplicate role name not allowed.");
+              page = "/roleEdit.jsp";
+            }
+            else
+            {
+              accessBean.addRole(role);
+              page = "/roleList"; 
+
+            }  
+              //clear the modulelist in session.
             //request.getSession().removeAttribute("moduleList");
-            page = "/roleList"; 
+            //page = "/roleList"; 
         }
         else if(action.equals("U"))
         {
             //get the role description
             String description = request.getParameter("role");
             RoleDTO roleDTO = accessBean.getRole(description);
+            
             request.setAttribute("roleData", roleDTO);
             String flag ="N";
             for(int i=0; i<roleDTO.getAccessList().size();i++)

@@ -45,21 +45,36 @@ public class AddDept extends HttpServlet {
         String action = request.getParameter("action");
         //System.out.println("name: "+name);
         String page="/addDept.jsp";
+        String oldName = request.getParameter("oldName");
         if(name!=null&&!name.isEmpty())
         {
             DeptDTO deptDTO = new DeptDTO();
             deptDTO.setDescription(name);
             if(deptBean.getDepartment(name)==null)
             {
-              deptBean.addDept(deptDTO);
+              if(action!=null&&action.equals("U"))
+              {
+                  
+                  deptBean.updateDept(oldName, name);
+              }
+              else
+              {
+                  deptBean.addDept(deptDTO);
+              }
               //request.getSession().setAttribute("dept", name);
               //page = "/deptEdit";
               page = "/deptList";
             }
             else
             {
+                
                 //duplicate name
                 request.setAttribute("error", "Duplicate department name.");
+                if(action!=null&&action.equals("U"))
+                {
+                  page="/editDeptName.jsp?dept="+oldName;
+                }
+                
             }
         }
         RequestDispatcher view = getServletContext().getRequestDispatcher(page); 

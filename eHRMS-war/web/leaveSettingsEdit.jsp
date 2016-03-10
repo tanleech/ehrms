@@ -62,7 +62,12 @@
         <!-- Main content -->
                  <form action="leaveSettings" method="post" id="myForm" class="form-horizontal">
                   <input type="hidden" value="${requestScope.leaveType.id}" id="id" name="id"/>
-                  <input type="hidden" value="${param.action}" id="action" name="action"/>                     
+                  <input type="hidden" value="${param.action}" id="action" name="action"/>
+                  <c:if test="${not empty requestScope.error}">
+                          <div class="alert alert-danger">
+                          ${requestScope.error}
+                          </div>
+                  </c:if>
                   <span class="content form-control">
                     <div class="form-group">
                      <label class=" control-label col-sm-1">Leave Type:</label>

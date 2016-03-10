@@ -27,6 +27,7 @@
                  }
                  else
                  {
+                     $('#action').val('U');
                      $('#myForm').submit();
                  }
                  //window.location.href="deptList";
@@ -47,13 +48,7 @@
           
         <!-- Content Header (Page header) -->
         <div class="content-header">
-            <h1>
-                <c:if test="${action ne 'U' }">
-                     Add Department
-                </c:if>
-                <c:if test="${action eq 'U' }">
-                     Update Department
-                </c:if>               
+            <h1>Edit Department
                 <button type="button" class="btn btn-primary pull-right" id="saveBtn">Save</button>
             </h1>    
         </div>
@@ -70,8 +65,9 @@
                         
                      <label class=" control-label col-sm-1">Name</label>
                      <div class="col-sm-3" id="nameContainer">
-                        <input type="hidden" value="${param.action}" />
-                        <input type="text" class="form-control" name="name" id="name"/>   
+                        <input type="hidden" value="" name="action" id="action"/> 
+                        <input type="hidden" value="${param.dept}" name="oldName" id="oldName"/> 
+                        <input type="text" class="form-control" name="name" id="name" value="${param.dept}"/>   
                      </div>
                     </div>
                   </span> 

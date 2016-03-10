@@ -72,9 +72,7 @@
                           <th>Submitted</th> 
                           <th>Manager</th> 
                           <th>Status</th>
-                          <c:if test="${requestScope.isManager eq 'Y'}">
-                             <th>Action</th> 
-                          </c:if>
+                          <th>Action</th> 
                       </tr>
                     </thead>
                     <tbody>
@@ -107,13 +105,20 @@
                             <td width="10%">
                                 ${entry.status.description}
                             </td>
-                           <c:if test="${requestScope.isManager eq 'Y'}">
+                           <c:if test="${(requestScope.isManager eq 'Y') && (entry.status.description ne 'approved'&&
+                                 entry.status.description ne 'rejected')}">
                             <td width="20%">
                                 <a href="leaveTxnApprove?action=APPRV&txn=${entry.id}">Approve</a>
                                 |
                                 <a href="leaveTxnApprove?action=REJ&txn=${entry.id}&typeId=${entry.leaveType.id}&userId=${entry.user.id}&days=${entry.days}">Reject</a>
                             </td>
                            </c:if> 
+                            <c:if test="${(requestScope.isManager eq 'Y') || (entry.status.description eq 'approved' ||
+                                 entry.status.description eq 'rejected')}">
+                            <td width="20%">
+                            </td>
+                           </c:if> 
+                           
                           </tr> 
                         </c:forEach>
                     </tbody>
