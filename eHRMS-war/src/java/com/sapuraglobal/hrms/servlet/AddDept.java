@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
     urlPatterns = {"/addDept"}
 )
 public class AddDept extends HttpServlet {
-    @EJB
+    @EJB(beanName="DeptBean")
     private DeptBeanLocal deptBean;
     
 

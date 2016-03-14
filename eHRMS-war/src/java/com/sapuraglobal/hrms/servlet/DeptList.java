@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 )
 public class DeptList extends HttpServlet {
 
-    @EJB
+    @EJB(beanName="DeptBean")
     private DeptBeanLocal deptBean;
 
     /**

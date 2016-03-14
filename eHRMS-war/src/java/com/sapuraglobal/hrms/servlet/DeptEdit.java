@@ -35,9 +35,9 @@ import javax.servlet.http.HttpServletResponse;
 )
 
 public class DeptEdit extends HttpServlet {
-    @EJB
+    @EJB(beanName="UserBean")
     private UserBeanLocal userBean;
-    @EJB
+    @EJB(beanName="DeptBean")
     private DeptBeanLocal deptBean;
     
 

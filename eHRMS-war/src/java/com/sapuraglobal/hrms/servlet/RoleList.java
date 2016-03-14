@@ -26,7 +26,7 @@ import com.sapuraglobal.hrms.ejb.AccessBeanLocal;
 )
 public class RoleList extends HttpServlet {
 
-    @EJB
+    @EJB(beanName="AccessBean")
     private AccessBeanLocal userAccessBean;
 
     /**

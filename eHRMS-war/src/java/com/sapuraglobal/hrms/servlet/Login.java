@@ -30,10 +30,10 @@ import javax.servlet.http.HttpSession;
 )
 public class Login extends HttpServlet {
 
-    @EJB
+    @EJB(beanName="UserBean")
     private UserBeanLocal userBean;
 
-    @EJB
+    @EJB(beanName="AccessBean")
     private AccessBeanLocal accessBean;
 
     /**

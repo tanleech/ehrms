@@ -36,7 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 )
 public class EmployeeList extends HttpServlet {
 
-    @EJB
+    @EJB(beanName="UserBean")
     private UserBeanLocal userBean;
 
     

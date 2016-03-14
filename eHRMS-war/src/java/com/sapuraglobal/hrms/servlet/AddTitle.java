@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 )
 public class AddTitle extends HttpServlet {
 
-    @EJB
+    @EJB(beanName="TitleBean")
     private TitleBeanLocal titleBean;
     
 

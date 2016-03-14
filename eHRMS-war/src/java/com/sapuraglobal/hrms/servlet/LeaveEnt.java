@@ -30,10 +30,10 @@ import javax.servlet.http.HttpServletResponse;
 )
 
 public class LeaveEnt extends HttpServlet {
-    @EJB
+    @EJB(beanName="LeaveBean")
     private LeaveBeanLocal leaveBean;
     
-    @EJB
+    @EJB(beanName="UserBean")
     private UserBeanLocal userBean;
 
     /**

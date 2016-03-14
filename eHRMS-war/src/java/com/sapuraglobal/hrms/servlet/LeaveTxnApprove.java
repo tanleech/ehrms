@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 )
 
 public class LeaveTxnApprove extends HttpServlet {
-    @EJB
+    @EJB(beanName="LeaveBean")
     private LeaveBeanLocal leaveBean;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
