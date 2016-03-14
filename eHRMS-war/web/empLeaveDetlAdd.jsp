@@ -83,7 +83,7 @@
                     <div class="form-group">  
                      <label class=" control-label col-sm-1">No of days</label>
                      <div class="col-sm-3">
-                         <input value="" id="days" name="days" readonly/>
+                         <input value="" id="days" name="days"/>
                      </div>
                      
                     </div>

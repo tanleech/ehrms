@@ -5,14 +5,7 @@
  */
 package com.sapuraglobal.hrms.servlet;
 
-import com.sapuraglobal.hrms.dto.AccessDTO;
-import com.sapuraglobal.hrms.dto.UserDTO;
-import com.sapuraglobal.hrms.ejb.AccessBeanLocal;
-import com.sapuraglobal.hrms.ejb.UserBeanLocal;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

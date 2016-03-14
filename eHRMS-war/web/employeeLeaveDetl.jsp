@@ -22,7 +22,7 @@
              $('#saveBtn').click(function ()
              {
                 //$('#action').val('A'); 
-                alert('update');
+                //alert('update');
                 var url = $('#myForm').attr('action'); 
                 $('#action').val('E');
                 var frmData = $('#myForm').serialize(); 
@@ -30,7 +30,7 @@
                     $.post(url, frmData,
                     function (data,status) {
                         //$('#computedCF').val(data);
-                        alert(data);
+                        //alert(data);
                         location.reload();
                         
                      }); 

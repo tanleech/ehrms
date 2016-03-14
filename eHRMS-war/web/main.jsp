@@ -27,11 +27,8 @@
         <!-- Main content -->
         <section class="content">
             <div id="inner">
-                Dear employees,
                 <br/>
-                Let me tell you this. No bonus for all employees this year unless you prove your worth to me.
                 <br/>
-                From the boss.
             </div><!-- /.row -->
           <!-- Main row -->
         </section><!-- /.content -->

@@ -87,16 +87,21 @@ public class AccessBean implements AccessBeanLocal {
 
     @Override
     public RoleDTO getRole(String descr) {
-        List results=null;
+         List results=null;
         Session session=null;
+        RoleDTO data = null;
         try
         {
             session = DaoDelegate.getInstance().create();
-            //results =  session.createQuery("FROM com.sapuraglobal.hrms.dto.RoleDTO role").list();
+            //results =  session.createQuery("FROM sg.edu.ntu.hrms.dto.RoleDTO role").list();
             String qry = "SELECT DISTINCT role FROM com.sapuraglobal.hrms.dto.RoleDTO role left join fetch role.accessList WHERE role.description = :descr";
             Query query = session.createQuery(qry);
             query.setParameter("descr", descr);
             results = query.list();
+            if(results!=null&&results.size()>0)
+            {
+                data = (RoleDTO)results.get(0);
+            }
         }
         catch(Exception ex)
         {
@@ -107,7 +112,7 @@ public class AccessBean implements AccessBeanLocal {
             DaoDelegate.getInstance().close(session);
         }
         
-        return (RoleDTO)results.get(0);
+        return data;
     }
 
     @Override
