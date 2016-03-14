@@ -31,18 +31,21 @@ public class UserBean implements UserBeanLocal {
     @Override
     public UserDTO authenticate(String loginId, String password, boolean useLDAP) {
         
-        Context initCtx;
+        //Context initCtx;
         String url,baseDn;
         UserDTO userData = null;
         try {
            if(useLDAP)
            {
+            /*   
             initCtx = new InitialContext();
             Context envCtx = (Context) initCtx.lookup("java:comp/env");
             // Look up our data source
             url = (String)envCtx.lookup("LDAP_URL");
             baseDn = (String)envCtx.lookup("LDAP_BASE");
-            
+            */
+            url = "ldap://dns1.sapuraglobal.com:389";
+            baseDn = "cn=users,dc=dns1,dc=sapuraglobal,dc=com";
        	    Hashtable<String,String> env = new Hashtable<String,String>();
   	    env.put(Context.INITIAL_CONTEXT_FACTORY, 
 	    "com.sun.jndi.ldap.LdapCtxFactory");
