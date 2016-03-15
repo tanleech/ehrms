@@ -68,6 +68,8 @@ public class UserBean implements UserBeanLocal {
            {
                userData = getUser(loginId);
                System.out.println("user id: "+userData.getId());
+               System.out.println("user id: "+userData.getPassword());
+               
                if(!password.equals(userData.getPassword()))
                {
                    userData=null;
@@ -301,6 +303,31 @@ public class UserBean implements UserBeanLocal {
         }
 
         return results;
+    }
+
+    @Override
+    public UserDTO getUserFromId(int id) {
+        UserDTO data=null;
+        String hql = "FROM com.sapuraglobal.hrms.dto.UserDTO U left join fetch U.role WHERE U.id = :Id";
+        Session session=null;
+        try{
+            session = DaoDelegate.getInstance().create();
+            Query query = session.createQuery(hql);
+            query.setParameter("Id", id);
+            List results = query.list();
+            if(results!=null && !results.isEmpty())
+            {
+               data = (UserDTO) results.get(0);
+            }
+        }catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
+        return data;
     }
     
     

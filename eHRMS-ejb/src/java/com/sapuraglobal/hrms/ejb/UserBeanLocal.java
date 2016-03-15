@@ -33,5 +33,7 @@ public interface UserBeanLocal {
     void updateRole(int userId, int roleId);
 
     List<UserDTO> getReporteeList(int userId);
+
+    UserDTO getUserFromId(int id);
     
 }

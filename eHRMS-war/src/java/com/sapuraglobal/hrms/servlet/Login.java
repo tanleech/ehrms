@@ -62,7 +62,8 @@ public class Login extends HttpServlet {
         {
 
             //authenticate
-            UserDTO auth = userBean.authenticate(userId, password, true);
+            UserDTO auth = userBean.authenticate(userId, password, false);
+            
             
             if(auth!=null)
             {
@@ -74,6 +75,12 @@ public class Login extends HttpServlet {
                 session.setAttribute("User", auth);
                 session.setAttribute("access", convertToACRMap(list));
                 //determine manager
+                UserDTO mgr = userBean.getUserFromId(auth.getApprover());
+                if(mgr!=null)
+                {
+                    auth.setApproverEmail(mgr.getEmail());
+                    auth.setApproverName(mgr.getName());
+                }
                 List<UserDTO> resultList = userBean.getReporteeList(auth.getId());
                 if(resultList!=null&&resultList.size()>0)
                 {

@@ -116,6 +116,18 @@ public class UserDTO implements Serializable{
     
     @Transient
     private String approverName;
+    
+    @Transient
+    private String approverEmail;
+
+    public String getApproverEmail() {
+        return approverEmail;
+    }
+
+    public void setApproverEmail(String approverEmail) {
+        this.approverEmail = approverEmail;
+    }
+    
 
     public String getApproverName() {
         return approverName;

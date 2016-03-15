@@ -10,6 +10,7 @@ import com.sapuraglobal.hrms.dto.LeaveTypeDTO;
 import com.sapuraglobal.hrms.dto.StatusDTO;
 import com.sapuraglobal.hrms.dto.UserDTO;
 import com.sapuraglobal.hrms.ejb.LeaveBeanLocal;
+import com.sapuraglobal.hrms.servlet.helper.Emailer;
 import com.sapuraglobal.hrms.servlet.helper.Utility;
 import java.io.IOException;
 import java.text.ParseException;
@@ -92,6 +93,10 @@ public class LeaveTxnAdd extends HttpServlet {
         
         leaveBean.applyLeave(txn);
         leaveBean.updateLeaveEnt(typeDTO.getId(), user.getId(), bal-daysTaken);
+        new Emailer().send("APPLY",user.getEmail());
+        System.out.println("apprv: "+user.getApproverEmail());
+        new Emailer().send("APPRV",user.getApproverEmail());
+        
         //update the balance
         
         if(!page.isEmpty())
