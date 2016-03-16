@@ -108,12 +108,14 @@
                            <c:if test="${(requestScope.isManager eq 'Y') && (entry.status.description ne 'approved'&&
                                  entry.status.description ne 'rejected')}">
                             <td width="20%">
-                                <a href="leaveTxnApprove?action=APPRV&txn=${entry.id}">Approve</a>
-                                |
-                                <a href="leaveTxnApprove?action=REJ&txn=${entry.id}&typeId=${entry.leaveType.id}&userId=${entry.user.id}&days=${entry.days}">Reject</a>
+                                <c:if test="${sessionScope.User.id ne entry.user.id}">
+                                    <a href="leaveTxnApprove?action=APPRV&txn=${entry.id}&userId=${entry.user.id}">Approve</a>
+                                    |
+                                    <a href="leaveTxnApprove?action=REJ&txn=${entry.id}&typeId=${entry.leaveType.id}&userId=${entry.user.id}&days=${entry.days}}">Reject</a>
+                                </c:if> 
                             </td>
                            </c:if> 
-                            <c:if test="${(requestScope.isManager eq 'Y') || (entry.status.description eq 'approved' ||
+                            <c:if test="${(requestScope.isManager ne 'Y') || (entry.status.description eq 'approved' ||
                                  entry.status.description eq 'rejected')}">
                             <td width="20%">
                             </td>

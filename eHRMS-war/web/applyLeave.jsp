@@ -60,9 +60,9 @@
              $('#leaveType').change(function ()
              {
                 var type = $('#leaveType').val();
-                alert('type: '+type);
+                //alert('type: '+type);
                 $.get("leaveTxn?action=Q&typeId="+type, function(data, status){
-                        alert("Data: " + data + "\nStatus: " + status);
+                        //alert("Data: " + data + "\nStatus: " + status);
                         //alert(data);
                         $('#balance').val(data);
                         

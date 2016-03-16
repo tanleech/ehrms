@@ -44,7 +44,7 @@ public class BeanHelper {
             for(int i=0;i<allUsers.size();i++)
             {
                 UserDTO user = allUsers.get(i);
-                map.put(user.getId(), user.getName());
+                map.put(user.getId(), user);
             }
             
        return map;

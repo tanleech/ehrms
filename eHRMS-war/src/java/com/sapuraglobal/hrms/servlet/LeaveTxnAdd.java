@@ -93,10 +93,13 @@ public class LeaveTxnAdd extends HttpServlet {
         
         leaveBean.applyLeave(txn);
         leaveBean.updateLeaveEnt(typeDTO.getId(), user.getId(), bal-daysTaken);
-        new Emailer().send("APPLY",user.getEmail());
-        System.out.println("apprv: "+user.getApproverEmail());
-        new Emailer().send("APPRV",user.getApproverEmail());
-        
+        Emailer email = new Emailer();
+        email.send("messageApply",user.getEmail());
+        if(user.getApproverEmail()!=null&&!user.getApproverEmail().isEmpty())
+        {    
+           System.out.println("apprv: "+user.getApproverEmail());
+           email.send("messageApprv",user.getApproverEmail());
+        }
         //update the balance
         
         if(!page.isEmpty())

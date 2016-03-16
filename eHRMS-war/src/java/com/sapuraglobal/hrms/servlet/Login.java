@@ -72,7 +72,6 @@ public class Login extends HttpServlet {
                 
                 //auth.getRole().getRole().setAccessList(accessBean.getAccessRights(auth.getRole().getRole().getId()));
                 List<AccessDTO> list = accessBean.getAccessRights(auth.getRole().getRole().getId());
-                session.setAttribute("User", auth);
                 session.setAttribute("access", convertToACRMap(list));
                 //determine manager
                 UserDTO mgr = userBean.getUserFromId(auth.getApprover());
@@ -82,10 +81,12 @@ public class Login extends HttpServlet {
                     auth.setApproverName(mgr.getName());
                 }
                 List<UserDTO> resultList = userBean.getReporteeList(auth.getId());
+                System.out.println("auth id: "+auth.getId());
                 if(resultList!=null&&resultList.size()>0)
                 {
                     auth.setIsManager(true);
                 }
+                session.setAttribute("User", auth);
                 page = "/main.jsp";
             }
             else

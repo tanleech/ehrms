@@ -66,10 +66,15 @@ public class LeaveTxn extends HttpServlet {
                 LeaveTypeDTO typeDTO= new LeaveTypeDTO();
                 typeDTO.setId(typeId);
                 UserDTO userDTO = (UserDTO)request.getSession().getAttribute("User");
-                HashMap map = new BeanHelper().getUserTab(userBean);
+                //HashMap map = new BeanHelper().getUserTab(userBean);
                 System.out.println("approver: "+userDTO.getApprover());
-                String appr = (String)map.get(userDTO.getApprover());
-                userDTO.setApproverName(appr);
+                //String appr = (String)map.get(userDTO.getApprover());
+                //userDTO.setApproverName(appr);
+                UserDTO mgrDTO = userBean.getUserFromId(userDTO.getApprover());
+                if(mgrDTO!=null)
+                {
+                    userDTO.setApproverName(mgrDTO.getApproverName());
+                }
                 double balance = leaveBean.getLeaveBalance(typeDTO, userDTO);
                 PrintWriter out = response.getWriter();
                 out.write(String.valueOf(balance));
@@ -88,13 +93,13 @@ public class LeaveTxn extends HttpServlet {
                 System.out.println("acr: "+acr);
                 if(acr==1)
                 {
-                    if(!userDTO.isIsManager())
-                    {
+                    //if(!userDTO.isIsManager())
+                    //{
                       txnList = leaveBean.getLeaveRecords(userDTO.getId());
-                    }
-                    else
+                    //}
+                    if(userDTO.isIsManager())
                     {
-                      txnList = leaveBean.getTxnForApprover(userDTO.getId());
+                      txnList.addAll(leaveBean.getTxnForApprover(userDTO.getId()));
                       request.setAttribute("isManager", "Y");
                         
                     }
@@ -102,13 +107,21 @@ public class LeaveTxn extends HttpServlet {
                 else if (acr==2)
                 {
                    txnList = leaveBean.getAllTxn();
+                   //request.setAttribute("isManager", "Y");
                 }   
 
 
                 for(int i=0;i<txnList.size();i++)
                 {
                     LeaveTxnDTO txn = txnList.get(i);
-                    txn.getUser().setApproverName((String)map.get(txn.getUser().getApprover()));
+                    UserDTO mgr = (UserDTO)map.get(txn.getUser().getApprover());
+                    System.out.println("in list aprover: "+txn.getUser().getApprover());
+                    //UserDTO mgr = userBean.getUserFromId(txn.getUser().getApprover());
+                    if(mgr!=null)
+                    {
+                      txn.getUser().setApproverName(mgr.getName());
+                      //txn.getUser().setApproverEmail(mgr.getEmail());
+                    }
                 }
                 request.setAttribute("leaveTxnlist", txnList);
                 page="/leaveList.jsp";

@@ -9,6 +9,8 @@ import com.sapuraglobal.hrms.dto.LeaveTypeDTO;
 import com.sapuraglobal.hrms.dto.StatusDTO;
 import com.sapuraglobal.hrms.dto.UserDTO;
 import com.sapuraglobal.hrms.ejb.LeaveBeanLocal;
+import com.sapuraglobal.hrms.ejb.UserBeanLocal;
+import com.sapuraglobal.hrms.servlet.helper.Emailer;
 import java.io.IOException;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -29,6 +31,9 @@ import javax.servlet.http.HttpServletResponse;
 public class LeaveTxnApprove extends HttpServlet {
     @EJB(beanName="LeaveBean")
     private LeaveBeanLocal leaveBean;
+    @EJB(beanName="UserBean")
+    private UserBeanLocal userBean;
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -49,12 +54,17 @@ public class LeaveTxnApprove extends HttpServlet {
         String page = "/leaveTxn?action=list";
 
         String txnId = request.getParameter("txn");
+        String userId = request.getParameter("userId");
+        Emailer mailer = new Emailer();
+
         if(action!=null)
         {
+            UserDTO user = userBean.getUserFromId(Integer.parseInt(userId));
             if(action.equals("APPRV"))
             {
                 StatusDTO status = leaveBean.getStatus("approved");
                 leaveBean.approveLeave(Integer.parseInt(txnId), status.getId());
+                mailer.send("msgApprv", user.getEmail());
             }
             else if(action.equals("REJ"))
             {
@@ -62,7 +72,7 @@ public class LeaveTxnApprove extends HttpServlet {
                 leaveBean.approveLeave(Integer.parseInt(txnId), status.getId());
                 //add on to the leave balance
                 String typeId = request.getParameter("typeId");
-                String userId = request.getParameter("userId");
+                //String userId = request.getParameter("userId");
                 double days = Double.parseDouble(request.getParameter("days"));
                 
                 //LeaveEntDTO entDTO = leaveBean.getLeaveEnt(Integer.parseInt(typeId), Integer.parseInt(userId));
@@ -74,6 +84,8 @@ public class LeaveTxnApprove extends HttpServlet {
                 double bal = leaveBean.getLeaveBalance(typeDTO, userDTO);
 
                 leaveBean.updateLeaveEnt(Integer.parseInt(typeId),Integer.parseInt(userId) , bal+days);
+                mailer.send("msgRej", user.getEmail());
+
             }
         }
         

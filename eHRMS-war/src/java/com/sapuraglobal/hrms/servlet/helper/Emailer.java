@@ -21,23 +21,23 @@ import javax.mail.internet.MimeMessage;
 public class Emailer {
     
     private String smtp,user,password,subject,msgApply,orig,msgApprv;
+    Properties props = null;
     public Emailer()
     {
-        
-        Properties prop = new Properties();
 	try {
 
-                 prop = new Properties();
-                 prop.load(getClass().getResourceAsStream("email.properties"));
+                 props = new Properties();
+                 props.load(getClass().getResourceAsStream("email.properties"));
 		// load a properties file
-		smtp = prop.getProperty("smtp");
-		user = prop.getProperty("user");
-		password = prop.getProperty("password");
-                subject = prop.getProperty("subject");
+		smtp = props.getProperty("smtp");
+		user = props.getProperty("user");
+		password = props.getProperty("password");
+                subject = props.getProperty("subject");
+                /*
                 msgApply = prop.getProperty("messageApply");
                 msgApprv = prop.getProperty("messageApprv");
-                
-                orig = prop.getProperty("user");
+                */
+                orig = props.getProperty("user");
 
 	} catch (IOException ex) {
 		ex.printStackTrace();
@@ -70,6 +70,7 @@ public class Emailer {
 
          // Now set the actual message
          String msg = "";
+         /*
          if(type.equalsIgnoreCase("APPLY"))
          {
              msg = msgApply;
@@ -78,6 +79,8 @@ public class Emailer {
          {
              msg = msgApprv;
          }
+         */
+         msg=props.getProperty(type);
          message.setText(msg);
          // Send message
          Transport.send(message);
