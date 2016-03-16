@@ -38,19 +38,21 @@
                  {
                      if($('#start_slot').val()===$('#end_slot').val())
                      {
-                         days = days - 0.5+1;
+                         days = days - 0.5;
                      }
+                     /*
                      else
                      {
                          days = days +1;
                      }
+                     */
                  }
                  else
                  {
                      
                     if($('#start_slot').val()==='AM' && $('#end_slot').val()==='AM')
                      {
-                         days = days - 1;
+                         days = days - 0.5;
                      }
                  }
                 $('#taken').val(days);
