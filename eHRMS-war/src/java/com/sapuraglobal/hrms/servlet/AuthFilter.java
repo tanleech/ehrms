@@ -32,11 +32,11 @@ import javax.servlet.http.HttpSession;
 		urlPatterns  = {"/employee","/deptList","/addDept","/employeeEdit",
                                 "/addTitle","/titleList","/roleList","/roleEdit",
                                 "/leaveEnt","/leaveSettings","/leaveEndAdd","/leaveTxn",
-                                "/leaveTxnAdd","/leaveTxnApprove"},
+                                "/leaveTxnAdd","/leaveTxnApprove","/uploadEmp"},
 		servletNames = {"employeeEdit","deptList","employee","addDept",
                                 "employeeEdit","addTitle","titleList","roleList","roleEdit",
                                 "leaveEnt","leaveSettings","leaveEndAdd","leaveTxn",
-                                "leaveTxnAdd","leaveTxnApprove"},  
+                                "leaveTxnAdd","leaveTxnApprove","uploadEmp"},  
 		filterName= "/AuthFilter",
 	    dispatcherTypes = {DispatcherType.REQUEST, DispatcherType.FORWARD}
 		)
@@ -127,6 +127,7 @@ public class AuthFilter implements Filter {
     private boolean hasAccess(String module,String action, HashMap accessTab, boolean isManager)
     {
         boolean hasAccess=false;
+        System.out.println("module: "+module);
         if(module.equals("employee"))
         {
             AccessDTO access =(AccessDTO)accessTab.get("Employee");
@@ -263,6 +264,15 @@ public class AuthFilter implements Filter {
                      hasAccess=true;
             }
 
+        }
+        else if(module.equals("uploadEmp"))
+        {
+            AccessDTO access =(AccessDTO)accessTab.get("Upload");
+            if(access.getAccess()>=1 )
+            {
+                     hasAccess=true;
+            }
+            
         }
         
             

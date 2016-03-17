@@ -13,7 +13,6 @@ import java.util.Hashtable;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.InitialDirContext;
