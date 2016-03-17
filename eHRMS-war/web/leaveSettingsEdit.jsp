@@ -77,20 +77,41 @@
                      </div>
                      <label class=" control-label col-sm-2">Entitlement:</label>
                      <div class="col-sm-3">
+                        <c:if test="${empty requestScope.leaveType.days}">
+                        <input type="text" class="form-control" name="ent"
+                               value="0"/>   
+                        </c:if>    
+                        <c:if test="${not empty requestScope.leaveType.days}">
+ 
                         <input type="text" class="form-control" name="ent"
                                value="${requestScope.leaveType.days}"/>   
+                        </c:if>
+                        
                      </div>
                     </div>
                     <div class="form-group">
                      <label class=" control-label col-sm-1">Year Increment:</label>
                      <div class="col-sm-3">
-                        <input type="text" class="form-control" name="annualIncre"
-                               value="${requestScope.leaveType.annualIncre}"/>   
+                         <c:if test="${empty requestScope.leaveType.annualIncre}">
+                             <input type="text" class="form-control" name="annualIncre"
+                               value="0"/>   
+                         </c:if>
+                         <c:if test="${not empty requestScope.leaveType.annualIncre}">
+                             <input type="text" class="form-control" name="annualIncre"
+                                value="${requestScope.leaveType.annualIncre}"/>
+                         </c:if>    
                      </div>
                      <label class=" control-label col-sm-2">Carried Forward %</label>
                      <div class="col-sm-3">
-                        <input type="text" class="form-control" name="cf"
-                               value="${requestScope.leaveType.carriedForward}"/>   
+                         <c:if test="${empty requestScope.leaveType.carriedForward}">
+                            <input type="text" class="form-control" name="cf"
+                                   value="0"/>   
+                         </c:if>
+                         <c:if test="${not empty requestScope.leaveType.carriedForward}">
+                            
+                          <input type="text" class="form-control" name="cf"
+                               value="${requestScope.leaveType.carriedForward}"/>
+                         </c:if> 
                      </div>
                     </div>
                       
