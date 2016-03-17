@@ -24,7 +24,7 @@
                 <c:if test="${param.action eq 'U'}">
                  $('#action').val('E');
                 </c:if>
-                <c:if test="${param.action eq 'U'}">
+                <c:if test="${param.action ne 'U'}">
                  $('#action').val('A');
                 </c:if>
                     

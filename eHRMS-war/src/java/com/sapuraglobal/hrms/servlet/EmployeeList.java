@@ -59,7 +59,7 @@ public class EmployeeList extends HttpServlet {
         {
           Date current = new Date();  
           Calendar frmCal = Calendar.getInstance();
-          frmCal.add(Calendar.MONTH, -1);
+          frmCal.add(Calendar.MONTH, -480);
           String frmDate = formatter.format(frmCal.getTime());
           String toDate  = formatter.format(current);
           StringBuilder sb = new StringBuilder();
@@ -133,13 +133,15 @@ public class EmployeeList extends HttpServlet {
             
              if(map.containsKey(user.getApprover()))
              {
-                 approver = (String) map.get(user.getApprover());
+                 UserDTO mgr = (UserDTO)map.get(user.getApprover());
+                 approver = mgr.getName();
              }
             String deptDescr=""; 
             if(user.getDept()!=null)
             {
                 deptDescr = user.getDept().getDept().getDescription();
             }
+            System.out.println("approver: "+approver);
             array.add(
             Json.createObjectBuilder()
                     .add("id", user.getLogin())

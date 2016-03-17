@@ -123,16 +123,14 @@ public class LeaveSettings extends HttpServlet {
         {
             cfVal = Double.parseDouble(cf);
         }
-        if(ent!=null&&ent.isEmpty())
+        if(ent!=null&&!ent.isEmpty())
         {
             entVal = Double.parseDouble(ent);
         }
-        if(annualIncre!=null&&annualIncre.isEmpty())
+        if(annualIncre!=null&&!annualIncre.isEmpty())
         {
             increVal = Double.parseDouble(annualIncre);
         }
-        
-        
         LeaveTypeDTO type = new LeaveTypeDTO();
         type.setDescription(leaveType);
         type.setMandatory(mandatory);
