@@ -62,7 +62,7 @@ public class Login extends HttpServlet {
         {
 
             //authenticate
-            UserDTO auth = userBean.authenticate(userId, password, true);
+            UserDTO auth = userBean.authenticate(userId, password, false);
             
             
             if(auth!=null)
