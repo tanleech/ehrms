@@ -100,6 +100,7 @@ public class AuthFilter implements Filter {
                 //List<AccessDTO> list = user.getRole().getRole().getAccessList();
                 //System.out.println("accessList: "+user.getRole().getRole().getAccessList());
                 String url = ((HttpServletRequest)request).getRequestURL().toString();
+                System.out.println("url: "+url);
                 String module = getModuleName(url);
                 String queryString = ((HttpServletRequest)request).getQueryString();
                 System.out.println("qry: "+queryString);
