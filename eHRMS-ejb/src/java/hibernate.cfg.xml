@@ -3,18 +3,17 @@
 <hibernate-configuration>
   <session-factory>
     <property name="show_sql">true</property>
-    <!--
-    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/hrms</property>
     <property name="hibernate.connection.username">root</property>
     <property name="hibernate.connection.password">zaq1ZAQ!</property>
     <property name="hibernate.connection.pool_size">20</property>
-    -->
-   
-    <property name="connection.datasource">jdbc/hrms</property> 
     
+   <!--
+    <property name="connection.datasource">jdbc/hrms</property> 
+    -->
     <!-- <mapping resource="com/sapura/User.hbm.xml"/> -->
     
     <mapping class="com.sapuraglobal.hrms.dto.DeptDTO"/>
@@ -29,6 +28,8 @@
     <mapping class="com.sapuraglobal.hrms.dto.LeaveTxnDTO"/>
     <mapping class="com.sapuraglobal.hrms.dto.LeaveEntDTO"/>
     <mapping class="com.sapuraglobal.hrms.dto.StatusDTO"/>
+    <mapping class="com.sapuraglobal.hrms.dto.AuditDTO"/>
+    
      
     
   </session-factory>

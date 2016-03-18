@@ -70,6 +70,7 @@ public class EmployeeEdit extends HttpServlet {
           String page = "/employeeEdit.jsp";
           
           System.out.println("action: "+action);
+          UserDTO loginUser = (UserDTO)request.getSession().getAttribute("User");
           
           List<TitleDTO> titleList = titleBean.getAllTitles();
           request.setAttribute("titleList", titleList);
@@ -96,6 +97,7 @@ public class EmployeeEdit extends HttpServlet {
                     userDto.setDept(null);
                     userDto.setRole(null);
                     userDto.setLeaveEnt(null);
+                    userDto.setAuthor(loginUser);
                     userBean.createUser(userDto);
                     deptBean.assignEmployee(userDto, deptDto.getDept());
                     userBean.assignRole(userDto,userRoleDto.getRole());
@@ -103,6 +105,7 @@ public class EmployeeEdit extends HttpServlet {
                     entDto.setUser(userDto);
                     entDto.setBalance(ent);
                     leaveBean.addLeaveEnt(entDto);
+                    
                     page="/employee";
 
                  }
@@ -154,6 +157,8 @@ public class EmployeeEdit extends HttpServlet {
                  userDto.setRole(null);
                  userDto.setLeaveEnt(null);
                  //update user
+                 System.out.println("LoginUSer:"+loginUser);
+                 userDto.setAuthor(loginUser);
                  userBean.updateUser(userDto);
                  userBean.updateRole(id, userRoleDto.getRole().getId());
                  //update dept
@@ -168,6 +173,8 @@ public class EmployeeEdit extends HttpServlet {
                  //entDto.setUser(userDto);
                  //leaveBean.addLeaveEnt(entDto);
                  page="/employee";
+
+
 
           }
              

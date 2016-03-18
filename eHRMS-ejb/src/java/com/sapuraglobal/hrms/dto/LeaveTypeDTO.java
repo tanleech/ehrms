@@ -12,6 +12,7 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 /**
  *
  * @author sapura-mac-pro-cto-C02PC1MWG3QT
@@ -46,6 +47,20 @@ public class LeaveTypeDTO implements java.io.Serializable {
     @Column(name = "modified")
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date modified;
+    
+    @Transient
+    private UserDTO author;
+
+    public UserDTO getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(UserDTO author) {
+        this.author = author;
+    }
+
+
+    
     
      public int getId() {
         return id;

@@ -49,7 +49,20 @@ public class AccessDTO implements Serializable{
     @Column(name = "access")
     private int access;
     
+    @Transient
+    private UserDTO author;
 
+    public UserDTO getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(UserDTO author) {
+        this.author = author;
+    }
+
+
+
+    
     public int getAccess() {
         return access;
     }

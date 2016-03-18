@@ -5,12 +5,14 @@
  */
 package com.sapuraglobal.hrms.ejb;
 
+import com.sapuraglobal.hrms.dto.AuditDTO;
 import com.sapuraglobal.hrms.dto.RoleDTO;
 import com.sapuraglobal.hrms.dto.UserDTO;
 import com.sapuraglobal.hrms.dto.UserRoleDTO;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.naming.Context;
 import javax.naming.NamingException;
@@ -26,6 +28,8 @@ import org.hibernate.Transaction;
  */
 @Stateless
 public class UserBean implements UserBeanLocal {
+    @EJB(beanName="AuditBean")
+    private AuditBeanLocal auditBean;
     
     @Override
     public UserDTO authenticate(String loginId, String password, boolean useLDAP) {
@@ -142,6 +146,12 @@ public class UserBean implements UserBeanLocal {
             //deptBean.addEmployees(userList, dept);
             
             txn.commit(); 
+            //audit log
+            if(user.getAuthor()!=null)
+            {
+                String descr = "Employee:Add Employee: "+user.getName();
+                auditLog(descr, user.getAuthor());
+            }
         }catch (Exception ex)
         {
             txn.rollback();
@@ -237,6 +247,14 @@ public class UserBean implements UserBeanLocal {
             session.saveOrUpdate(user);
             //deptBean.addEmployees(userList, dept);
             txn.commit(); 
+            
+            //audit log
+            if(userDTO.getAuthor()!=null)
+            {
+                String descr = "Employee:Update Employee: "+user.getName();
+                auditLog(descr, userDTO.getAuthor());
+            }
+
         }catch (Exception ex)
         {
             txn.rollback();
@@ -329,7 +347,14 @@ public class UserBean implements UserBeanLocal {
         return data;
     }
     
-    
+    private void auditLog(String descr,UserDTO author)
+    {
+        System.out.println("audit log");
+            AuditDTO audit = new AuditDTO();
+            audit.setDescr(descr);
+            audit.setLogin(author);
+            auditBean.log(audit);
+    }
     
     
 }

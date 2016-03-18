@@ -43,6 +43,20 @@ public class DeptDTO implements java.io.Serializable {
     @OneToMany(cascade=CascadeType.ALL)
     @JoinColumn(name="Dept_id")
     private List<UserDeptDTO> employees;
+    
+    @Transient
+    private UserDTO author;
+
+    public UserDTO getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(UserDTO author) {
+        this.author = author;
+    }
+
+
+
 
     public List<UserDeptDTO> getEmployees() {
         return employees;

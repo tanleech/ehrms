@@ -5,39 +5,36 @@
  */
 package com.sapuraglobal.hrms.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
-import javax.persistence.Transient;
+
 /**
  *
  * @author sapura-mac-pro-cto-C02PC1MWG3QT
  */
 @Entity  
-@Table(name= "UserDept")  
-public class UserDeptDTO implements java.io.Serializable {
+@Table(name= "Audit")
+public class AuditDTO implements Serializable{
     
     @Id @GeneratedValue
     @Column(name = "id")
     private int id;
     
     @ManyToOne(cascade=CascadeType.MERGE)
-    @JoinColumn(name="Dept_id")
-    private DeptDTO dept;
-
-    @ManyToOne(cascade=CascadeType.MERGE)
     @JoinColumn(name="User_id")
-    private UserDTO user;
+    private UserDTO login;
     
-    @Column(name="manager")
-    private String manager;
+    @Column(name = "description")
+    private String descr;
     
     @Column(name = "created")
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
@@ -47,17 +44,11 @@ public class UserDeptDTO implements java.io.Serializable {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date modified;
     
-    @Transient
-    private UserDTO author;
+    
 
-    public UserDTO getAuthor() {
-        return author;
+    public Date getCreated() {
+        return created;
     }
-
-    public void setAuthor(UserDTO author) {
-        this.author = author;
-    }
-
 
     public int getId() {
         return id;
@@ -67,32 +58,20 @@ public class UserDeptDTO implements java.io.Serializable {
         this.id = id;
     }
 
-    public DeptDTO getDept() {
-        return dept;
+    public UserDTO getLogin() {
+        return login;
     }
 
-    public void setDept(DeptDTO dept) {
-        this.dept = dept;
+    public void setLogin(UserDTO login) {
+        this.login = login;
     }
 
-    public UserDTO getUser() {
-        return user;
+    public String getDescr() {
+        return descr;
     }
 
-    public void setUser(UserDTO user) {
-        this.user = user;
-    }
-
-    public String getManager() {
-        return manager;
-    }
-
-    public void setManager(String manager) {
-        this.manager = manager;
-    }
-
-    public Date getCreated() {
-        return created;
+    public void setDescr(String descr) {
+        this.descr = descr;
     }
 
     public void setCreated(Date created) {
@@ -106,6 +85,5 @@ public class UserDeptDTO implements java.io.Serializable {
     public void setModified(Date modified) {
         this.modified = modified;
     }
-    
     
 }

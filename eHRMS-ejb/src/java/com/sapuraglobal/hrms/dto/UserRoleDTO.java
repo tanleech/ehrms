@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 
 /**
  *
@@ -46,6 +47,18 @@ public class UserRoleDTO implements Serializable{
     @JoinColumn(name="User_id")
     private UserDTO user;
 
+    @Transient
+    private UserDTO author;
+
+    public UserDTO getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(UserDTO author) {
+        this.author = author;
+    }
+
+    
     public int getId() {
         return id;
     }

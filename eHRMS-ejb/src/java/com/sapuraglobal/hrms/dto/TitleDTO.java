@@ -49,6 +49,21 @@ public class TitleDTO implements Serializable{
 
     @Transient
     private DeptDTO dept;
+    
+    @Transient
+    private UserDTO author;
+
+    public UserDTO getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(UserDTO author) {
+        this.author = author;
+    }
+
+
+
+    
 
     public DeptDTO getDept() {
         return dept;
