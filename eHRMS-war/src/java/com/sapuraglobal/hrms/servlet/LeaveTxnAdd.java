@@ -53,9 +53,9 @@ public class LeaveTxnAdd extends HttpServlet {
         Date startDt=null,endDt=null;
         try
         {
-           startDt = Utility.format(startDate, "MM/dd/yyyy");
+           startDt = Utility.format(startDate, "dd/MM/yyyy");
            String endDate = request.getParameter("endDate");
-           endDt = Utility.format(endDate, "MM/dd/yyyy");
+           endDt = Utility.format(endDate, "dd/MM/yyyy");
  
         }catch(ParseException pe)
         {
