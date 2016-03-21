@@ -157,7 +157,7 @@ public class UploadEmp extends HttpServlet {
                                             //oil ent
                                             LeaveTypeDTO oilTypeDTO = leaveBean.getLeaveType("Off in Leave");
                                             LeaveEntDTO  oilentDTO = new LeaveEntDTO();
-                                            oilentDTO.setBalance(oilTypeDTO.getDays()-Double.parseDouble(med));
+                                            oilentDTO.setBalance(oilTypeDTO.getDays()-Double.parseDouble(oil));
                                             oilentDTO.setCurrent(0);
                                             oilentDTO.setUser(user);
                                             oilentDTO.setLeaveType(oilTypeDTO);

@@ -51,6 +51,7 @@ public class LeaveEnt extends HttpServlet {
             String action = request.getParameter("action");
             System.out.println("action: "+action);
             String page = "/employeeLeaveDetl.jsp";
+            UserDTO loginUser = (UserDTO)request.getSession().getAttribute("User");
             
             /*
             String leaveType = request.getParameter("leaveType");
@@ -77,6 +78,7 @@ public class LeaveEnt extends HttpServlet {
                    //leaveBean.deleteLeaveSetting(Integer.parseInt(id));
                     String entId = request.getParameter("entId");
                     String userId = request.getParameter("userId");
+                    leaveBean.setAuthor(loginUser);
                     leaveBean.deleteLeaveEnt(Integer.parseInt(entId),Integer.parseInt(userId));
                     
                 }

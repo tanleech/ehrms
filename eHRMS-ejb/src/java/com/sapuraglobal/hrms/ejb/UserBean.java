@@ -5,7 +5,6 @@
  */
 package com.sapuraglobal.hrms.ejb;
 
-import com.sapuraglobal.hrms.dto.AuditDTO;
 import com.sapuraglobal.hrms.dto.RoleDTO;
 import com.sapuraglobal.hrms.dto.UserDTO;
 import com.sapuraglobal.hrms.dto.UserRoleDTO;

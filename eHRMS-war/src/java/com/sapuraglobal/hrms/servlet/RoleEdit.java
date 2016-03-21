@@ -8,6 +8,7 @@ package com.sapuraglobal.hrms.servlet;
 import com.sapuraglobal.hrms.dto.AccessDTO;
 import com.sapuraglobal.hrms.dto.ModuleDTO;
 import com.sapuraglobal.hrms.dto.RoleDTO;
+import com.sapuraglobal.hrms.dto.UserDTO;
 import com.sapuraglobal.hrms.ejb.AccessBeanLocal;
 import com.sapuraglobal.hrms.ejb.ModuleBeanLocal;
 import java.io.IOException;
@@ -54,6 +55,7 @@ public class RoleEdit extends HttpServlet {
         String action = request.getParameter("action");
         System.out.println("action: "+action);
         String page = "/roleEdit.jsp";
+        UserDTO loginUser = (UserDTO)request.getSession().getAttribute("User");
         if(action==null||action.isEmpty())
         {
             List<ModuleDTO> moduleList = moduleBean.getAllModules();

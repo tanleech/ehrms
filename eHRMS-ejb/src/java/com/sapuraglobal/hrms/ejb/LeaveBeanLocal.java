@@ -18,7 +18,7 @@ import javax.ejb.Local;
  * @author michael-PC
  */
 @Local
-public interface LeaveBeanLocal {
+public interface LeaveBeanLocal extends BaseBeanLocal{
 
     void saveLeaveSetting(LeaveTypeDTO leaveType);
 

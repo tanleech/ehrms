@@ -16,7 +16,7 @@ import javax.ejb.Local;
  * @author sapura-mac-pro-cto-C02PC1MWG3QT
  */
 @Local
-public interface DeptBeanLocal {
+public interface DeptBeanLocal extends BaseBeanLocal {
 
     List<DeptDTO> getAllDepts();
 

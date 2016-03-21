@@ -11,6 +11,7 @@ import com.sapuraglobal.hrms.dto.LeaveTypeDTO;
 import com.sapuraglobal.hrms.dto.StatusDTO;
 import com.sapuraglobal.hrms.dto.UserDTO;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -21,7 +22,10 @@ import org.hibernate.Transaction;
  * @author michael-PC
  */
 @Stateless
-public class LeaveBean implements LeaveBeanLocal {
+public class LeaveBean extends BaseBean implements LeaveBeanLocal {
+
+    @EJB(beanName="AuditBean")
+    private AuditBeanLocal auditBean;
 
     @Override
     public void saveLeaveSetting(LeaveTypeDTO leaveType) {
@@ -89,12 +93,20 @@ public class LeaveBean implements LeaveBeanLocal {
         Transaction txn = null;
         try
         {
+            LeaveTypeDTO lvlType = getLeaveSetting(typeId);
             session = DaoDelegate.getInstance().create();
             txn = session.beginTransaction();
             Query delQry = session.createQuery("DELETE FROM com.sapuraglobal.hrms.dto.LeaveTypeDTO where id = :typeId");
             delQry.setParameter("typeId", typeId);
             delQry.executeUpdate();
             txn.commit();
+            if(getAuthor()!=null)
+            {
+                
+                String descr = "Leave Settings:Delete Leave Setting: "+lvlType.getDescription();
+                auditBean.log(descr, getAuthor());
+            }
+
             
         }
         catch(Exception ex)
@@ -283,6 +295,12 @@ public class LeaveBean implements LeaveBeanLocal {
             leaveEnt.setModified(current);
             session.persist(leaveEnt);
             txn.commit();
+            
+            if(getAuthor()!=null)
+            {
+                String descr = "Leave Entitement:Add Leave Entitlement: "+leaveEnt.getLeaveType().getDescription()+" For Employee: "+leaveEnt.getUser().getName();
+                auditBean.log(descr, getAuthor());
+            }
         }
         catch(Exception ex)
         {
@@ -365,6 +383,12 @@ public class LeaveBean implements LeaveBeanLocal {
             delQry.setParameter("userId", userId);
             delQry.executeUpdate();
             txn.commit();
+            
+            if(getAuthor()!=null)
+            {
+                String descr = "Leave Settings:Delete Leave Entitlment: "+entId+" userId: "+userId;
+                auditBean.log(descr, getAuthor());
+            }
             
         }
         catch(Exception ex)

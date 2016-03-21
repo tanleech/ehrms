@@ -9,6 +9,7 @@ import com.sapuraglobal.hrms.dto.DeptDTO;
 import com.sapuraglobal.hrms.dto.UserDTO;
 import com.sapuraglobal.hrms.dto.UserDeptDTO;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -19,7 +20,10 @@ import org.hibernate.Transaction;
  * @author sapura-mac-pro-cto-C02PC1MWG3QT
  */
 @Stateless
-public class DeptBean implements DeptBeanLocal {
+public class DeptBean extends BaseBean implements DeptBeanLocal {
+    
+    @EJB(beanName="AuditBean")
+    private AuditBeanLocal auditBean;
 
     @Override
     public List<DeptDTO> getAllDepts() {
@@ -59,7 +63,11 @@ public class DeptBean implements DeptBeanLocal {
             txn = session.beginTransaction();
             session.persist(deptDTO);
             txn.commit();
-            
+            if(getAuthor()!=null)
+            {
+                String descr = "Department:Add  Department: "+deptDTO.getDescription();
+                auditBean.log(descr, getAuthor());
+            }
         }catch (Exception ex)
         {
             if(txn!=null)
@@ -344,7 +352,12 @@ public class DeptBean implements DeptBeanLocal {
             qry.setParameter("oldDescr", oldName);
             result = qry.executeUpdate();
             txn.commit();
-            
+            if(getAuthor()!=null)
+            {
+                String descr = "Department:Update Department: "+newName;
+                auditBean.log(descr, getAuthor());
+            }
+
         }catch (Exception ex)
         {
             if(txn!=null)
