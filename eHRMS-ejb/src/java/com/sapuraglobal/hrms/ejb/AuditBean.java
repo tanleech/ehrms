@@ -7,7 +7,10 @@ package com.sapuraglobal.hrms.ejb;
 
 import com.sapuraglobal.hrms.dto.AuditDTO;
 import com.sapuraglobal.hrms.dto.UserDTO;
+import java.util.Date;
+import java.util.List;
 import javax.ejb.Stateless;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -54,6 +57,34 @@ public class AuditBean implements AuditBeanLocal {
             audit.setDescr(descr);
             audit.setLogin(author);
             return audit;
+    }
+
+    @Override
+    public List<AuditDTO> getAuditLog(Date from, Date to) {
+        
+        List<AuditDTO> results = null;
+        String hql = "FROM com.sapuraglobal.hrms.dto.AuditDTO U left join fetch U.login WHERE U.created BETWEEN :stDate "
+                +    "AND :edDate";
+        Session session = null;
+        try
+        {
+            session = DaoDelegate.getInstance().create();
+            Query query = session.createQuery(hql);
+            query.setParameter("stDate", from);
+            query.setParameter("edDate", to);
+
+            results = query.list();
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
+        return results;
+
     }
 
 

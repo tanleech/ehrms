@@ -82,11 +82,11 @@
                                 ${entry.user.name}
                             </td>
                             <td width="10%">
-                                <fmt:formatDate type="date"
+                                <fmt:formatDate type="date" pattern="dd-MM-yyyy"
                                value="${entry.start}" /> ${entry.start_slot}
                             </td>
                             <td width="10%">
-                                <fmt:formatDate type="date"
+                                <fmt:formatDate type="date" pattern="dd-MM-yyyy"
                                value="${entry.end}" /> ${entry.end_slot}
                             </td>
                             <td width="10%">

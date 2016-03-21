@@ -17,11 +17,14 @@
  <script>
      
 // Count days from d0 to d1 inclusive, excluding weekends
-        function calculateDays( d0, d1 )
+        function calculateDays(  d0,  d1 )
         {
+            //alert(d0.getDay()+":"+d1.getDay());
+            //alert(d0.getDay());
             var ndays = 1 + Math.round((d1.getTime()-d0.getTime())/(24*3600*1000));
+            //alert('ndays: '+ndays);
             var nsaturdays = Math.floor((ndays + d0.getDay()) / 7);
-            return ndays - 2*nsaturdays + (d0.getDay()==6) - (d1.getDay()==5);
+            return ndays - 2*nsaturdays + (d0.getDay()==6) - (d1.getDay()==7);
         }
          $(document).ready(function () {
              $('#submit').click(function ()
@@ -31,8 +34,8 @@
              );
              $('#compute').click(function()
              {
-                 var d1 = new Date($('#startDate').val());
-                 var d2 = new Date($('#endDate').val());
+                 var d1 = $("#startDate").datepicker('getDate');//new Date($('#startDate').val());
+                 var d2 = $("#endDate").datepicker('getDate');//new Date($('#endDate').val());
                  var days = calculateDays(d1,d2);
                  if(d1.getDay() === d2.getDay())
                  {
@@ -71,8 +74,16 @@
                     });
              }
              );
-             $('#startDate').datepicker();
-             $('#endDate').datepicker();
+             $('#startDate').datepicker(
+                     {  
+                       format: "dd/mm/yyyy"
+                     }
+             );
+             $('#endDate').datepicker(
+                     {  
+                       format: "dd/mm/yyyy"
+                     }                     
+                );
      
             }
           );

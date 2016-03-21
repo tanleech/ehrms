@@ -87,7 +87,7 @@ public class Login extends HttpServlet {
                     auth.setIsManager(true);
                 }
                 session.setAttribute("User", auth);
-                page = "/main.jsp";
+                page = "/leaveTxn?action=list";
             }
             else
             {

@@ -5,7 +5,10 @@
  */
 package com.sapuraglobal.hrms.ejb;
 
+import com.sapuraglobal.hrms.dto.AuditDTO;
 import com.sapuraglobal.hrms.dto.UserDTO;
+import java.util.Date;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -16,5 +19,7 @@ import javax.ejb.Local;
 public interface AuditBeanLocal {
 
     void log(String descr,UserDTO author);
+
+    List<AuditDTO> getAuditLog(Date from, Date to);
     
 }
