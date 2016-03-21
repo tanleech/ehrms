@@ -48,17 +48,6 @@ public class LeaveTypeDTO implements java.io.Serializable {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date modified;
     
-    @Transient
-    private UserDTO author;
-
-    public UserDTO getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(UserDTO author) {
-        this.author = author;
-    }
-
 
     
     

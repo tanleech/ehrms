@@ -6,15 +6,12 @@
 package com.sapuraglobal.hrms.ejb;
 
 import com.sapuraglobal.hrms.dto.UserDTO;
-import javax.ejb.Local;
 
 /**
  *
  * @author sapura-mac-pro-cto-C02PC1MWG3QT
  */
-@Local
-public interface AuditBeanLocal {
-
-    void log(String descr,UserDTO author);
-    
+public interface BaseBeanLocal {
+    public UserDTO getAuthor();
+    public void setAuthor(UserDTO author);    
 }

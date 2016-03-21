@@ -18,7 +18,7 @@ import org.hibernate.Transaction;
  * @author sapura-mac-pro-cto-C02PC1MWG3QT
  */
 @Stateless
-public class AccessBean implements AccessBeanLocal {
+public class AccessBean extends BaseBean implements AccessBeanLocal {
 
     @Override
     public List<RoleDTO> getAllRoles() {

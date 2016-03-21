@@ -6,6 +6,7 @@
 package com.sapuraglobal.hrms.ejb;
 
 import com.sapuraglobal.hrms.dto.AuditDTO;
+import com.sapuraglobal.hrms.dto.UserDTO;
 import javax.ejb.Stateless;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -18,8 +19,9 @@ import org.hibernate.Transaction;
 public class AuditBean implements AuditBeanLocal {
 
     @Override
-    public void log(AuditDTO audit) {
+    public void log(String descr,UserDTO author) {
         
+        AuditDTO audit = create(descr,author);
         java.util.Date current = new java.util.Date();
         audit.setCreated(current);
         audit.setModified(current);
@@ -46,7 +48,13 @@ public class AuditBean implements AuditBeanLocal {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
-    
+    private AuditDTO create(String descr,UserDTO author)
+    {
+            AuditDTO audit = new AuditDTO();
+            audit.setDescr(descr);
+            audit.setLogin(author);
+            return audit;
+    }
 
 
 }

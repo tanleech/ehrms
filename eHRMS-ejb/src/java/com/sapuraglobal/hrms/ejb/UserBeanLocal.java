@@ -16,7 +16,7 @@ import javax.ejb.Local;
  * @author sapura-mac-pro-cto-C02PC1MWG3QT
  */
 @Local
-public interface UserBeanLocal {
+public interface UserBeanLocal extends BaseBeanLocal{
 
     UserDTO authenticate(String parameter,String password, boolean useLdap);
 
@@ -35,5 +35,6 @@ public interface UserBeanLocal {
     List<UserDTO> getReporteeList(int userId);
 
     UserDTO getUserFromId(int id);
+    
     
 }

@@ -27,7 +27,7 @@ import org.hibernate.Transaction;
  * @author sapura-mac-pro-cto-C02PC1MWG3QT
  */
 @Stateless
-public class UserBean implements UserBeanLocal {
+public class UserBean extends BaseBean implements UserBeanLocal {
     @EJB(beanName="AuditBean")
     private AuditBeanLocal auditBean;
     
@@ -147,10 +147,11 @@ public class UserBean implements UserBeanLocal {
             
             txn.commit(); 
             //audit log
-            if(user.getAuthor()!=null)
+            if(getAuthor()!=null)
             {
                 String descr = "Employee:Add Employee: "+user.getName();
-                auditLog(descr, user.getAuthor());
+                //auditLog(descr, user.getAuthor());
+                auditBean.log(descr, getAuthor());
             }
         }catch (Exception ex)
         {
@@ -249,10 +250,11 @@ public class UserBean implements UserBeanLocal {
             txn.commit(); 
             
             //audit log
-            if(userDTO.getAuthor()!=null)
+            if(getAuthor()!=null)
             {
                 String descr = "Employee:Update Employee: "+user.getName();
-                auditLog(descr, userDTO.getAuthor());
+                //auditLog(descr, userDTO.getAuthor());
+                auditBean.log(descr, getAuthor());
             }
 
         }catch (Exception ex)
@@ -347,6 +349,7 @@ public class UserBean implements UserBeanLocal {
         return data;
     }
     
+    /*
     private void auditLog(String descr,UserDTO author)
     {
         System.out.println("audit log");
@@ -355,6 +358,6 @@ public class UserBean implements UserBeanLocal {
             audit.setLogin(author);
             auditBean.log(audit);
     }
-    
+    */
     
 }

@@ -50,17 +50,6 @@ public class RoleDTO implements Serializable{
     @JoinColumn(name="Role_id")
     private List<AccessDTO> accessList;
 
-    @Transient
-    private UserDTO author;
-
-    public UserDTO getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(UserDTO author) {
-        this.author = author;
-    }
-
 
     
     

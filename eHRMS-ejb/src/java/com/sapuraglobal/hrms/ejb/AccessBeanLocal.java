@@ -26,6 +26,7 @@ public interface AccessBeanLocal {
     void update(int roleId, List<AccessDTO>accessList);
 
     List<AccessDTO> getAccessRights(int roleId);
+    
 
 
     

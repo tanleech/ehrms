@@ -49,17 +49,6 @@ public class LeaveEntDTO implements java.io.Serializable {
     @JoinColumn(name="LeaveType_id")
     private LeaveTypeDTO leaveType;
 
-    @Transient
-    private UserDTO author;
-
-    public UserDTO getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(UserDTO author) {
-        this.author = author;
-    }
-
  
 
 

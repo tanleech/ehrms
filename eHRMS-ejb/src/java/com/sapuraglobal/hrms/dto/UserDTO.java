@@ -120,20 +120,6 @@ public class UserDTO implements Serializable{
     @Transient
     private String approverEmail;
     
-    @Transient
-    private UserDTO author;
-
-    public UserDTO getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(UserDTO author) {
-        this.author = author;
-    }
-
-
-
-
     
 
     public String getApproverEmail() {
