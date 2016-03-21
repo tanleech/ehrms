@@ -6,16 +6,13 @@
 package com.sapuraglobal.hrms.servlet;
 
 import com.sapuraglobal.hrms.dto.AuditDTO;
-import com.sapuraglobal.hrms.dto.UserDTO;
 import com.sapuraglobal.hrms.ejb.AuditBeanLocal;
-import com.sapuraglobal.hrms.servlet.helper.BeanHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
 import javax.ejb.EJB;
@@ -84,12 +81,13 @@ public class AuditList extends HttpServlet {
 		Date fromDate = formatter.parse(stDate);
                 Date toDate = formatter.parse(edDate);
 
-                List<AuditDTO> userList = auditBean.getAuditLog(fromDate,toDate);
+                List<AuditDTO> auditList = auditBean.getAuditLog(fromDate,toDate);
                 //convert to json array
-                //String json = convertToJson(userList,new BeanHelper().getUserTab(userBean));
-                //response.setContentType("text/html");
+                String json = convertToJson(auditList);
+                response.setContentType("text/html");
                 PrintWriter out = response.getWriter();
-                //out.write(json);
+                System.out.println("json: "+json);
+                out.write(json);
                 out.flush();
   	  } catch (ParseException e) {
 		e.printStackTrace();
@@ -98,62 +96,21 @@ public class AuditList extends HttpServlet {
             
         }
     }
-    /*
-    private HashMap getMap(HttpServletRequest request)
-    {
-        HashMap map;
-        if(request.getSession().getAttribute("allUsers")!=null)
-        {
-            map = (HashMap)request.getSession().getAttribute("allUsers");
-        }
-        else
-        {
-            map = new HashMap();
-            List<UserDTO> allUsers = new BeanHelper().getAllUsers(userBean);
-            for(int i=0;i<allUsers.size();i++)
-            {
-                UserDTO user = allUsers.get(i);
-                map.put(user.getId(), user.getName());
-            }
-            request.getSession().setAttribute("allUsers", map);
-        }
-        return map;
-    }
-    */
-    private String convertToJson(List<UserDTO> userList, HashMap map)
+    
+    private String convertToJson(List<AuditDTO> auditList)
     {
         JsonArrayBuilder array = Json.createArrayBuilder();
-        for(int i=0;i<userList.size();i++)
+        for(int i=0;i<auditList.size();i++)
         {
-            UserDTO user = userList.get(i);
-            Date datejoin = user.getDateJoin();
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            String joinDateStr = formatter.format(datejoin);
-            
-            String approver = "";
-            
-             if(map.containsKey(user.getApprover()))
-             {
-                 UserDTO mgr = (UserDTO)map.get(user.getApprover());
-                 approver = mgr.getName();
-             }
-            String deptDescr=""; 
-            if(user.getDept()!=null)
-            {
-                deptDescr = user.getDept().getDept().getDescription();
-            }
-            System.out.println("approver: "+approver);
+            AuditDTO audit = auditList.get(i);
+            Date subDate = audit.getCreated();
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            String subDateStr = formatter.format(subDate);
             array.add(
             Json.createObjectBuilder()
-                    .add("id", user.getLogin())
-                    .add("name",  user.getName())
-                    .add("email", user.getEmail())
-                    .add("dept", deptDescr)
-                    //.add("dept", user.getDept().getDept().getDescription())
-                    .add("title", user.getTitle().getDescription())
-                    //.add("category","coming")
-                    .add("manager",approver)
-                    .add("datejoin",joinDateStr)
+                    .add("date",subDateStr)
+                    .add("description",  audit.getDescr())
+                    .add("employee", audit.getLogin().getName())
             );
             
         }

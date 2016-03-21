@@ -92,7 +92,7 @@
         <section class="content">
           <div class="row">
             <div class="col-xs-12">
-                   <form action="employee" method="post" id="myForm">
+                   <form action="auditList" method="post" id="myForm">
                     <table>
                         <tr>
                             <td>
