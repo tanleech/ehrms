@@ -111,7 +111,7 @@
                                 <c:if test="${sessionScope.User.id ne entry.user.id}">
                                     <a href="leaveTxnApprove?action=APPRV&txn=${entry.id}&userId=${entry.user.id}">Approve</a>
                                     |
-                                    <a href="leaveTxnApprove?action=REJ&txn=${entry.id}&typeId=${entry.leaveType.id}&userId=${entry.user.id}&days=${entry.days}}">Reject</a>
+                                    <a href="leaveTxnApprove?action=REJ&txn=${entry.id}&typeId=${entry.leaveType.id}&userId=${entry.user.id}&days=${entry.days}">Reject</a>
                                 </c:if> 
                             </td>
                            </c:if> 

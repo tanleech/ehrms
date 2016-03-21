@@ -69,7 +69,7 @@
                         "ordering": true,
                         "info": true,
                         "autoWidth": true,
-                        "pageLength": 7
+                        "pageLength": 15
                       });
             }
          $(document).ready(function () {
