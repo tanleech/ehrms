@@ -497,7 +497,46 @@ public class LeaveBean extends BaseBean implements LeaveBeanLocal {
         return status;
         
     }
+    
+ @Override
+    public void updateLeaveEntitlement(LeaveEntDTO entDTO, int userId) {
+        Session session=null;
+        Transaction txn = null;
+        java.util.Date current = new java.util.Date();
+        try
+        {
+            session = DaoDelegate.getInstance().create();
+            txn = session.beginTransaction();
+            Query updateQry = session.createQuery("UPDATE com.sapuraglobal.hrms.dto.LeaveEntDTO ent "
+                    + " set  ent.balance = :bal, ent.current= :cur, ent.max = :max, ent.modified =:modified "
+                    + " where ent.leaveType.id = :typeId AND ent.user.id = :userId");
+            //System.out.println("typeId: "+leaveTypeId);
+            updateQry.setParameter("typeId", entDTO.getLeaveType().getId());
+            updateQry.setParameter("userId", userId);
+            updateQry.setParameter("max",entDTO.getMax());
+            updateQry.setParameter("cur", entDTO.getCurrent());
+            updateQry.setParameter("bal", entDTO.getBalance());
+            updateQry.setParameter("modified", current);
+            updateQry.executeUpdate();
+            txn.commit();
+            
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            if(txn!=null)
+            {
+                txn.rollback();
+            }
+        }
+        finally
+        {
+            DaoDelegate.getInstance().close(session);
+        }
 
+        
+    }
+    
     @Override
     public void updateLeaveEnt(int leaveTypeId, int userId, double days) {
         Session session=null;

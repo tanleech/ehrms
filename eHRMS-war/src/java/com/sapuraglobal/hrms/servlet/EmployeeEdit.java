@@ -169,6 +169,10 @@ public class EmployeeEdit extends HttpServlet {
                  {
                      deptBean.assignEmployee(userDto, deptDto.getDept());
                  }
+                 //update the Leave ent
+                 
+                 //leaveBean.updateLeaveEnt(entDto.getLeaveType().getId(), id, entDto.getBalance());
+                 leaveBean.updateLeaveEntitlement(entDto,id);
                  //update role
                  //userBean.assignRole(userDto,userRoleDto.getRole());
                  //update entitlement

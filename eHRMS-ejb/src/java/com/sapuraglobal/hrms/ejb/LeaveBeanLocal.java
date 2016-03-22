@@ -53,6 +53,8 @@ public interface LeaveBeanLocal extends BaseBeanLocal{
     StatusDTO getStatus(String descr);
 
     void updateLeaveEnt(int leaveTypeId, int userId, double days);
+    
+    void updateLeaveEntitlement(LeaveEntDTO entDo, int userId);
 
     void approveLeave(int txnId, int status);
 
